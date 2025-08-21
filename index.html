@@ -7,7 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -285,12 +284,8 @@
         <!-- Projects Section -->
         <section id="projects" class="py-24 fade-in-up">
             <h2 class="section-title">Some Things I've Built</h2>
-            <div class="swiper-container">
-                <div class="swiper-wrapper" id="projects-container">
-                    <!-- Projects will be dynamically inserted here -->
-                </div>
-                <!-- Add Pagination -->
-                <div class="swiper-pagination"></div>
+            <div id="projects-container" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Projects will be dynamically inserted here -->
             </div>
         </section>
 
@@ -320,7 +315,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // --- Particles.js Background ---
@@ -360,21 +354,21 @@
 
             projects.forEach(project => {
                 const tagsHtml = project.tags.map(tag => `<span class="bg-gray-800 text-gold text-xs font-semibold px-3 py-1 rounded-full">${tag}</span>`).join(' ');
-                const projectEl = document.createElement('div');
-                projectEl.className = "swiper-slide";
+                const projectEl = document.createElement('a');
+                projectEl.href = project.link;
+                projectEl.target = "_blank";
+                projectEl.className = "block group project-card rounded-md shadow-lg h-full";
                 projectEl.innerHTML = `
-                    <a href="${project.link}" target="_blank" class="block group project-card rounded-md shadow-lg h-full">
-                        <div class="project-content h-full flex flex-col p-6 rounded-md">
-                            <div class="project-image-container rounded-md overflow-hidden mb-4">
-                               <img src="${project.img}" alt="${project.title}" class="project-image w-full h-40 object-cover">
-                            </div>
-                            <h3 class="text-xl font-bold mb-2 text-lightest-slate group-hover:text-gold flex-grow">${project.title}</h3>
-                            <p class="text-sm mb-4 text-slate-300">${project.description}</p>
-                            <div class="flex flex-wrap gap-2 mt-auto">
-                                ${tagsHtml}
-                            </div>
+                    <div class="project-content h-full flex flex-col p-6 rounded-md">
+                        <div class="project-image-container rounded-md overflow-hidden mb-4">
+                           <img src="${project.img}" alt="${project.title}" class="project-image w-full h-40 object-cover">
                         </div>
-                    </a>
+                        <h3 class="text-xl font-bold mb-2 text-lightest-slate group-hover:text-gold flex-grow">${project.title}</h3>
+                        <p class="text-sm mb-4 text-slate-300">${project.description}</p>
+                        <div class="flex flex-wrap gap-2 mt-auto">
+                            ${tagsHtml}
+                        </div>
+                    </div>
                 `;
                 projectsContainer.appendChild(projectEl);
             });
@@ -414,7 +408,7 @@
             }, { threshold: 0.1 });
             sections.forEach(section => observer.observe(section));
 
-            const roles = ["AI Enthusiast", "Software Dev", "Machine Learning Dev", "Problem Solver", "Creative Coder"];
+            const roles = ["AI Enthusiast", "Sofware Dev", "Machine Learning Dev", "Problem Solver", "Creative Coder"];
             let roleIndex = 0, charIndex = 0, isDeleting = false;
             const typingElement = document.getElementById('typing-text');
 
@@ -489,31 +483,8 @@
                     header.classList.remove('scrolled');
                 }
             });
-
-            // Swiper JS
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 30,
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30,
-                    },
-                }
-            });
         });
     </script>
 
 </body>
 </html>
-
-
