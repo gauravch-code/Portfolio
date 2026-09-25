@@ -363,32 +363,15 @@
   .live-note { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11.5px; color: var(--dim); margin-top: 14px; }
   .live-note .live-pill { font-size: 11.5px; }
 
-  /* ---------- CONTRIBUTIONS ---------- */
-  .contrib { border: 1px solid var(--line); border-radius: 18px; background: var(--surface); padding: 26px; }
-  .contrib-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
-  .contrib-top h3 { font-size: 22px; letter-spacing: -0.02em; }
-  .contrib-top p { color: var(--dim); font-size: 13.5px; }
-  .contrib-stats { display: flex; gap: 28px; }
-  .contrib-stats div strong { display: block; font-size: 22px; font-weight: 700; letter-spacing: -0.03em; }
-  .contrib-stats div span { font-family: var(--mono); font-size: 10.5px; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; }
-  .heat-scroll { overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
-  .heat-inner { min-width: calc(var(--weeks, 53) * 13px); }
-  .heat {
-    display: grid; grid-auto-flow: column; gap: 3px;
-    grid-template-rows: repeat(7, auto);
-    grid-template-columns: repeat(var(--weeks, 53), minmax(10px, 1fr));
+  /* Key design decision under each project */
+  .decision {
+    margin: 0 0 24px; padding: 14px 16px; border-radius: 12px;
+    border: 1px solid var(--line); border-left: 2px solid var(--mint);
+    background: linear-gradient(90deg, var(--mint-soft), transparent 70%);
+    color: var(--muted); font-size: 14.5px;
   }
-  .heat i { aspect-ratio: 1; border-radius: 22%; background: rgba(255,255,255,0.05); }
-  .heat i[data-l="1"] { background: rgba(94,234,212,.28); }
-  .heat i[data-l="2"] { background: rgba(94,234,212,.5); }
-  .heat i[data-l="3"] { background: rgba(94,234,212,.75); }
-  .heat i[data-l="4"] { background: var(--mint); box-shadow: 0 0 8px rgba(94,234,212,.5); }
-  .heat i.pad { background: transparent; }
-  .heat-months { display: grid; grid-template-columns: repeat(var(--weeks, 53), minmax(10px, 1fr)); gap: 3px; font-family: var(--mono); font-size: 10.5px; color: var(--dim); margin-bottom: 6px; }
-  .heat-months span { white-space: nowrap; overflow: visible; }
-  .heat-legend { display: flex; justify-content: flex-end; align-items: center; gap: 4px; margin-top: 14px; font-family: var(--mono); font-size: 10.5px; color: var(--dim); }
-  .heat-legend i { width: 11px; height: 11px; border-radius: 3px; display: inline-block; }
-  .heat-fallback img { width: 100%; filter: saturate(.9); }
+  .decision span { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--mint); margin-bottom: 4px; }
+  .decision b { color: var(--text); font-weight: 500; }
 
   /* ---------- EXPERIENCE ---------- */
   .xp-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 20px; }
@@ -515,7 +498,7 @@
         </div>
         <div class="proof">
           <div><strong>4</strong><span>agents with live demos</span></div>
-          <div><strong>2 merged</strong><span>PRs in AI open source</span></div>
+          <div><strong><span id="hero-merged">2</span> merged</strong><span>PRs in AI open source</span></div>
           <div><strong>3.89</strong><span>GPA · MS CS, UIC</span></div>
         </div>
       </div>
@@ -540,7 +523,7 @@
 
     <div class="strip">
       <div class="wrap">
-        <span class="strip-label">Contributed to</span>
+        <span class="strip-label">Open-source work in</span>
         <div class="strip-list" id="strip-list">
           <a href="https://github.com/Tracer-Cloud/opensre" target="_blank" rel="noopener">OpenSRE <span data-stars="Tracer-Cloud/opensre">★ 11.2k</span></a>
           <a href="https://github.com/deepset-ai/haystack" target="_blank" rel="noopener">Haystack <span data-stars="deepset-ai/haystack">★ 26.6k</span></a>
@@ -582,6 +565,7 @@
             <li><span><b>Escalate only when uncertain</b> to a PydanticAI fallback that reads the full thread.</span></li>
             <li><span><b>Learn from corrections</b> through a guarded retraining loop with regression checks.</span></li>
           </ol>
+          <p class="decision"><span>Key decision</span><b>Don't send every email to an LLM.</b> Most mail is easy to classify, so a local model handles the confident majority in milliseconds for free, and the LLM budget goes only to the ambiguous tail.</p>
           <div class="metrics">
             <div><strong>~5 ms</strong><span>local decision</span></div>
             <div><strong>92%</strong><span>no LLM needed</span></div>
@@ -613,6 +597,7 @@
             <li><span><b>Investigate:</b> jump to the exact point where a run failed or drifted.</span></li>
             <li><span><b>Control:</b> route uncertain support drafts into a human review queue.</span></li>
           </ol>
+          <p class="decision"><span>Key decision</span><b>Treat agent output as a draft, not an answer.</b> Uncertain support replies go to a human queue instead of straight to the customer, and every step behind them stays inspectable.</p>
           <div class="metrics">
             <div><strong>Every step</strong><span>traced & timed</span></div>
             <div><strong>Human</strong><span>review queue</span></div>
@@ -644,6 +629,7 @@
             <li><span><b>Investigate:</b> a CrewAI orchestrator gathers evidence through four allowlisted MCP tools.</span></li>
             <li><span><b>Remediate:</b> restart on the first alert, and double the memory limit only if the problem recurs in the window.</span></li>
           </ol>
+          <p class="decision"><span>Key decision</span><b>A small allowlist beats broad cluster access.</b> With four bounded MCP tools and a two-step escalation, the worst the agent can do is known before it ever runs.</p>
           <div class="metrics">
             <div><strong>4</strong><span>allowlisted MCP tools</span></div>
             <div><strong>2-stage</strong><span>bounded escalation</span></div>
@@ -675,6 +661,7 @@
             <li><span><b>Execute schema-valid mock tools</b> with session state so the conversation stays consistent.</span></li>
             <li><span><b>Judge and repair</b> with an LLM judge that scores naturalness, tool correctness and completion.</span></li>
           </ol>
+          <p class="decision"><span>Key decision</span><b>Execute the tools instead of imagining them.</b> Schema-valid mock responses with session state keep multi-turn data consistent, and a judge-plus-repair loop fixes weak samples instead of quietly keeping them.</p>
           <div class="metrics">
             <div><strong>16</strong><span>tools</span></div>
             <div><strong>40</strong><span>endpoints</span></div>
@@ -722,35 +709,15 @@
       <div class="oss-summary reveal">
         <div class="oss-stat merged"><strong id="n-merged">2</strong><span>merged pull requests</span></div>
         <div class="oss-stat review"><strong id="n-open">4</strong><span>in review right now</span></div>
-        <div class="oss-stat stars"><strong id="n-stars">237k</strong><span>combined GitHub stars</span></div>
+        <div class="oss-stat stars"><strong id="n-projects">8</strong><span>open-source projects</span></div>
       </div>
 
       <div class="ledger reveal" role="table" aria-label="Open-source pull requests">
         <div class="ledger-head" role="row"><span role="columnheader">Project</span><span role="columnheader">What I fixed</span><span role="columnheader">Stars</span><span role="columnheader">Status</span></div>
         <div id="ledger-rows"></div>
       </div>
-      <div class="live-note"><span class="live-pill" id="oss-live">live</span><span id="oss-note">Status and stars are loaded from the GitHub API each time the page opens.</span></div>
+      <div class="live-note"><span class="live-pill" id="oss-live">live</span><span id="oss-note">New pull requests appear here automatically. Status and stars load from the GitHub API.</span></div>
 
-      <div class="contrib reveal" style="margin-top: 28px;">
-        <div class="contrib-top">
-          <div>
-            <h3>Contribution activity</h3>
-            <p>The last 12 months on GitHub, updated live.</p>
-          </div>
-          <div class="contrib-stats">
-            <div><strong id="c-total">–</strong><span>contributions</span></div>
-            <div><strong id="c-days">–</strong><span>active days</span></div>
-            <div><strong id="c-streak">–</strong><span>longest streak</span></div>
-          </div>
-        </div>
-        <div class="heat-scroll" id="heat-wrap">
-          <div class="heat-inner" id="heat-inner">
-            <div class="heat-months" id="heat-months"></div>
-            <div class="heat" id="heat" aria-label="Contribution heatmap"></div>
-          </div>
-        </div>
-        <div class="heat-legend" aria-hidden="true">Less <i style="background:rgba(255,255,255,.05)"></i><i style="background:rgba(94,234,212,.28)"></i><i style="background:rgba(94,234,212,.5)"></i><i style="background:rgba(94,234,212,.75)"></i><i style="background:#5eead4"></i> More</div>
-      </div>
     </div>
   </section>
 
@@ -869,55 +836,71 @@
 
 <script>
 (function () {
-  // ---------- Open-source ledger: static fallback, refreshed live from the GitHub API ----------
-  const PRS = [
-    { repo: 'Tracer-Cloud/opensre', name: 'OpenSRE', number: 716, stars: 11224, state: 'merged',
-      title: 'Evidence-grounded root-cause analysis',
+  // ---------- Open-source work, discovered live from GitHub ----------
+  // Summaries in my own words for PRs worth explaining; any other PR shows its own title.
+  const NOTES = {
+    'Tracer-Cloud/opensre#716': { name: 'OpenSRE', title: 'Evidence-grounded root-cause analysis',
       what: 'Structured RCA prompt with an alternative-hypothesis output and a backward-compatible parser, which cut false-positive classifications by 30%.' },
-    { repo: 'deepset-ai/haystack', name: 'Haystack', number: 12863, stars: 26599, state: 'merged',
-      title: 'MetaFieldRanker ignored its missing-meta policy',
+    'deepset-ai/haystack#12863': { name: 'Haystack', title: 'MetaFieldRanker ignored its missing-meta policy',
       what: 'A single None metadata value silently turned off ranking for the whole batch. It now follows the configured drop, top or bottom policy.' },
-    { repo: 'huggingface/sentence-transformers', name: 'Sentence Transformers', number: 4073, stars: 19123, state: 'open',
-      title: 'Hard-negative mining skipped the CrossEncoder',
-      what: 'With min_score as the only filter, mine_hard_negatives filtered on bi-encoder scores and never ran the reranker it was given.' },
-    { repo: 'deepset-ai/haystack', name: 'Haystack', number: 12896, stars: 26599, state: 'open',
-      title: 'RegexTextExtractor returned None',
+    'deepset-ai/haystack#12896': { name: 'Haystack', title: 'RegexTextExtractor returned None',
       what: 'An alternation or optional group returned None instead of "", which crashed extract-then-route pipelines.' },
-    { repo: 'browser-use/browser-use', name: 'browser-use', number: 5690, stars: 116266, state: 'open',
-      title: 'send_keys treated "center" as Enter',
+    'huggingface/sentence-transformers#4073': { name: 'Sentence Transformers', title: 'Hard-negative mining skipped the CrossEncoder',
+      what: 'With min_score as the only filter, mine_hard_negatives filtered on bi-encoder scores and never ran the reranker it was given.' },
+    'browser-use/browser-use#5690': { name: 'browser-use', title: 'send_keys treated "center" as Enter',
       what: 'Substring matching added a navigation wait to ordinary typing. It now tracks the keys actually dispatched.' },
-    { repo: 'huggingface/diffusers', name: 'Diffusers', number: 14708, stars: 34600, state: 'open',
-      title: 'Positional config args lost on round-trip',
+    'huggingface/diffusers#14708': { name: 'Diffusers', title: 'Positional config args lost on round-trip',
       what: 'Values passed positionally were saved as defaults and dropped by from_config. They now survive the save and load.' },
-    { repo: 'chroma-core/chroma', name: 'Chroma', number: 7610, stars: 29376, state: 'open',
-      title: 'Whitespace-padded collection names',
-      what: 'Collection names with invisible leading or trailing spaces are now rejected with an explicit validation error.' }
+    'chroma-core/chroma#7610': { name: 'Chroma', title: 'Whitespace-padded collection names',
+      what: 'Collection names with invisible leading or trailing spaces are now rejected with an explicit validation error.' },
+    'zed-industries/zed#63992': { name: 'Zed' },
+    'agno-agi/agno#10072': { name: 'Agno' }
+  };
+  // Last known state, shown instantly and kept if the GitHub API is unreachable.
+  const FALLBACK = [
+    { repo: 'deepset-ai/haystack', number: 12863, merged: true, date: '2026-09-24', stars: 26599, title: 'Treat None meta values as missing in MetaFieldRanker' },
+    { repo: 'Tracer-Cloud/opensre', number: 716, merged: true, date: '2026-04-20', stars: 11224, title: 'Improve RCA prompt for evidence-grounded diagnosis' },
+    { repo: 'huggingface/sentence-transformers', number: 4073, merged: false, date: '2026-09-23', stars: 19123, title: '' },
+    { repo: 'zed-industries/zed', number: 63992, merged: false, date: '2026-09-20', stars: 90900, title: 'Fix thread switcher registration after enabling AI' },
+    { repo: 'agno-agi/agno', number: 10072, merged: false, date: '2026-09-15', stars: 42300, title: 'Restore direct answers for simple route-mode requests' },
+    { repo: 'browser-use/browser-use', number: 5690, merged: false, date: '2026-09-05', stars: 116266, title: '' },
+    { repo: 'huggingface/diffusers', number: 14708, merged: false, date: '2026-09-04', stars: 34600, title: '' },
+    { repo: 'chroma-core/chroma', number: 7610, merged: false, date: '2026-08-18', stars: 29376, title: '' }
   ];
-  const fmt = (n) => n >= 1000 ? (n >= 100000 ? Math.round(n / 1000) : (n / 1000).toFixed(1).replace(/\.0$/, '')) + 'k' : String(n);
+  const fmt = (n) => n >= 100000 ? Math.floor(n / 1000) + 'k' : n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const cleanTitle = (t) => {
+    const x = t.replace(/^\s*(\[[^\]]+\]\s*)?(\([^)]*\)\s*:?\s*)?([a-z]+(\([^)]*\))?!?:\s*)?/i, '').replace(/\s*\((fixes|closes|resolves)\s+#\d+\)\s*$/i, '').trim();
+    return x.charAt(0).toUpperCase() + x.slice(1);
+  };
+  const prettyRepo = (repo) => repo.split('/')[1].replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
   function renderLedger(prs) {
-    const shown = prs.filter((p) => p.state !== 'closed');
-    shown.sort((a, b) => (a.state === 'merged' ? 0 : 1) - (b.state === 'merged' ? 0 : 1));
-    document.getElementById('ledger-rows').innerHTML = shown.map((p) => `
+    const rows = [...prs].sort((a, b) => (a.merged === b.merged ? b.date.localeCompare(a.date) : a.merged ? -1 : 1));
+    document.getElementById('ledger-rows').innerHTML = rows.map((p) => {
+      const note = NOTES[`${p.repo}#${p.number}`] || {};
+      const name = note.name || prettyRepo(p.repo);
+      const title = note.title || p.title;
+      return `
       <a class="pr" role="row" href="https://github.com/${p.repo}/pull/${p.number}" target="_blank" rel="noopener">
-        <span class="pr-repo" role="cell"><b>${esc(p.name)}</b><span>${esc(p.repo.split('/')[0])} · #${p.number}</span></span>
-        <span class="pr-what" role="cell"><b>${esc(p.title)}</b><p>${esc(p.what)}</p></span>
+        <span class="pr-repo" role="cell"><b>${esc(name)}</b><span>${esc(p.repo.split('/')[0])} · #${p.number}</span></span>
+        <span class="pr-what" role="cell"><b>${esc(title)}</b>${note.what ? `<p>${esc(note.what)}</p>` : ''}</span>
         <span class="pr-stars" role="cell">★ ${fmt(p.stars)}</span>
-        <span class="state ${p.state}" role="cell">${p.state === 'merged' ? 'Merged' : 'In review'}</span>
-      </a>`).join('');
-    const merged = shown.filter((p) => p.state === 'merged').length;
-    const open = shown.filter((p) => p.state === 'open').length;
-    const repoStars = {};
-    shown.forEach((p) => { repoStars[p.repo] = p.stars; });
-    const total = Object.values(repoStars).reduce((a, b) => a + b, 0);
+        <span class="state ${p.merged ? 'merged' : 'open'}" role="cell">${p.merged ? 'Merged' : 'In review'}</span>
+      </a>`;
+    }).join('');
+
+    const merged = rows.filter((p) => p.merged).length;
+    const repos = [];
+    rows.forEach((p) => { if (!repos.some((r) => r.repo === p.repo)) repos.push(p); });
     document.getElementById('n-merged').textContent = merged;
-    document.getElementById('n-open').textContent = open;
-    document.getElementById('n-stars').textContent = fmt(total);
-    document.querySelectorAll('[data-stars]').forEach((el) => {
-      const s = repoStars[el.dataset.stars];
-      if (s) el.textContent = '★ ' + fmt(s);
-    });
+    document.getElementById('hero-merged').textContent = merged;
+    document.getElementById('n-open').textContent = rows.length - merged;
+    document.getElementById('n-projects').textContent = repos.length;
+    document.getElementById('strip-list').innerHTML = repos.map((p) => {
+      const note = NOTES[`${p.repo}#${p.number}`] || {};
+      return `<a href="https://github.com/${p.repo}" target="_blank" rel="noopener">${esc(note.name || prettyRepo(p.repo))} <span>★ ${fmt(p.stars)}</span></a>`;
+    }).join('');
   }
 
   function readCache(key, maxAgeMs) {
@@ -933,68 +916,35 @@
   }
 
   async function refreshLedger() {
-    renderLedger(PRS);
-    const cached = readCache('gc-prs-v1', 30 * 60 * 1000);
+    renderLedger(FALLBACK);
+    const cached = readCache('gc-oss-v2', 30 * 60 * 1000);
     if (cached) { renderLedger(cached); return; }
+    const gh = async (path) => {
+      const r = await fetch('https://api.github.com/' + path, { headers: { Accept: 'application/vnd.github+json' } });
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    };
     try {
-      const updated = await Promise.all(PRS.map(async (p) => {
-        const r = await fetch(`https://api.github.com/repos/${p.repo}/pulls/${p.number}`, { headers: { Accept: 'application/vnd.github+json' } });
-        if (!r.ok) throw new Error(r.status);
-        const d = await r.json();
-        const state = d.merged_at ? 'merged' : d.state === 'open' ? 'open' : 'closed';
-        return { ...p, state, stars: d.base && d.base.repo ? d.base.repo.stargazers_count : p.stars };
-      }));
-      writeCache('gc-prs-v1', updated);
-      renderLedger(updated);
+      const found = await gh('search/issues?q=author:gauravch-code+is:pr+-user:gauravch-code&per_page=100');
+      const prs = found.items
+        .filter((i) => i.state === 'open' || i.pull_request.merged_at)
+        .map((i) => ({
+          repo: i.repository_url.split('/repos/')[1],
+          number: i.number,
+          merged: Boolean(i.pull_request.merged_at),
+          date: (i.pull_request.merged_at || i.created_at).slice(0, 10),
+          title: cleanTitle(i.title),
+          stars: 0
+        }));
+      const repos = [...new Set(prs.map((p) => p.repo))];
+      const stars = Object.fromEntries(await Promise.all(repos.map(async (r) => [r, (await gh('repos/' + r)).stargazers_count])));
+      prs.forEach((p) => { p.stars = stars[p.repo]; });
+      writeCache('gc-oss-v2', prs);
+      renderLedger(prs);
     } catch (e) {
       document.getElementById('oss-live').textContent = 'cached';
       document.getElementById('oss-note').textContent = "GitHub's API rate limit was hit, so this shows the last known status.";
     }
-  }
-
-  // ---------- Contribution heatmap from live GitHub data ----------
-  async function renderHeatmap() {
-    const heat = document.getElementById('heat');
-    const monthsEl = document.getElementById('heat-months');
-    let data = readCache('gc-contrib-v1', 6 * 60 * 60 * 1000);
-    try {
-      if (!data) {
-        const r = await fetch('https://github-contributions-api.jogruber.de/v4/gauravch-code?y=last');
-        if (!r.ok) throw new Error(r.status);
-        data = await r.json();
-        writeCache('gc-contrib-v1', data);
-      }
-    } catch (e) {
-      document.getElementById('heat-wrap').innerHTML = '<div class="heat-fallback"><img src="https://ghchart.rshah.org/2dd4bf/gauravch-code" alt="GitHub contribution chart for gauravch-code" loading="lazy" /></div>';
-      return;
-    }
-    const days = data.contributions;
-    const first = new Date(days[0].date + 'T00:00:00');
-    const pad = first.getDay();
-    const cells = [];
-    for (let i = 0; i < pad; i++) cells.push('<i class="pad"></i>');
-    days.forEach((d) => cells.push(`<i data-l="${d.level}" title="${d.count} contribution${d.count === 1 ? '' : 's'} on ${d.date}"></i>`));
-    heat.innerHTML = cells.join('');
-    const weeks = Math.ceil((pad + days.length) / 7);
-    document.getElementById('heat-inner').style.setProperty('--weeks', weeks);
-    const labels = new Array(weeks).fill('');
-    let lastMonth = -1;
-    days.forEach((d, idx) => {
-      const dt = new Date(d.date + 'T00:00:00');
-      const week = Math.floor((idx + pad) / 7);
-      if (dt.getMonth() !== lastMonth && dt.getDate() <= 7) {
-        labels[week] = dt.toLocaleString('en', { month: 'short' });
-        lastMonth = dt.getMonth();
-      }
-    });
-    monthsEl.innerHTML = labels.map((l) => `<span>${l}</span>`).join('');
-    let longest = 0, run = 0, active = 0, total = 0;
-    days.forEach((d) => { total += d.count; if (d.count > 0) { active++; run++; longest = Math.max(longest, run); } else run = 0; });
-    document.getElementById('c-total').textContent = total;
-    document.getElementById('c-days').textContent = active;
-    document.getElementById('c-streak').textContent = longest + (longest === 1 ? ' day' : ' days');
-    const wrap = document.getElementById('heat-wrap');
-    wrap.scrollLeft = wrap.scrollWidth;
   }
 
   // ---------- Hero trace animation ----------
@@ -1086,7 +1036,6 @@
 
   runTrace();
   refreshLedger();
-  renderHeatmap();
 })();
 </script>
 </body>
