@@ -421,6 +421,119 @@
   .palette-empty { padding: 24px; text-align: center; color: var(--dim); font-size: 14px; }
   .palette-foot { display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11px; color: var(--dim); }
 
+  /* ---------- MINI-GAURAV (illustrated avatar) ---------- */
+  .avatar { display: block; width: 100%; height: 100%; overflow: visible; }
+  .avatar .av-mouth, .avatar .av-think, .avatar .av-hand { display: none; }
+  .avatar[data-state="idle"] .av-m-smile, .avatar[data-state="happy"] .av-m-smile, .avatar[data-state="wave"] .av-m-smile { display: inline; }
+  .avatar[data-state="talking"] .av-m-talk { display: inline; }
+  .avatar[data-state="thinking"] .av-m-flat, .avatar[data-state="shrug"] .av-m-flat { display: inline; }
+  .avatar[data-state="thinking"] .av-think, .avatar[data-state="wave"] .av-hand { display: inline; }
+  .avatar .av-pupils { transform: translate(var(--px, 0px), var(--py, 0px)); transition: transform .12s linear; }
+  .avatar[data-state="thinking"] .av-pupils { transform: translate(-1.6px, -2.4px); }
+  .avatar .av-eyes { transform-box: view-box; transform-origin: 100px 87px; animation: av-blink 5.2s infinite; }
+  @keyframes av-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
+  .avatar .av-head { transform-box: view-box; transform-origin: 100px 132px; animation: av-sway 7s ease-in-out infinite; transition: transform .35s var(--ease); }
+  @keyframes av-sway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+  .avatar .av-body { animation: av-breathe 4s ease-in-out infinite; }
+  @keyframes av-breathe { 50% { transform: translateY(1px); } }
+  .avatar .tw { animation: av-twinkle 3.4s ease-in-out infinite; }
+  .avatar .tw:nth-child(3n) { animation-delay: -1.2s; } .avatar .tw:nth-child(3n+1) { animation-delay: -2.3s; }
+  @keyframes av-twinkle { 50% { opacity: .25; } }
+  .avatar .av-talk { transform-box: view-box; transform-origin: 100px 119px; animation: av-talk .26s ease-in-out infinite alternate; }
+  @keyframes av-talk { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+  .avatar .av-hand { transform-box: view-box; transform-origin: 160px 184px; animation: av-wave 1.1s ease-in-out 2; }
+  @keyframes av-wave { 0%, 100% { transform: rotate(0); } 25%, 75% { transform: rotate(14deg); } 50% { transform: rotate(-8deg); } }
+  .avatar .av-think circle { animation: av-dot 1.2s ease-in-out infinite; }
+  .avatar .av-think circle:nth-child(2) { animation-delay: .15s; } .avatar .av-think circle:nth-child(3) { animation-delay: .3s; }
+  @keyframes av-dot { 50% { transform: translateY(-3px); opacity: .5; } }
+  .avatar[data-state="happy"] .av-head { animation: av-hop .6s var(--ease); }
+  @keyframes av-hop { 40% { transform: translateY(-4px) rotate(-2deg); } }
+  .avatar[data-state="shrug"] .av-head { animation: none; transform: rotate(-7deg); }
+  .avatar[data-state="shrug"] .av-brow-l { transform: translateY(-3px); }
+  .avatar[data-state="shrug"] .av-body { animation: none; transform: translateY(-3px); }
+  .avatar[data-state="thinking"] .av-brows { transform: translateY(-2px); }
+
+  /* Ask panel persona */
+  .persona { display: flex; align-items: center; gap: 14px; }
+  .persona .av-slot { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; box-shadow: 0 0 0 1px var(--line-2), 0 10px 30px -10px rgba(0,0,0,.8); }
+  .persona b { display: block; font-size: 16px; letter-spacing: -0.01em; }
+  .persona span { font-size: 13.5px; color: var(--muted); }
+
+  /* Live GitHub activity line */
+  .activity { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--dim); flex-wrap: wrap; }
+  .activity a { color: var(--muted); border-bottom: 1px solid var(--line-2); transition: color .15s; }
+  .activity a:hover { color: var(--text); }
+
+  /* ---------- FLOATING GUIDE ---------- */
+  .guide { position: fixed; right: 20px; bottom: 20px; z-index: 60; display: flex; align-items: flex-end; gap: 12px; pointer-events: none; }
+  .guide.hidden { display: none; }
+  .guide-av {
+    pointer-events: auto; width: 68px; height: 68px; border-radius: 50%; padding: 0; flex-shrink: 0;
+    box-shadow: 0 0 0 1px var(--line-2), 0 16px 40px -12px rgba(0,0,0,.9); transform: translateY(120%) scale(.6); opacity: 0;
+    transition: transform .6s var(--ease), opacity .4s ease, box-shadow .2s;
+  }
+  .guide.on .guide-av { transform: none; opacity: 1; }
+  .guide-av:hover { box-shadow: 0 0 0 2px var(--mint), 0 16px 40px -12px rgba(0,0,0,.9); }
+  .guide-bubble {
+    pointer-events: auto; position: relative; max-width: 290px; padding: 14px 16px 14px; border-radius: 14px 14px 4px 14px;
+    background: var(--surface-2); border: 1px solid var(--line-2); box-shadow: 0 20px 50px -18px rgba(0,0,0,.9);
+    font-size: 14px; color: var(--muted); line-height: 1.5;
+    opacity: 0; transform: translateY(8px) scale(.98); transform-origin: bottom right; visibility: hidden;
+    transition: opacity .3s ease, transform .35s var(--ease), visibility 0s linear .35s;
+  }
+  .guide-bubble.show { opacity: 1; transform: none; visibility: visible; transition: opacity .3s ease, transform .35s var(--ease); }
+  .guide-bubble p { padding-right: 16px; }
+  .guide-bubble b { color: var(--text); font-weight: 600; }
+  .guide-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .guide-actions:empty { display: none; }
+  .guide-actions button { font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line-2); color: var(--text); background: var(--bg-2); transition: border-color .15s, background .15s; }
+  .guide-actions button:hover { border-color: var(--text); }
+  .guide-actions button.primary { background: var(--text); color: #0a0a0a; border-color: var(--text); }
+  .guide-x { position: absolute; top: 6px; right: 8px; font-size: 16px; line-height: 1; color: var(--dim); padding: 2px 4px; }
+  .guide-x:hover { color: var(--text); }
+  @media (max-width: 560px) { .guide { right: 12px; bottom: 12px; } .guide-av { width: 56px; height: 56px; } .guide-bubble { max-width: calc(100vw - 96px); font-size: 13.5px; } }
+
+  /* ---------- 60-SECOND TOUR ---------- */
+  .tour { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+  .tour[hidden] { display: none; }
+  .tour-spot { position: fixed; border-radius: 18px; box-shadow: 0 0 0 200vmax rgba(0,0,0,.66), 0 0 0 1px rgba(94,234,212,.5); transition: top .55s var(--ease), left .55s var(--ease), width .55s var(--ease), height .55s var(--ease); pointer-events: none; }
+  .tour-card {
+    pointer-events: auto; position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); width: min(600px, calc(100% - 32px));
+    display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; padding: 18px 20px;
+    border-radius: 18px; background: rgba(20,20,20,.96); border: 1px solid var(--line-2); box-shadow: 0 30px 80px -20px rgba(0,0,0,.95);
+    backdrop-filter: blur(12px);
+  }
+  .tour-card .av-slot { width: 64px; height: 64px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line-2); }
+  .tour-step { font-family: var(--mono); font-size: 11px; color: var(--dim); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .tour-text { font-size: 15.5px; color: var(--text); line-height: 1.5; min-height: 46px; }
+  .tour-foot { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; }
+  .tour-bar { flex: 1; height: 2px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
+  .tour-bar i { display: block; height: 100%; width: 0; background: var(--mint); }
+  .tour-foot button { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 9px; border: 1px solid var(--line-2); transition: border-color .15s; }
+  .tour-foot button:hover { border-color: var(--text); }
+  .tour-foot .primary { background: var(--text); color: #0a0a0a; border-color: var(--text); }
+  .tour-foot .skip { border-color: transparent; color: var(--dim); }
+  @media (max-width: 560px) { .tour-card { grid-template-columns: 48px 1fr; padding: 14px; bottom: 12px; } .tour-card .av-slot { width: 48px; height: 48px; } .tour-text { font-size: 14.5px; } }
+
+  /* ---------- TERMINAL MODE ---------- */
+  .term { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; padding: 16px; background: rgba(3,3,3,.72); backdrop-filter: blur(6px); animation: fade .15s ease; }
+  .term[hidden] { display: none; }
+  .term-box { width: min(860px, 100%); height: min(560px, calc(100vh - 32px)); display: flex; flex-direction: column; border-radius: 14px; border: 1px solid var(--line-2); background: #0b0d0c; box-shadow: 0 40px 100px -20px rgba(0,0,0,.95); overflow: hidden; font-family: var(--mono); font-size: 13.5px; }
+  .term-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 12px; }
+  .term-bar .dots i:first-child { background: #3a3a3a; }
+  .term-bar span { flex: 1; text-align: center; }
+  .term-bar button { color: var(--dim); font-size: 12px; }
+  .term-bar button:hover { color: var(--text); }
+  .term-out { flex: 1; overflow-y: auto; padding: 16px 18px 6px; color: #cfd6d2; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .term-out .c { color: var(--mint); } .term-out .d { color: var(--dim); } .term-out .w { color: var(--text); font-weight: 600; } .term-out .e { color: #f08a8a; }
+  .term-out a { color: var(--mint); text-decoration: underline; text-underline-offset: 2px; }
+  .term-form { display: flex; align-items: center; gap: 10px; padding: 10px 18px 16px; }
+  .term-prompt { color: var(--mint); white-space: nowrap; }
+  .term-form input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; font-family: var(--mono); font-size: 13.5px; caret-color: var(--mint); }
+  .footer-hint kbd { margin: 0 2px; }
+
+  .tour-foot button:disabled { opacity: .4; cursor: default; }
+
   /* ---------- MOTION ---------- */
   .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s var(--ease); }
   .reveal.in { opacity: 1; transform: none; }
@@ -488,13 +601,14 @@
           <a href="#ask" class="btn btn-primary">Ask my portfolio
             <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="#work" class="btn btn-ghost">See live demos</a>
+          <button class="btn btn-ghost" type="button" data-start-tour>▶ 60-second tour</button>
         </div>
         <div class="proof hero-fade">
           <div><strong>4</strong><span>agents with live demos</span></div>
           <div><strong><span id="hero-merged">2</span> merged</strong><span>PRs in AI open source</span></div>
           <div><strong>3.89</strong><span>GPA · MS CS, UIC</span></div>
         </div>
+        <p class="activity hero-fade" id="activity" hidden></p>
       </div>
 
       <div class="portrait reveal">
@@ -532,28 +646,29 @@
           <span class="eyebrow">Ask my portfolio</span>
           <h2>Don't take my word for it. <span class="serif">Ask.</span></h2>
         </div>
-        <p>A small retrieval agent over this page. It runs in your browser with no LLM, so it can only answer from evidence you can click through to, and it says so when there isn't any.</p>
+        <p>Mini-me runs a small retrieval agent over this page, right in your browser, with no LLM. It can only answer from evidence you can click through to, and it tells you when there isn't any.</p>
       </div>
 
       <div class="agent reveal">
         <div class="agent-side spot">
+          <div class="persona"><div class="av-slot" aria-hidden="true"></div><div><b>Hi, I'm Mini-Gaurav.</b><span>Ask me about my work. I cite everything.</span></div></div>
           <h3>Try a question</h3>
           <div class="suggestions" id="suggestions">
-            <button class="suggestion" type="button">Has he shipped AI agents?</button>
-            <button class="suggestion" type="button">What has he merged into open source?</button>
-            <button class="suggestion" type="button">Can he handle infrastructure and Kubernetes?</button>
-            <button class="suggestion" type="button">Does he know RAG and retrieval?</button>
-            <button class="suggestion" type="button">Is he available, and how do I reach him?</button>
+            <button class="suggestion" type="button">Have you shipped AI agents?</button>
+            <button class="suggestion" type="button">What have you merged into open source?</button>
+            <button class="suggestion" type="button">Can you handle infrastructure and Kubernetes?</button>
+            <button class="suggestion" type="button">Do you know RAG and retrieval?</button>
+            <button class="suggestion" type="button">Are you available, and how do I reach you?</button>
           </div>
           <form class="ask-form" id="ask-form" autocomplete="off">
-            <input id="ask-input" type="text" maxlength="160" placeholder="Or ask your own…" aria-label="Ask a question about Gaurav's work" />
+            <input id="ask-input" type="text" maxlength="160" placeholder="Or ask your own…" aria-label="Ask Mini-Gaurav a question about his work" />
             <button class="btn btn-primary btn-sm" type="submit">Ask</button>
           </form>
           <p class="agent-note">Retrieval is keyword expansion and weighted scoring over this page's content. Timings shown are real.</p>
         </div>
 
         <div class="console" aria-live="polite">
-          <div class="console-head"><span class="q" id="console-q">agent · portfolio-rag</span><span class="run-state" id="run-state">idle</span></div>
+          <div class="console-head"><span class="q" id="console-q">mini-gaurav · portfolio agent</span><span class="run-state" id="run-state">idle</span></div>
           <ol class="steps-log" id="steps-log"><li class="idle"><span class="kind">ready</span><span class="detail">Pick a question on the left, or type your own. Each step of the run shows up here.</span><span class="ms"></span></li></ol>
           <div class="answer" id="answer"></div>
         </div>
@@ -942,7 +1057,7 @@
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Gaurav Chintakunta · Built by hand, no framework</span>
+    <span>© 2026 Gaurav Chintakunta · Built by hand, no framework · <a href="#" class="footer-hint" data-open-term>press <kbd>`</kbd> for terminal mode</a></span>
     <nav aria-label="Footer">
       <a href="https://github.com/gauravch-code" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/gauravchintak/" target="_blank" rel="noopener">LinkedIn</a>
@@ -950,6 +1065,37 @@
     </nav>
   </div>
 </footer>
+
+<div class="guide" id="guide">
+  <div class="guide-bubble" id="guide-bubble" role="status" aria-live="polite">
+    <p id="guide-text"></p>
+    <div class="guide-actions" id="guide-actions"></div>
+    <button class="guide-x" id="guide-x" type="button" aria-label="Close">×</button>
+  </div>
+  <button class="guide-av" id="guide-av" type="button" aria-label="Mini-Gaurav: open menu"><span class="av-slot" style="display:block;width:100%;height:100%;border-radius:50%;overflow:hidden"></span></button>
+</div>
+
+<div class="tour" id="tour" hidden>
+  <div class="tour-spot" id="tour-spot"></div>
+  <div class="tour-card" id="tour-card" role="dialog" aria-label="60-second tour">
+    <div class="av-slot" aria-hidden="true"></div>
+    <div><div class="tour-step" id="tour-step">1 / 6</div><p class="tour-text" id="tour-text"></p></div>
+    <div class="tour-foot">
+      <button class="skip" id="tour-skip" type="button">Skip</button>
+      <div class="tour-bar"><i id="tour-bar"></i></div>
+      <button id="tour-back" type="button">Back</button>
+      <button class="primary" id="tour-next" type="button">Next</button>
+    </div>
+  </div>
+</div>
+
+<div class="term" id="term" hidden role="dialog" aria-modal="true" aria-label="Terminal mode">
+  <div class="term-box">
+    <div class="term-bar"><div class="dots"><i></i><i></i><i></i></div><span>visitor@gaurav: ~</span><button id="term-close" type="button">esc ✕</button></div>
+    <div class="term-out" id="term-out"></div>
+    <form class="term-form" id="term-form" autocomplete="off"><label class="term-prompt" for="term-in">visitor@gaurav:~$</label><input id="term-in" type="text" spellcheck="false" autocapitalize="off" /></form>
+  </div>
+</div>
 
 <div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Command menu">
   <div class="palette-box">
@@ -1158,28 +1304,28 @@
     if (intent.name === 'open_source') {
       const merged = OSS.filter((p) => p.merged), open = OSS.filter((p) => !p.merged);
       return {
-        html: `<b>${merged.length} merged pull requests</b>: ${merged.map((p) => `${esc(prName(p))} (★ ${fmt(p.stars)})`).join(' and ')}, plus <b>${open.length} more in review</b> at ${open.map((p) => esc(prName(p))).join(', ')}. Each one fixes a real bug with a regression test. ${cite('#open-source', 'open source')}`,
+        html: `I have <b>${merged.length} merged pull requests</b>: ${merged.map((p) => `${esc(prName(p))} (★ ${fmt(p.stars)})`).join(' and ')}, plus <b>${open.length} more in review</b> at ${open.map((p) => esc(prName(p))).join(', ')}. Each one fixes a real bug with a regression test. ${cite('#open-source', 'open source')}`,
         sources: merged.length + open.length
       };
     }
     if (intent.name === 'availability') {
       return {
-        html: `<b>Yes.</b> He's open to full-time AI Engineer, ML Engineer and Software Engineer roles, on <b>OPT work authorization</b>, based in <b>New Jersey</b> (NYC metro). The fastest way to reach him is <b>gaurav.pvt25@gmail.com</b>. ${cite('#contact', 'contact')}`,
+        html: `<b>Yes.</b> I'm open to full-time AI Engineer, ML Engineer and Software Engineer roles, on <b>OPT work authorization</b>, based in <b>New Jersey</b> (NYC metro). The fastest way to reach me is <b>gaurav.pvt25@gmail.com</b>. ${cite('#contact', 'contact')}`,
         sources: 1
       };
     }
     if (intent.name === 'education') {
       const edu = KB.find((d) => d.id === 'edu');
-      return { html: `He has ${esc(edu.text)}. ${cite(edu.anchor, 'education')}`, sources: 1 };
+      return { html: `I have ${esc(edu.text)}. ${cite(edu.anchor, 'education')}`, sources: 1 };
     }
     const top = retrieval.results.slice(0, 3);
     if (!top.length) {
       return {
-        html: `I couldn't find evidence for <b>“${esc(query)}”</b> on this page, so I won't guess. What the page does cover: AI agents, RAG and retrieval, agent observability, Kubernetes automation, and open-source fixes. Try one of the suggested questions.`,
+        html: `I couldn't find evidence for <b>“${esc(query)}”</b> on this page, so I won't guess. What I can show you: AI agents, RAG and retrieval, agent observability, Kubernetes automation, and open-source fixes. Try one of the suggested questions.`,
         sources: 0
       };
     }
-    const lead = top[0].score >= 4 ? '<b>Yes.</b> Here is the evidence on this page:' : 'The closest evidence on this page:';
+    const lead = top[0].score >= 4 ? "<b>Yes.</b> Here's the evidence:" : "The closest evidence I have:";
     return {
       html: `${lead}<ul>${top.map((r) => `<li><b>${esc(r.doc.title)}</b>: ${esc(r.doc.text)}. ${cite(r.doc.anchor, r.doc.kind)}</li>`).join('')}</ul>`,
       sources: top.length
@@ -1227,6 +1373,7 @@
     log.innerHTML = ''; answerEl.innerHTML = '';
     qEl.textContent = query;
     stateEl.className = 'run-state running'; stateEl.textContent = 'running';
+    mood('thinking');
 
     const t0 = performance.now();
     const intent = plan(query);
@@ -1253,9 +1400,11 @@
     await sleep(300); if (id !== runId) return;
 
     addStep('answer', 'streaming', ((performance.now() - t0) / 1000).toFixed(1) + ' s');
+    mood('talking');
     await typeHTML(answerEl, out.html, id);
     if (id !== runId) return;
     stateEl.className = 'run-state done'; stateEl.textContent = out.sources ? 'grounded' : 'declined';
+    mood(out.sources ? 'happy' : 'shrug', 2600);
   }
 
   $$('.suggestion').forEach((b) => b.addEventListener('click', () => {
@@ -1305,6 +1454,7 @@
         }
       }
     };
+    project.__show = show;
     tabs.forEach((t, n) => {
       t.addEventListener('click', () => show(t.dataset.pane));
       t.addEventListener('keydown', (e) => {
@@ -1433,6 +1583,9 @@
   const go = (sel) => () => $(sel).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   const open = (url) => () => window.open(url, '_blank', 'noopener');
   const COMMANDS = [
+    { group: 'Mini-Gaurav', label: 'Take the 60-second tour', hint: 'tour', run: () => startTour() },
+    { group: 'Mini-Gaurav', label: 'Open terminal mode', hint: '`', run: () => openTerm() },
+    { group: 'Mini-Gaurav', label: 'Show Mini-Gaurav (the guide)', hint: 'guide', run: () => { setGuideHidden(false); guide.classList.add('on'); } },
     { group: 'Ask', label: 'Ask my portfolio a question', hint: 'agent', run: () => { go('#ask')(); setTimeout(() => $('#ask-input').focus({ preventScroll: true }), 500); } },
     { group: 'Live demos', label: 'Winnow: local-first inbox triage', hint: 'demo', run: open('https://gauravch-code.github.io/winnow/') },
     { group: 'Live demos', label: 'TraceGuard: agent run tracing', hint: 'demo', run: open('https://gauravch-code.github.io/TraceGuard/') },
@@ -1480,10 +1633,430 @@
   plist.addEventListener('click', (e) => { const li = e.target.closest('.palette-item'); if (li) { active = +li.dataset.i; runActive(); } });
   palette.addEventListener('click', (e) => { if (e.target === palette) closePalette(); });
 
+  // ======================= Mini-Gaurav: the illustrated avatar =======================
+  const AV_TEMPLATE = `<svg class="avatar" viewBox="0 0 200 200" aria-hidden="true" data-state="idle">
+  <defs>
+    <clipPath id="UID-clip"><circle cx="100" cy="100" r="100"/></clipPath>
+    <linearGradient id="UID-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1216"/><stop offset="1" stop-color="#161d22"/></linearGradient>
+    <linearGradient id="UID-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b47c56"/><stop offset="1" stop-color="#a46e4b"/></linearGradient>
+    <linearGradient id="UID-jacket" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#aab5bb"/><stop offset=".5" stop-color="#d0d7db"/><stop offset="1" stop-color="#a7b2b8"/></linearGradient>
+  </defs>
+  <g clip-path="url(#UID-clip)">
+    <rect width="200" height="200" fill="url(#UID-sky)"/>
+    <g class="av-city" fill="#1b2328">
+      <rect x="4" y="96" width="26" height="110"/><rect x="32" y="70" width="22" height="130"/><rect x="146" y="64" width="24" height="140"/><rect x="172" y="88" width="26" height="120"/><rect x="56" y="112" width="14" height="90"/><rect x="132" y="104" width="12" height="96"/>
+    </g>
+    <g class="av-windows" fill="#e9d59a">
+      <rect x="9" y="104" width="3" height="3"/><rect x="17" y="112" width="3" height="3" class="tw"/><rect x="9" y="126" width="3" height="3"/><rect x="22" y="134" width="3" height="3"/>
+      <rect x="37" y="80" width="3" height="3" class="tw"/><rect x="45" y="92" width="3" height="3"/><rect x="37" y="106" width="3" height="3"/><rect x="45" y="118" width="3" height="3" class="tw"/>
+      <rect x="151" y="74" width="3" height="3"/><rect x="160" y="86" width="3" height="3" class="tw"/><rect x="151" y="100" width="3" height="3"/><rect x="160" y="112" width="3" height="3"/>
+      <rect x="178" y="98" width="3" height="3" class="tw"/><rect x="187" y="110" width="3" height="3"/><rect x="178" y="124" width="3" height="3"/>
+      <rect x="60" y="120" width="3" height="3"/><rect x="135" y="112" width="3" height="3" class="tw"/>
+    </g>
+    <g class="av-body">
+      <path d="M18,204 C22,164 56,144 100,142 C144,144 178,164 182,204 Z" fill="url(#UID-jacket)"/>
+      <path d="M18,204 C22,176 40,158 62,148 L70,204 Z" fill="#6a838c"/>
+      <path d="M182,204 C178,176 160,158 138,148 L130,204 Z" fill="#6a838c"/>
+      <path d="M80,143 C88,152 112,152 120,143 L125,204 L75,204 Z" fill="#e8decd"/>
+      <path d="M62,146 C70,142 78,141 83,142 L91,170 L77,178 Z" fill="#e1e7ea"/>
+      <path d="M138,146 C130,142 122,141 117,142 L109,170 L123,178 Z" fill="#e1e7ea"/>
+      <path d="M87,124 L113,124 L114,145 C107,151 93,151 86,145 Z" fill="#936244"/>
+    </g>
+    <g class="av-hand">
+      <rect x="146" y="170" width="30" height="16" rx="6" fill="#c9d1d5"/>
+      <g fill="#ad7a55">
+        <ellipse cx="161" cy="160" rx="12.5" ry="13"/>
+        <rect x="149.5" y="130" width="6.2" height="26" rx="3.1"/>
+        <rect x="157" y="125" width="6.2" height="30" rx="3.1"/>
+        <rect x="164.5" y="127" width="6.2" height="28" rx="3.1"/>
+        <rect x="171.5" y="133" width="5.8" height="24" rx="2.9"/>
+        <rect x="139" y="150" width="6" height="18" rx="3" transform="rotate(-38 142 159)"/>
+      </g>
+    </g>
+    <g class="av-head">
+      <ellipse cx="65" cy="96" rx="6.5" ry="10.5" fill="#9e6b48"/>
+      <ellipse cx="135" cy="96" rx="6.5" ry="10.5" fill="#9e6b48"/>
+      <path d="M66,84 C66,58 81,46 100,46 C119,46 134,58 134,84 L134,98 C134,122 119,136 100,136 C81,136 66,122 66,98 Z" fill="url(#UID-face)"/>
+      <path d="M68,104 C70,124 85,136 100,136 C115,136 130,124 132,104 C127,118 116,127 100,127 C84,127 73,118 68,104 Z" fill="#3a2419" opacity=".2"/>
+      <ellipse cx="79" cy="106" rx="7" ry="3.5" fill="#cf9570" opacity=".35"/>
+      <ellipse cx="121" cy="106" rx="7" ry="3.5" fill="#cf9570" opacity=".35"/>
+      <g fill="#17110e">
+        <path d="M63,92 C58,70 62,50 76,40 C86,30 101,27 113,30 C127,31 139,42 140,58 C143,68 140,82 137,92 C135,78 129,67 118,62 C107,58 94,59 84,62 C73,66 68,78 66,92 Z"/>
+        <circle cx="80" cy="44" r="13"/><circle cx="96" cy="34" r="15"/><circle cx="113" cy="34" r="14"/><circle cx="128" cy="45" r="12"/><circle cx="70" cy="57" r="9"/><circle cx="133" cy="58" r="8"/>
+        <path d="M64,90 C62,75 65,63 73,56 L70,92 Z"/><path d="M136,90 C138,75 135,63 127,57 L130,92 Z"/>
+      </g>
+      <g stroke="#2d231d" stroke-width="2.2" fill="none" stroke-linecap="round">
+        <path d="M84,40 C92,31 106,30 115,36"/><path d="M76,52 C80,46 86,43 92,43"/><path d="M110,44 C117,43 123,46 127,52"/>
+      </g>
+      <g class="av-brows" stroke="#17110e" stroke-width="4.2" stroke-linecap="round" fill="none">
+        <path class="av-brow-l" d="M76,78 Q85,72 94,76"/>
+        <path class="av-brow-r" d="M106,76 Q115,72 124,78"/>
+      </g>
+      <g class="av-eyes">
+        <path d="M77,88 Q86,81 95,88 Q86,92.5 77,88 Z" fill="#f4eee7"/>
+        <path d="M105,88 Q114,81 123,88 Q114,92.5 105,88 Z" fill="#f4eee7"/>
+        <g class="av-pupils" fill="#1a120d"><circle cx="86" cy="87.3" r="3.4"/><circle cx="114" cy="87.3" r="3.4"/></g>
+        <path d="M77,90 Q86,95.5 95,90 M105,90 Q114,95.5 123,90" stroke="#865739" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+      </g>
+      <path d="M100,91 C99,98 96,103 95,106 C98,108.5 102,108.5 105,106" stroke="#7f5134" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M85,111.5 C90,107.5 97,107.5 100,110 C103,107.5 110,107.5 115,111.5 C109,113 104,112 100,113 C96,112 91,113 85,111.5 Z" fill="#1c130e"/>
+      <g class="av-mouth av-m-smile">
+        <path d="M84,114 Q100,137 116,114 Q100,120 84,114 Z" fill="#3b1512"/>
+        <path d="M86.4,115.1 Q100,121.4 113.6,115.1 L111.6,120.2 Q100,125.2 88.4,120.2 Z" fill="#fbf8f2"/>
+        <path d="M92,127 Q100,130 108,127" stroke="#c77b6b" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+      </g>
+      <g class="av-mouth av-m-talk"><ellipse class="av-talk" cx="100" cy="119" rx="8" ry="5" fill="#3b1512"/></g>
+      <g class="av-mouth av-m-flat"><path d="M91,119 Q100,116.5 109,119" stroke="#3b1512" stroke-width="2.8" fill="none" stroke-linecap="round"/></g>
+    </g>
+    <g class="av-think" fill="#5eead4"><circle cx="142" cy="50" r="3.5"/><circle cx="153" cy="41" r="4.5"/><circle cx="164" cy="32" r="5.5"/></g>
+  </g>
+</svg>`;
+  const avatars = [];
+  function mountAvatar(slot) {
+    slot.innerHTML = AV_TEMPLATE.replaceAll('UID', 'av' + avatars.length);
+    const svg = slot.firstElementChild;
+    avatars.push(svg);
+    return svg;
+  }
+  let moodTimer = null;
+  function mood(state, holdMs) {
+    clearTimeout(moodTimer);
+    avatars.forEach((a) => { a.dataset.state = state; });
+    if (holdMs) moodTimer = setTimeout(() => avatars.forEach((a) => { a.dataset.state = 'idle'; }), holdMs);
+  }
+  $$('.av-slot').forEach(mountAvatar);
+
+  // Eyes follow the cursor
+  if (matchMedia('(hover: hover)').matches && !reduce) {
+    let pending = null;
+    addEventListener('pointermove', (e) => {
+      pending = e;
+      requestAnimationFrame(() => {
+        if (!pending) return;
+        const { clientX: x, clientY: y } = pending; pending = null;
+        avatars.forEach((a) => {
+          const r = a.getBoundingClientRect();
+          if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
+          const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height * 0.44);
+          const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 300);
+          a.style.setProperty('--px', (dx / d * 2.2 * k).toFixed(2) + 'px');
+          a.style.setProperty('--py', (dy / d * 1.6 * k).toFixed(2) + 'px');
+        });
+      });
+    }, { passive: true });
+  }
+
+  // ======================= Floating guide =======================
+  const guide = $('#guide'), bubble = $('#guide-bubble'), gText = $('#guide-text'), gActions = $('#guide-actions');
+  const GUIDE_KEY = 'gc-guide-hidden';
+  let guideHidden = false;
+  try { guideHidden = localStorage.getItem(GUIDE_KEY) === '1'; } catch (e) { /* storage unavailable */ }
+  let bubbleTimer = null, tourActive = false;
+  function say(html, actions = [], ms = 6500) {
+    if (guideHidden || tourActive) return;
+    gText.innerHTML = html;
+    gActions.innerHTML = '';
+    actions.forEach((a) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = a.label; if (a.primary) b.className = 'primary';
+      b.addEventListener('click', () => { hideBubble(); a.run(); });
+      gActions.appendChild(b);
+    });
+    bubble.classList.add('show');
+    clearTimeout(bubbleTimer);
+    if (ms) bubbleTimer = setTimeout(hideBubble, ms);
+  }
+  function hideBubble() { bubble.classList.remove('show'); clearTimeout(bubbleTimer); }
+  bubble.addEventListener('pointerenter', () => clearTimeout(bubbleTimer));
+  bubble.addEventListener('pointerleave', () => { if (bubble.classList.contains('show')) bubbleTimer = setTimeout(hideBubble, 3500); });
+  $('#guide-x').addEventListener('click', hideBubble);
+  function setGuideHidden(v) {
+    guideHidden = v;
+    guide.classList.toggle('hidden', v);
+    try { localStorage.setItem(GUIDE_KEY, v ? '1' : '0'); } catch (e) { /* storage unavailable */ }
+  }
+  const focusAsk = () => { go('#ask')(); setTimeout(() => $('#ask-input').focus({ preventScroll: true }), 600); };
+  $('#guide-av').addEventListener('click', () => {
+    if (bubble.classList.contains('show')) { hideBubble(); return; }
+    mood('wave', 2400);
+    say('What would you like to do?', [
+      { label: 'Ask me something', primary: true, run: focusAsk },
+      { label: '60-second tour', run: () => startTour() },
+      { label: 'Terminal mode', run: () => openTerm() },
+      { label: 'Hide me', run: () => setGuideHidden(true) }
+    ], 0);
+  });
+  if (guideHidden) guide.classList.add('hidden');
+  setTimeout(() => {
+    guide.classList.add('on');
+    if (guideHidden) return;
+    mood('wave', 2600);
+    say("Hi, I'm <b>Gaurav</b>. Want the 60-second version of this page?", [
+      { label: 'Take the tour', primary: true, run: () => startTour() },
+      { label: 'Look around', run: () => {} }
+    ], 9000);
+  }, 1400);
+
+  // One short, useful tip per section, shown once
+  const TIPS = {
+    ask: 'Ask me anything about my work. If there\'s no evidence on this page, I\'ll say so instead of guessing.',
+    winnow: 'Flip this frame to <b>Architecture</b>: most mail never touches the LLM.',
+    traceguard: 'This is how I\'d debug an agent: every step recorded, and uncertain drafts go to a human first.',
+    sre: 'Try <b>Run live</b>, then start the incident tour. The agent fixes it through four allowlisted tools.',
+    toolgen: 'Toolgen writes training data for tool-using agents, and a judge sends weak samples back for repair.',
+    'open-source': 'These are real bugs I found and fixed. The statuses update live from GitHub.',
+    experience: 'Before agents: research on 2 TB of spatialomics data on an HPC cluster.',
+    contact: { html: "I'm available now. Email is the fastest way to reach me.", actions: [{ label: 'Copy email', primary: true, run: () => copyEmail() }], wave: true }
+  };
+  const tipped = new Set();
+  const tipIO = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (!e.isIntersecting || tipped.has(e.target.id) || tourActive) return;
+    tipped.add(e.target.id);
+    const tip = TIPS[e.target.id];
+    if (typeof tip === 'string') say(tip);
+    else { if (tip.wave) mood('wave', 2600); say(tip.html, tip.actions, 8000); }
+  }), { threshold: 0.45 });
+  Object.keys(TIPS).forEach((id) => { const el = document.getElementById(id); if (el) tipIO.observe(el); });
+
+  // ======================= 60-second tour =======================
+  const tourEl = $('#tour'), spot = $('#tour-spot'), tText = $('#tour-text'), tStep = $('#tour-step'), tBar = $('#tour-bar'), tNext = $('#tour-next'), tBack = $('#tour-back');
+  const STEPS = [
+    { sel: '.hero .hero-grid', mood: 'wave', text: "Hi, I'm Gaurav. I build AI agents that are observable, bounded, and grounded in real workflows. Here's the 60-second version." },
+    { sel: '#ask .agent', mood: 'talking', text: 'This is a retrieval agent over my portfolio. Watch it plan, search, and cite every claim. It refuses to guess.', run: () => ask('Have you shipped AI agents?') },
+    { sel: '#winnow .frame', text: 'Winnow: a local classifier decides most mail in about 5 ms. Only the uncertain tail ever reaches an LLM.', run: () => $('#winnow').__show('arch') },
+    { sel: '#sre .frame', text: 'My SRE agent heals Kubernetes through four allowlisted tools, and escalates only when the cheap fix fails.', run: () => $('#sre').__show('arch') },
+    { sel: '#ledger', text: 'I find real bugs in AI tools and ship the fix with a test: merged into Haystack and OpenSRE, with more in review.' },
+    { sel: '#contact', mood: 'wave', text: "I'm open to full-time roles right now. The fastest way to reach me is email.", last: true }
+  ];
+  const STEP_MS = 8000;
+  let tourIdx = 0, tourTimer = null, tourStart = 0, tourPaused = false, tourRaf = null;
+  function placeSpot() {
+    const el = $(STEPS[tourIdx].sel);
+    if (!el) return;
+    const r = el.getBoundingClientRect(), pad = 10;
+    Object.assign(spot.style, { top: (r.top - pad) + 'px', left: (r.left - pad) + 'px', width: (r.width + pad * 2) + 'px', height: (r.height + pad * 2) + 'px' });
+  }
+  function tick() {
+    if (!tourActive) return;
+    placeSpot();
+    if (!tourPaused && !reduce) {
+      const k = Math.min(1, (performance.now() - tourStart) / STEP_MS);
+      tBar.style.width = (k * 100) + '%';
+      if (k >= 1 && !STEPS[tourIdx].last) { showStep(tourIdx + 1); }
+    }
+    tourRaf = requestAnimationFrame(tick);
+  }
+  function showStep(i) {
+    tourIdx = Math.max(0, Math.min(STEPS.length - 1, i));
+    const s = STEPS[tourIdx], el = $(s.sel);
+    tStep.textContent = `${tourIdx + 1} / ${STEPS.length}`;
+    tText.textContent = s.text;
+    tBack.disabled = tourIdx === 0;
+    tNext.textContent = s.last ? 'Email me' : 'Next';
+    if (el) {
+      // Fit the target into the space between the nav and the tour card, not behind the card
+      const card = $('#tour-card').getBoundingClientRect();
+      const top = 84, room = Math.max(160, card.top - top - 24), r = el.getBoundingClientRect();
+      const offset = r.height < room ? (room - r.height) / 2 : 0;
+      window.scrollTo({ top: scrollY + r.top - top - offset, behavior: reduce ? 'auto' : 'smooth' });
+    }
+    mood(s.mood || 'talking', s.mood === 'wave' ? 2600 : 2200);
+    if (s.run) setTimeout(s.run, 500);
+    tourStart = performance.now();
+    tBar.style.width = '0%';
+  }
+  function startTour() {
+    if (tourActive) return;
+    closeTerm();
+    hideBubble();
+    tourActive = true;
+    tourEl.hidden = false;
+    showStep(0);
+    tourRaf = requestAnimationFrame(tick);
+    tNext.focus({ preventScroll: true });
+  }
+  function endTour() {
+    tourActive = false;
+    tourEl.hidden = true;
+    cancelAnimationFrame(tourRaf);
+    mood('idle');
+  }
+  tNext.addEventListener('click', () => {
+    if (STEPS[tourIdx].last) { endTour(); location.href = 'mailto:gaurav.pvt25@gmail.com'; return; }
+    showStep(tourIdx + 1);
+  });
+  tBack.addEventListener('click', () => showStep(tourIdx - 1));
+  $('#tour-skip').addEventListener('click', endTour);
+  $('#tour-card').addEventListener('pointerenter', () => { tourPaused = true; });
+  $('#tour-card').addEventListener('pointerleave', () => { tourPaused = false; tourStart = performance.now() - (parseFloat(tBar.style.width) || 0) / 100 * STEP_MS; });
+  $$('[data-start-tour]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); startTour(); }));
+
+  // ======================= Terminal mode =======================
+  const term = $('#term'), tOut = $('#term-out'), tIn = $('#term-in');
+  const PROJECTS = Object.fromEntries($$('.project').map((p) => [p.id, {
+    name: $('h3', p).textContent,
+    lede: $('.p-lede', p).textContent.trim(),
+    steps: $$('.steps li', p).map((li) => li.textContent.trim()),
+    decision: $('.decision', p).textContent.replace(/^Key decision/, '').trim(),
+    stack: $$('.stack .chip', p).map((c) => c.textContent),
+    demo: p.dataset.demo,
+    src: $('.p-actions a.btn-ghost', p).href
+  }]));
+  $$('.mini').forEach((m) => { PROJECTS[m.id] = { name: $('h4', m).textContent, lede: $('p', m).textContent, steps: [], decision: '', stack: [], demo: null, src: m.href }; });
+  const LINKS = { resume: './Gaurav_Resume.pdf', github: 'https://github.com/gauravch-code', linkedin: 'https://www.linkedin.com/in/gauravchintak/', email: 'mailto:gaurav.pvt25@gmail.com' };
+  const CMDS = ['help', 'whoami', 'ls', 'cat', 'open', 'arch', 'ask', 'oss', 'tour', 'contact', 'clear', 'history', 'exit', 'sudo'];
+  const hist = [];
+  let histIdx = 0;
+  const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; tOut.appendChild(d); tOut.scrollTop = tOut.scrollHeight; };
+  const pad = (s, n) => (s + ' '.repeat(n)).slice(0, n);
+  // Phones get stacked rows instead of padded columns that would wrap mid-row
+  const narrow = () => tOut.clientWidth < 600;
+  const HELP = [
+    ['whoami', 'who I am, in one paragraph'], ['ls [projects|oss]', 'list things'], ['cat <project>', 'read a project: how it works and the key decision'],
+    ['open <project|resume|github|linkedin|email>', 'open a demo or link'], ['arch <project>', 'jump to its live architecture diagram'],
+    ['ask <question>', 'ask my portfolio agent'], ['oss', 'open-source pull requests, live'], ['tour', 'the 60-second tour'],
+    ['clear · history · exit', '']
+  ];
+  const RUN = {
+    help: () => print(HELP.map(([c, d]) => narrow()
+      ? `<span class="c">${esc(c)}</span>${d ? `\n  <span class="d">${esc(d)}</span>` : ''}`
+      : `  <span class="c">${esc(pad(c, 46))}</span><span class="d">${esc(d)}</span>`).join('\n')),
+    whoami: () => print('<span class="w">Gaurav Chintakunta</span>, AI engineer. MS CS, University of Illinois Chicago (GPA 3.89).\nBased in New Jersey (NYC metro), on OPT, open to full-time AI / ML / Software Engineer roles.\nI build agents that are observable, bounded, and grounded in real workflows.'),
+    ls: (arg) => {
+      if (arg === 'projects') return print(Object.entries(PROJECTS).map(([id, p]) => `  <span class="c">${pad(id, 20)}</span>${esc(p.lede.split('. ')[0].replace(/\.$/, ''))}`).join('\n'));
+      if (arg === 'oss') return RUN.oss();
+      print('<span class="c">projects/</span>  <span class="c">oss/</span>  resume.pdf  contact.txt');
+    },
+    cat: (arg) => {
+      if (!arg) return print('usage: cat &lt;project&gt;   (try: ls projects)', 'd');
+      if (arg === 'contact.txt' || arg === 'contact') return RUN.contact();
+      if (arg === 'resume.pdf') return print('binary file. Try: open resume', 'd');
+      const p = PROJECTS[arg.replace(/\/$/, '')];
+      if (!p) return print(`cat: ${esc(arg)}: no such project. Try: ls projects`, 'e');
+      let out = `<span class="w"># ${esc(p.name)}</span>\n${esc(p.lede)}\n`;
+      if (p.steps.length) out += '\n' + p.steps.map((s, i) => `  ${i + 1}. ${esc(s)}`).join('\n') + '\n';
+      if (p.decision) out += `\n<span class="c">key decision:</span> ${esc(p.decision)}\n`;
+      if (p.stack.length) out += `<span class="d">stack: ${esc(p.stack.join(', '))}</span>\n`;
+      if (p.demo) out += `demo: <a href="${p.demo}" target="_blank" rel="noopener">${p.demo}</a>\n`;
+      out += `source: <a href="${p.src}" target="_blank" rel="noopener">${p.src}</a>`;
+      print(out);
+    },
+    open: (arg) => {
+      const p = PROJECTS[arg];
+      const url = (p && (p.demo || p.src)) || LINKS[arg];
+      if (!url) return print(`open: unknown target "${esc(arg || '')}". Try a project name, resume, github, linkedin or email.`, 'e');
+      print(`opening ${esc(url)}…`, 'd');
+      if (url.startsWith('mailto:')) location.href = url; else window.open(url, '_blank', 'noopener');
+    },
+    arch: (arg) => {
+      const el = document.getElementById(arg);
+      if (!el || !el.__show) return print('usage: arch &lt;winnow|traceguard|sre|toolgen&gt;', 'd');
+      closeTerm(); el.__show('arch'); el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    },
+    ask: (arg) => {
+      if (!arg) return print('usage: ask &lt;question&gt;', 'd');
+      const q = arg.replace(/^["']|["']$/g, '');
+      const intent = plan(q), out = answerFor(intent, q, retrieve(q));
+      const tmp = document.createElement('div'); tmp.innerHTML = out.html.replace(/<li>/g, '\n  - ');
+      $$('.cite', tmp).forEach((c) => c.remove());
+      print(`<span class="d">plan: intent ${intent.name} · tool ${esc(intent.tool)}</span>\n${esc(tmp.textContent.trim())}`);
+      mood(out.sources ? 'happy' : 'shrug', 2600);
+    },
+    oss: () => print(OSS.map((p) => `  ${p.merged ? '<span class="c">merged   </span>' : '<span class="d">in review</span>'}  ${pad(esc(prName(p)), narrow() ? 23 : 24)}<a href="https://github.com/${p.repo}/pull/${p.number}" target="_blank" rel="noopener">#${p.number}</a>${narrow() ? '' : `${' '.repeat(Math.max(2, 9 - String(p.number).length))}<span class="d">★ ${fmt(p.stars)}</span>`}`).join('\n')),
+    contact: () => print('email:    <a href="mailto:gaurav.pvt25@gmail.com">gaurav.pvt25@gmail.com</a>\nlinkedin: <a href="https://www.linkedin.com/in/gauravchintak/" target="_blank" rel="noopener">linkedin.com/in/gauravchintak</a>\ngithub:   <a href="https://github.com/gauravch-code" target="_blank" rel="noopener">github.com/gauravch-code</a>'),
+    tour: () => { closeTerm(); startTour(); },
+    clear: () => { tOut.innerHTML = ''; },
+    history: () => print(hist.map((h, i) => `  ${i + 1}  ${esc(h)}`).join('\n') || '(empty)', 'd'),
+    exit: () => closeTerm(),
+    sudo: (arg) => {
+      if (/^hire\s+gaurav$/i.test(arg)) {
+        print('[sudo] password for recruiter: ********', 'd');
+        setTimeout(() => { print('<span class="c">✓ access granted.</span> Opening an email draft to gaurav.pvt25@gmail.com…'); mood('happy', 2600); }, 700);
+        setTimeout(() => { location.href = 'mailto:gaurav.pvt25@gmail.com?subject=' + encodeURIComponent("Let's talk about a role"); }, 1600);
+        return;
+      }
+      print('Nice try. The only sudo command allowed here is: sudo hire gaurav', 'e');
+    }
+  };
+  function runLine(line) {
+    const raw = line.trim();
+    print(`<span class="term-prompt">visitor@gaurav:~$</span> ${esc(raw)}`);
+    if (!raw) return;
+    hist.push(raw); histIdx = hist.length;
+    const [cmd, ...rest] = raw.split(/\s+/);
+    const arg = rest.join(' ');
+    const fn = RUN[cmd.toLowerCase()];
+    if (fn) fn(cmd.toLowerCase() === 'ask' || cmd.toLowerCase() === 'sudo' ? arg : arg.toLowerCase());
+    else print(`command not found: ${esc(cmd)}. Type <span class="c">help</span>.`, 'e');
+  }
+  function openTerm() {
+    if (!term.hidden) return;
+    hideBubble();
+    term.hidden = false;
+    if (!tOut.childElementCount) {
+      print('<span class="w">gaurav.dev</span> <span class="d">· the portfolio, as a shell</span>');
+      print('Type <span class="c">help</span> to see commands. Try <span class="c">cat winnow</span> or <span class="c">ask "do you know RAG?"</span>. Esc closes.', 'd');
+    }
+    setTimeout(() => tIn.focus(), 30);
+  }
+  function closeTerm() { if (term.hidden) return; term.hidden = true; }
+  $('#term-form').addEventListener('submit', (e) => { e.preventDefault(); runLine(tIn.value); tIn.value = ''; });
+  $('#term-close').addEventListener('click', closeTerm);
+  term.addEventListener('click', (e) => { if (e.target === term) closeTerm(); });
+  tIn.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') { e.preventDefault(); if (histIdx > 0) tIn.value = hist[--histIdx]; }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); histIdx = Math.min(hist.length, histIdx + 1); tIn.value = hist[histIdx] || ''; }
+    else if (e.key === 'Tab') {
+      e.preventDefault();
+      const parts = tIn.value.split(/\s+/);
+      const pool = parts.length > 1 ? [...Object.keys(PROJECTS), 'projects', 'oss', 'resume', 'github', 'linkedin', 'email', 'contact.txt'] : CMDS;
+      const hits = pool.filter((w) => w.startsWith(parts[parts.length - 1].toLowerCase()));
+      if (hits.length === 1) { parts[parts.length - 1] = hits[0]; tIn.value = parts.join(' ') + ' '; }
+      else if (hits.length > 1) print(hits.join('  '), 'd');
+    } else if (e.key === 'Escape') { closeTerm(); }
+  });
+  $$('[data-open-term]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); openTerm(); }));
+  addEventListener('keydown', (e) => {
+    const typing = /INPUT|TEXTAREA/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
+    if (e.key === '`' && !typing && !e.metaKey && !e.ctrlKey) { e.preventDefault(); term.hidden ? openTerm() : closeTerm(); }
+    if (e.key === 'Escape' && tourActive) endTour();
+    if (tourActive && !typing) { if (e.key === 'ArrowRight') tNext.click(); if (e.key === 'ArrowLeft') tBack.click(); }
+  });
+
+  // ======================= Latest GitHub activity =======================
+  async function loadActivity() {
+    const el = $('#activity');
+    let events = readCache('gc-events-v1', 30 * 60 * 1000);
+    try {
+      if (!events) {
+        const r = await fetch('https://api.github.com/users/gauravch-code/events/public?per_page=30', { headers: { Accept: 'application/vnd.github+json' } });
+        if (!r.ok) return;
+        events = (await r.json()).map((e) => ({ type: e.type, repo: e.repo.name, at: e.created_at, action: e.payload.action, merged: e.payload.pull_request && e.payload.pull_request.merged, commits: e.payload.size, refType: e.payload.ref_type }));
+        writeCache('gc-events-v1', events);
+      }
+    } catch (e) { return; }
+    const describe = (e) => {
+      const repo = `<a href="https://github.com/${e.repo}" target="_blank" rel="noopener">${esc(e.repo.split('/')[1])}</a>`;
+      if (e.type === 'PullRequestEvent' && e.action === 'opened') return `Opened a pull request in ${repo}`;
+      if (e.type === 'PullRequestEvent' && e.action === 'closed' && e.merged) return `Got a pull request merged in ${repo}`;
+      if (e.type === 'PushEvent') return `Pushed ${e.commits || 'new'} commit${e.commits === 1 ? '' : 's'} to ${repo}`;
+      if (e.type === 'CreateEvent' && e.refType === 'repository') return `Created ${repo}`;
+      return null;
+    };
+    const ev = events.find((e) => describe(e));
+    if (!ev) return;
+    const days = (Date.now() - new Date(ev.at)) / 864e5;
+    if (days > 60) return;
+    const ago = days < 1 / 24 ? 'just now' : days < 1 ? Math.round(days * 24) + 'h ago' : Math.round(days) + (Math.round(days) === 1 ? ' day ago' : ' days ago');
+    el.innerHTML = `<span class="live-pill">latest</span><span>${describe(ev)} · ${ago}</span>`;
+    el.hidden = false;
+  }
+  loadActivity();
+
   refreshLedger();
 
   // Hooks for automated checks
-  window.__portfolio = { ask, retrieve, plan };
+  window.__portfolio = { ask, retrieve, plan, runLine, startTour, endTour, openTerm, closeTerm, mood, avatars };
 })();
 </script>
 </body>
