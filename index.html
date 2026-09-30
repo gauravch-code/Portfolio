@@ -1637,34 +1637,46 @@
   const AV_TEMPLATE = `<svg class="avatar" viewBox="0 0 200 200" aria-hidden="true" data-state="idle">
   <defs>
     <clipPath id="UID-clip"><circle cx="100" cy="100" r="100"/></clipPath>
-    <linearGradient id="UID-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1216"/><stop offset="1" stop-color="#161d22"/></linearGradient>
-    <linearGradient id="UID-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b47c56"/><stop offset="1" stop-color="#a46e4b"/></linearGradient>
-    <linearGradient id="UID-jacket" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#aab5bb"/><stop offset=".5" stop-color="#d0d7db"/><stop offset="1" stop-color="#a7b2b8"/></linearGradient>
+    <linearGradient id="UID-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1014"/><stop offset=".62" stop-color="#141c22"/><stop offset=".63" stop-color="#0c1418"/><stop offset="1" stop-color="#101a1f"/></linearGradient>
+    <linearGradient id="UID-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eab894"/><stop offset=".7" stop-color="#dfa681"/><stop offset="1" stop-color="#d39a75"/></linearGradient>
+    <linearGradient id="UID-beard" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a22"/><stop offset=".45" stop-color="#241913"/><stop offset="1" stop-color="#1a120e"/></linearGradient>
+    <linearGradient id="UID-jacket" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b4bec3"/><stop offset=".5" stop-color="#dde3e6"/><stop offset="1" stop-color="#b0babf"/></linearGradient>
+    <radialGradient id="UID-glow" cx=".5" cy=".42" r=".5"><stop offset="0" stop-color="#ffe7c2" stop-opacity=".16"/><stop offset="1" stop-color="#ffe7c2" stop-opacity="0"/></radialGradient>
+    <filter id="UID-soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".3"/></filter>
   </defs>
   <g clip-path="url(#UID-clip)">
     <rect width="200" height="200" fill="url(#UID-sky)"/>
-    <g class="av-city" fill="#1b2328">
-      <rect x="4" y="96" width="26" height="110"/><rect x="32" y="70" width="22" height="130"/><rect x="146" y="64" width="24" height="140"/><rect x="172" y="88" width="26" height="120"/><rect x="56" y="112" width="14" height="90"/><rect x="132" y="104" width="12" height="96"/>
+    <g class="av-city" fill="#1a2329">
+      <rect x="2" y="92" width="28" height="36"/><rect x="32" y="66" width="22" height="62"/><rect x="146" y="58" width="24" height="70"/><rect x="172" y="84" width="28" height="44"/><rect x="56" y="104" width="14" height="24"/><rect x="132" y="98" width="12" height="30"/>
+      <path d="M150,58 L158,48 L166,58 Z"/>
     </g>
-    <g class="av-windows" fill="#e9d59a">
-      <rect x="9" y="104" width="3" height="3"/><rect x="17" y="112" width="3" height="3" class="tw"/><rect x="9" y="126" width="3" height="3"/><rect x="22" y="134" width="3" height="3"/>
-      <rect x="37" y="80" width="3" height="3" class="tw"/><rect x="45" y="92" width="3" height="3"/><rect x="37" y="106" width="3" height="3"/><rect x="45" y="118" width="3" height="3" class="tw"/>
-      <rect x="151" y="74" width="3" height="3"/><rect x="160" y="86" width="3" height="3" class="tw"/><rect x="151" y="100" width="3" height="3"/><rect x="160" y="112" width="3" height="3"/>
-      <rect x="178" y="98" width="3" height="3" class="tw"/><rect x="187" y="110" width="3" height="3"/><rect x="178" y="124" width="3" height="3"/>
-      <rect x="60" y="120" width="3" height="3"/><rect x="135" y="112" width="3" height="3" class="tw"/>
+    <g class="av-windows" fill="#f1dca0">
+      <rect x="7" y="100" width="3" height="3"/><rect x="15" y="108" width="3" height="3" class="tw"/><rect x="22" y="100" width="3" height="3"/><rect x="7" y="116" width="3" height="3" class="tw"/>
+      <rect x="37" y="76" width="3" height="3" class="tw"/><rect x="45" y="86" width="3" height="3"/><rect x="37" y="98" width="3" height="3"/><rect x="45" y="110" width="3" height="3" class="tw"/><rect x="37" y="118" width="3" height="3"/>
+      <rect x="151" y="68" width="3" height="3"/><rect x="160" y="78" width="3" height="3" class="tw"/><rect x="151" y="92" width="3" height="3"/><rect x="160" y="104" width="3" height="3"/><rect x="151" y="116" width="3" height="3" class="tw"/>
+      <rect x="178" y="94" width="3" height="3" class="tw"/><rect x="188" y="104" width="3" height="3"/><rect x="178" y="114" width="3" height="3"/>
+      <rect x="60" y="112" width="3" height="3"/><rect x="136" y="106" width="3" height="3" class="tw"/>
     </g>
+    <g class="av-water" stroke="#e9d59a" stroke-linecap="round" opacity=".22">
+      <path d="M8,136 H26 M36,142 H52 M14,150 H30 M150,138 H168 M176,146 H194 M156,154 H170" stroke-width="1.4"/>
+    </g>
+    <circle cx="100" cy="92" r="70" fill="url(#UID-glow)"/>
+
     <g class="av-body">
-      <path d="M18,204 C22,164 56,144 100,142 C144,144 178,164 182,204 Z" fill="url(#UID-jacket)"/>
-      <path d="M18,204 C22,176 40,158 62,148 L70,204 Z" fill="#6a838c"/>
-      <path d="M182,204 C178,176 160,158 138,148 L130,204 Z" fill="#6a838c"/>
-      <path d="M80,143 C88,152 112,152 120,143 L125,204 L75,204 Z" fill="#e8decd"/>
-      <path d="M62,146 C70,142 78,141 83,142 L91,170 L77,178 Z" fill="#e1e7ea"/>
-      <path d="M138,146 C130,142 122,141 117,142 L109,170 L123,178 Z" fill="#e1e7ea"/>
-      <path d="M87,124 L113,124 L114,145 C107,151 93,151 86,145 Z" fill="#936244"/>
+      <path d="M86,120 L114,120 L115,146 C108,152 92,152 85,146 Z" fill="#d49a76"/>
+      <path d="M86,128 C92,136 108,136 114,128 L114,137 C107,142 93,142 86,137 Z" fill="#b57a58" opacity=".55"/>
+      <path d="M16,204 C20,164 56,144 100,142 C144,144 180,164 184,204 Z" fill="url(#UID-jacket)"/>
+      <path d="M16,204 C20,176 38,158 62,148 L70,204 Z" fill="#6e8e96"/>
+      <path d="M184,204 C180,176 162,158 138,148 L130,204 Z" fill="#6e8e96"/>
+      <path d="M80,143 C88,152 112,152 120,143 L125,204 L75,204 Z" fill="#ece3d4"/>
+      <path d="M62,146 C70,141 78,140 84,141 L92,170 L77,178 Z" fill="#e6ebed"/>
+      <path d="M138,146 C130,141 122,140 116,141 L108,170 L123,178 Z" fill="#e6ebed"/>
+      <path d="M110,170 L112,204" stroke="#8a9aa0" stroke-width="1.2"/>
     </g>
+
     <g class="av-hand">
-      <rect x="146" y="170" width="30" height="16" rx="6" fill="#c9d1d5"/>
-      <g fill="#ad7a55">
+      <rect x="146" y="170" width="30" height="16" rx="6" fill="#cfd7db"/>
+      <g fill="#e0a882">
         <ellipse cx="161" cy="160" rx="12.5" ry="13"/>
         <rect x="149.5" y="130" width="6.2" height="26" rx="3.1"/>
         <rect x="157" y="125" width="6.2" height="30" rx="3.1"/>
@@ -1673,42 +1685,56 @@
         <rect x="139" y="150" width="6" height="18" rx="3" transform="rotate(-38 142 159)"/>
       </g>
     </g>
+
     <g class="av-head">
-      <ellipse cx="65" cy="96" rx="6.5" ry="10.5" fill="#9e6b48"/>
-      <ellipse cx="135" cy="96" rx="6.5" ry="10.5" fill="#9e6b48"/>
-      <path d="M66,84 C66,58 81,46 100,46 C119,46 134,58 134,84 L134,98 C134,122 119,136 100,136 C81,136 66,122 66,98 Z" fill="url(#UID-face)"/>
-      <path d="M68,104 C70,124 85,136 100,136 C115,136 130,124 132,104 C127,118 116,127 100,127 C84,127 73,118 68,104 Z" fill="#3a2419" opacity=".2"/>
-      <ellipse cx="79" cy="106" rx="7" ry="3.5" fill="#cf9570" opacity=".35"/>
-      <ellipse cx="121" cy="106" rx="7" ry="3.5" fill="#cf9570" opacity=".35"/>
-      <g fill="#17110e">
-        <path d="M63,92 C58,70 62,50 76,40 C86,30 101,27 113,30 C127,31 139,42 140,58 C143,68 140,82 137,92 C135,78 129,67 118,62 C107,58 94,59 84,62 C73,66 68,78 66,92 Z"/>
-        <circle cx="80" cy="44" r="13"/><circle cx="96" cy="34" r="15"/><circle cx="113" cy="34" r="14"/><circle cx="128" cy="45" r="12"/><circle cx="70" cy="57" r="9"/><circle cx="133" cy="58" r="8"/>
-        <path d="M64,90 C62,75 65,63 73,56 L70,92 Z"/><path d="M136,90 C138,75 135,63 127,57 L130,92 Z"/>
+      <ellipse cx="67" cy="97" rx="6.5" ry="10" fill="#d9a17c"/>
+      <ellipse cx="133" cy="97" rx="6.5" ry="10" fill="#d9a17c"/>
+      <path d="M65,92 C63,96 64,101 67,103" stroke="#bf8561" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M135,92 C137,96 136,101 133,103" stroke="#bf8561" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      <path d="M68,84 C68,59 82,48 100,48 C118,48 132,59 132,84 L132,100 C132,121 118,136 100,136 C82,136 68,121 68,100 Z" fill="url(#UID-face)"/>
+      <ellipse cx="100" cy="70" rx="18" ry="7" fill="#fff3e6" opacity=".1"/>
+      <ellipse cx="83" cy="98.5" rx="5.2" ry="3" fill="#e99c86" opacity=".33"/>
+      <ellipse cx="117" cy="98.5" rx="5.2" ry="3" fill="#e99c86" opacity=".33"/>
+      <g class="av-beard" filter="url(#UID-soft)" opacity=".86">
+        <path d="M68,76 L69.4,76 C71.2,83 72.4,90 72.6,97 C73.2,104 76,108.6 81.2,112.2 C86.6,116.6 93.6,117.8 100,117.8 C106.4,117.8 113.4,116.6 118.8,112.2 C124,108.6 126.8,104 127.4,97 C127.6,90 128.8,83 130.6,76 L132,76 L132,100 C132,122 118,137.6 100,137.6 C82,137.6 68,122 68,100 Z" fill="url(#UID-beard)"/>
+        <path d="M85.5,112.2 C90.5,108.2 97,108 100,110.2 C103,108 109.5,108.2 114.5,112.2 C109.5,114 104.5,113.2 100,114.2 C95.5,113.2 90.5,114 85.5,112.2 Z" fill="#221812"/>
       </g>
-      <g stroke="#2d231d" stroke-width="2.2" fill="none" stroke-linecap="round">
-        <path d="M84,40 C92,31 106,30 115,36"/><path d="M76,52 C80,46 86,43 92,43"/><path d="M110,44 C117,43 123,46 127,52"/>
+      <path d="M71.6,88 C72.6,96 74.6,106 81.4,112" stroke="#caa088" stroke-width=".7" fill="none" opacity=".35"/>
+      <path d="M128.4,88 C127.4,96 125.4,106 118.6,112" stroke="#caa088" stroke-width=".7" fill="none" opacity=".35"/>
+      <g fill="#15100d">
+        <path d="M66,91 C63,72 66,55 79,45 C90,37 110,36 122,42 C134,49 138,64 134,91 C133,79 130,72 125,68 C119,63 110,62 104,64 C97,61 88,62 82,66 C75,71 69.5,80 68.5,91 Z"/>
+        <circle cx="80" cy="48" r="11"/><circle cx="93" cy="40" r="13"/><circle cx="108" cy="38.5" r="13"/><circle cx="121" cy="44" r="11"/><circle cx="129" cy="54" r="7.5"/><circle cx="72" cy="57" r="7.5"/>
+        <path d="M66.5,70 C66,78 66.8,85 68.4,90 L70,90 C69.2,84 69.4,76 71.6,68 Z"/><path d="M133.5,70 C134,78 133.2,85 131.6,90 L130,90 C130.8,84 130.6,76 128.4,68 Z"/>
+        <path d="M79,66.5 C86,55.5 104,51.5 119,59 C111,58 100.5,60 93.5,66 C89,68.4 84.5,68.6 79,66.5 Z"/>
       </g>
-      <g class="av-brows" stroke="#17110e" stroke-width="4.2" stroke-linecap="round" fill="none">
-        <path class="av-brow-l" d="M76,78 Q85,72 94,76"/>
-        <path class="av-brow-r" d="M106,76 Q115,72 124,78"/>
+      <g stroke="#3a2b24" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".55">
+        <path d="M90,36 C94,33 98,32.5 102,33.5"/><path d="M114,40 C117.5,40.5 120,42.5 121.5,45"/><path d="M98,58 C102,56 106.5,56 110,57.2"/>
+      </g>
+      <g class="av-brows" fill="#18110d">
+        <path class="av-brow-l" d="M75,80.5 C79,75.5 88,73.5 94.5,76.5 L94,79.2 C88,77 80,78 75.8,82 Z"/>
+        <path class="av-brow-r" d="M105.5,76.5 C112,73.5 121,75.5 125,80.5 L124.2,82 C120,78 112,77 106,79.2 Z"/>
       </g>
       <g class="av-eyes">
-        <path d="M77,88 Q86,81 95,88 Q86,92.5 77,88 Z" fill="#f4eee7"/>
-        <path d="M105,88 Q114,81 123,88 Q114,92.5 105,88 Z" fill="#f4eee7"/>
-        <g class="av-pupils" fill="#1a120d"><circle cx="86" cy="87.3" r="3.4"/><circle cx="114" cy="87.3" r="3.4"/></g>
-        <path d="M77,90 Q86,95.5 95,90 M105,90 Q114,95.5 123,90" stroke="#865739" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+        <path d="M77,88.5 Q86,82 95,88.5 Q86,93.2 77,88.5 Z" fill="#f8f3ee"/>
+        <path d="M105,88.5 Q114,82 123,88.5 Q114,93.2 105,88.5 Z" fill="#f8f3ee"/>
+        <g class="av-pupils">
+          <circle cx="86" cy="87.8" r="3.7" fill="#3d2518"/><circle cx="114" cy="87.8" r="3.7" fill="#3d2518"/>
+          <circle cx="86" cy="87.8" r="1.9" fill="#0c0705"/><circle cx="114" cy="87.8" r="1.9" fill="#0c0705"/>
+          <circle cx="87.3" cy="86.5" r=".95" fill="#fff"/><circle cx="115.3" cy="86.5" r=".95" fill="#fff"/>
+        </g>
+        <path d="M76.3,88.6 Q86,81 95.7,88.6 M104.3,88.6 Q114,81 123.7,88.6" stroke="#1d130e" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M78,90.6 Q86,95.4 94,90.6 M106,90.6 Q114,95.4 122,90.6" stroke="#c48a68" stroke-width="1.2" fill="none" stroke-linecap="round"/>
       </g>
-      <path d="M100,91 C99,98 96,103 95,106 C98,108.5 102,108.5 105,106" stroke="#7f5134" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M85,111.5 C90,107.5 97,107.5 100,110 C103,107.5 110,107.5 115,111.5 C109,113 104,112 100,113 C96,112 91,113 85,111.5 Z" fill="#1c130e"/>
+      <path d="M100,91 C99.6,97.5 97.2,101.5 95.6,104.2 C97.8,106.6 102.2,106.6 104.4,104.2" stroke="#bb7f5d" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M96.5,104.8 C97.6,103.8 98.6,104 99,104.9 M101,104.9 C101.4,104 102.4,103.8 103.5,104.8" stroke="#a86c4d" stroke-width="1.1" fill="none" stroke-linecap="round"/>
       <g class="av-mouth av-m-smile">
-        <path d="M84,114 Q100,137 116,114 Q100,120 84,114 Z" fill="#3b1512"/>
-        <path d="M86.4,115.1 Q100,121.4 113.6,115.1 L111.6,120.2 Q100,125.2 88.4,120.2 Z" fill="#fbf8f2"/>
-        <path d="M92,127 Q100,130 108,127" stroke="#c77b6b" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+        <path d="M84.5,114.6 Q100,134 115.5,114.6 Q100,120.4 84.5,114.6 Z" fill="#4a1b17" stroke="#b0685a" stroke-width="1.2" stroke-linejoin="round"/>
+        <path d="M87,115.6 Q100,121.4 113,115.6 L111.2,119.9 Q100,124.6 88.8,119.9 Z" fill="#fffaf3"/>
       </g>
-      <g class="av-mouth av-m-talk"><ellipse class="av-talk" cx="100" cy="119" rx="8" ry="5" fill="#3b1512"/></g>
-      <g class="av-mouth av-m-flat"><path d="M91,119 Q100,116.5 109,119" stroke="#3b1512" stroke-width="2.8" fill="none" stroke-linecap="round"/></g>
+      <g class="av-mouth av-m-talk"><ellipse class="av-talk" cx="100" cy="119" rx="7.6" ry="5" fill="#4a1b17" stroke="#b0685a" stroke-width="1.2"/></g>
+      <g class="av-mouth av-m-flat"><path d="M90.5,118.6 Q100,116.2 109.5,118.6" stroke="#a0604f" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>
     </g>
-    <g class="av-think" fill="#5eead4"><circle cx="142" cy="50" r="3.5"/><circle cx="153" cy="41" r="4.5"/><circle cx="164" cy="32" r="5.5"/></g>
+    <g class="av-think" fill="#5eead4"><circle cx="144" cy="50" r="3.5"/><circle cx="155" cy="41" r="4.5"/><circle cx="166" cy="32" r="5.5"/></g>
   </g>
 </svg>`;
   const avatars = [];
