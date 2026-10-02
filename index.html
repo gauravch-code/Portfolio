@@ -1,2089 +1,490 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Gaurav Chintakunta · AI Engineer</title>
-<meta name="description" content="Gaurav Chintakunta: AI engineer building agents that are observable, bounded, and grounded in real workflows. Four live demos, merged open-source work in OpenSRE and Haystack. MS CS, UIC." />
-<meta name="theme-color" content="#0a0a0a" />
-<meta property="og:title" content="Gaurav Chintakunta · AI Engineer" />
-<meta property="og:description" content="Agents you can inspect, bound, and trust. Four live demos and merged open-source work in OpenSRE and Haystack." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://gauravch-code.github.io/Portfolio/" />
-<meta property="og:image" content="https://gauravch-code.github.io/Portfolio/assets/winnow.webp" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0a'/%3E%3Cpath d='M9 22V10m7 12V14m7 8v-5' stroke='%235eead4' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    color-scheme: dark;
-    --bg: #0a0a0a;
-    --bg-2: #0e0e0e;
-    --surface: #111111;
-    --surface-2: #171717;
-    --line: rgba(255, 255, 255, 0.07);
-    --line-2: rgba(255, 255, 255, 0.12);
-    --text: #ededea;
-    --muted: #a3a3a0;
-    --dim: #6c6c69;
-    --soft: rgba(255, 255, 255, 0.06);
-    --mint: #5eead4;
-    --mint-ink: #04201b;
-    --mint-soft: rgba(94, 234, 212, 0.12);
-    --sans: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-    --serif: 'Instrument Serif', Georgia, serif;
-    --wrap: 1180px;
-    --radius: 18px;
-    --ease: cubic-bezier(.2, .75, .15, 1);
-  }
-  *, *::before, *::after { box-sizing: border-box; }
-  * { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: var(--sans); font-size: 16px; line-height: 1.6;
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-    overflow-x: hidden;
-  }
-  img { display: block; max-width: 100%; }
-  a { color: inherit; text-decoration: none; }
-  button, input { font: inherit; color: inherit; }
-  button { background: none; border: 0; cursor: pointer; }
-  ::selection { background: var(--mint); color: var(--mint-ink); }
-  :focus-visible { outline: 2px solid var(--text); outline-offset: 3px; border-radius: 6px; }
-
-  /* Matte backdrop: a faint grid under film grain */
-  .backdrop { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
-  .backdrop::before {
-    content: ''; position: absolute; inset: 0; opacity: .6;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px);
-    background-size: 72px 72px;
-    mask-image: radial-gradient(ellipse 90% 55% at 50% 0%, #000 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 90% 55% at 50% 0%, #000 30%, transparent 75%);
-  }
-  .backdrop::after {
-    content: ''; position: absolute; inset: -50%; opacity: .05; mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
-  /* Grid and flex children default to min-width: auto, so one long unbreakable line
-     (a URL, a question) would stretch the column past the screen on phones. */
-  .hero-grid > *, .agent > *, .project > *, .xp-grid > *, .console-head .q { min-width: 0; }
-  @media (max-width: 640px) { .wrap { padding: 0 16px; } }
-
-  /* ---------- NAV ---------- */
-  .nav {
-    position: sticky; top: 0; z-index: 40;
-    background: rgba(10, 10, 10, 0.74);
-    backdrop-filter: blur(18px) saturate(140%); -webkit-backdrop-filter: blur(18px) saturate(140%);
-    border-bottom: 1px solid transparent; transition: border-color .3s;
-  }
-  .nav.scrolled { border-bottom-color: var(--line); }
-  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
-  .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.01em; }
-  .brand-mark { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: var(--surface-2); border: 1px solid var(--line-2); }
-  .brand-mark svg { width: 18px; height: 18px; }
-  .brand small { font-family: var(--mono); font-size: 11.5px; color: var(--dim); font-weight: 500; }
-  .nav-links { position: relative; display: flex; align-items: center; gap: 6px; }
-  .nav-links a { position: relative; font-size: 14px; color: var(--muted); padding: 8px 12px; border-radius: 8px; transition: color .15s; }
-  .nav-links a:hover, .nav-links a.current { color: var(--text); }
-  .nav-pill { position: absolute; top: 50%; height: 34px; border-radius: 8px; background: var(--soft); transform: translateY(-50%); opacity: 0; pointer-events: none; transition: left .45s var(--ease), width .45s var(--ease), opacity .3s; }
-  .progress { position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; background: var(--mint); transform-origin: 0 50%; transform: scaleX(0); }
-  .kbd-btn {
-    display: inline-flex; align-items: center; gap: 10px; padding: 7px 8px 7px 12px; border-radius: 9px;
-    border: 1px solid var(--line-2); background: var(--surface); font-size: 13px; color: var(--muted);
-    transition: border-color .15s, color .15s;
-  }
-  .kbd-btn:hover { border-color: var(--text); color: var(--text); }
-  kbd { font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 2px 6px; border-radius: 5px; border: 1px solid var(--line-2); background: var(--bg-2); }
-  @media (max-width: 900px) { .nav-links a.hide-sm { display: none; } }
-  @media (max-width: 520px) { .brand small, .kbd-btn .kbd-label { display: none; } }
-
-  /* ---------- SHARED ---------- */
-  .eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-  .eyebrow::before { content: ''; width: 22px; height: 1px; background: currentColor; opacity: .7; }
-  .section { padding: 120px 0 0; }
-  @media (max-width: 720px) { .section { padding-top: 88px; } }
-  .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 48px; flex-wrap: wrap; }
-  .section-head h2 { font-size: clamp(34px, 5vw, 56px); line-height: 1.02; letter-spacing: -0.035em; font-weight: 700; margin-top: 14px; max-width: 760px; }
-  .section-head p { color: var(--muted); max-width: 400px; font-size: 15.5px; }
-  .section-head p b { color: var(--text); font-weight: 500; }
-  .serif { font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; }
-  .mint { color: var(--mint); }
-
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 11px;
-    font-weight: 600; font-size: 15px; letter-spacing: -0.005em; border: 1px solid transparent; white-space: nowrap;
-    transition: transform .2s, box-shadow .2s, background .2s, border-color .2s, color .2s;
-  }
-  .btn svg { width: 16px; height: 16px; transition: transform .2s; }
-  .btn:hover svg { transform: translate(2px, -2px); }
-  .btn-primary { background: var(--text); color: #0a0a0a; }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px -12px rgba(237,237,234,.35); }
-  .btn-ghost { border-color: var(--line-2); background: rgba(255,255,255,0.02); color: var(--text); }
-  .btn-ghost:hover { border-color: var(--text); }
-  .btn-sm { padding: 9px 14px; font-size: 13.5px; border-radius: 9px; }
-  .chip { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11.5px; color: var(--muted); padding: 4px 9px; border-radius: 6px; background: rgba(255,255,255,0.035); border: 1px solid var(--line); }
-  .live-pill { font-family: var(--mono); font-size: 10.5px; color: var(--mint); display: inline-flex; align-items: center; gap: 6px; }
-  .live-pill::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
-
-  /* ---------- HERO ---------- */
-  .hero { padding: 72px 0 40px; }
-  .hero-grid { display: grid; grid-template-columns: 1.12fr 0.88fr; gap: 56px; align-items: center; }
-  @media (max-width: 980px) { .hero-grid { grid-template-columns: 1fr; gap: 64px; } }
-  .status { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px 7px 10px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface); font-size: 13px; color: var(--muted); margin-bottom: 30px; }
-  .pulse { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 10px rgba(94,234,212,.6); flex-shrink: 0; }
-  .pulse::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: var(--mint); animation: ping 2s ease-out infinite; }
-  @keyframes ping { to { transform: scale(3.2); opacity: 0; } }
-  .status b { color: var(--text); font-weight: 500; }
-  .hero h1 { font-size: clamp(46px, 7.2vw, 92px); line-height: 0.96; letter-spacing: -0.048em; font-weight: 700; margin-bottom: 28px; }
-  .hero h1 .serif { color: var(--mint); font-size: 1.06em; letter-spacing: -0.03em; }
-  .hero-lead { font-size: clamp(17px, 1.6vw, 20px); color: var(--muted); max-width: 560px; margin-bottom: 36px; }
-  .hero-lead b { color: var(--text); font-weight: 500; }
-  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 44px; }
-  .proof { display: grid; grid-template-columns: repeat(3, auto); width: fit-content; border: 1px solid var(--line); border-radius: 14px; background: rgba(17,17,17,.6); }
-  .proof div { padding: 16px 22px; border-right: 1px solid var(--line); }
-  .proof div:last-child { border-right: 0; }
-  .proof strong { display: block; font-size: 24px; letter-spacing: -0.03em; font-weight: 700; line-height: 1.1; }
-  .proof > div > span { font-size: 12.5px; color: var(--dim); }
-  @media (max-width: 560px) {
-    .proof { grid-template-columns: 1fr; width: 100%; }
-    .proof div { border-right: 0; border-bottom: 1px solid var(--line); }
-    .proof div:last-child { border-bottom: 0; }
-  }
-
-  .portrait { position: relative; max-width: 460px; justify-self: end; width: 100%; }
-  @media (max-width: 980px) { .portrait { justify-self: start; } }
-  .photo { position: relative; border-radius: 26px; overflow: hidden; border: 1px solid var(--line-2); aspect-ratio: 4 / 4.6; box-shadow: 0 40px 90px -40px rgba(0,0,0,.9); }
-  .photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
-  .photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(10,10,10,.85)); }
-  .photo-tag { position: absolute; left: 18px; top: 18px; z-index: 2; font-family: var(--mono); font-size: 11.5px; padding: 6px 10px; border-radius: 8px; background: rgba(10,10,10,.6); border: 1px solid var(--line-2); backdrop-filter: blur(8px); }
-  .trace {
-    position: absolute; left: -64px; right: 28px; bottom: -34px; z-index: 3;
-    background: rgba(14, 14, 14, 0.92); border: 1px solid var(--line-2); border-radius: 16px;
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 30px 70px -20px rgba(0,0,0,.85); font-family: var(--mono); font-size: 12.5px;
-  }
-  @media (max-width: 980px) { .trace { left: 16px; right: 16px; } }
-  .trace-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 11.5px; }
-  .ok { display: inline-flex; align-items: center; gap: 6px; color: var(--mint); padding: 2px 8px; border-radius: 999px; background: var(--mint-soft); }
-  .ok::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .trace ol { list-style: none; padding: 10px 16px 6px; }
-  .trace li { display: grid; grid-template-columns: 18px 1fr auto; gap: 10px; align-items: baseline; padding: 6px 0; opacity: .18; transform: translateX(-4px); transition: opacity .45s ease, transform .45s ease; }
-  .trace li.on { opacity: 1; transform: none; }
-  .trace li i { font-style: normal; color: var(--mint); }
-  .trace li b { color: var(--text); font-weight: 500; }
-  .trace li em { font-style: normal; color: var(--dim); font-size: 11px; }
-  .trace li .k { color: var(--muted); }
-  .trace-foot { display: flex; justify-content: flex-end; padding: 0 16px 12px; }
-  .trace-foot a { font-size: 11.5px; color: var(--muted); transition: color .15s; }
-  .trace-foot a:hover { color: var(--mint); }
-
-  /* Strip of projects I've contributed to */
-  .strip { margin-top: 110px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: rgba(14,14,14,.5); }
-  .strip .wrap { display: flex; align-items: center; gap: 28px; padding-top: 22px; padding-bottom: 22px; flex-wrap: wrap; }
-  .strip-label { font-family: var(--mono); font-size: 11.5px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; }
-  .strip-list { display: flex; gap: 10px 26px; flex-wrap: wrap; flex: 1; }
-  .strip-list a { display: inline-flex; align-items: baseline; gap: 8px; font-weight: 600; color: var(--muted); letter-spacing: -0.01em; transition: color .15s; }
-  .strip-list a:hover { color: var(--text); }
-  .strip-list a span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); font-weight: 500; }
-
-  /* ---------- ASK MY PORTFOLIO ---------- */
-  .agent { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 20px; align-items: stretch; }
-  @media (max-width: 960px) { .agent { grid-template-columns: 1fr; } }
-  .agent-side { display: flex; flex-direction: column; gap: 14px; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-  .agent-side h3 { font-size: 12px; font-family: var(--mono); font-weight: 500; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
-  .suggestions { display: flex; flex-direction: column; gap: 8px; }
-  .suggestion {
-    text-align: left; padding: 12px 14px; border-radius: 11px; border: 1px solid var(--line); background: var(--bg-2);
-    font-size: 14.5px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; align-items: center;
-    transition: border-color .15s, color .15s, background .15s;
-  }
-  .suggestion::after { content: '↵'; font-family: var(--mono); font-size: 12px; color: var(--dim); opacity: 0; transition: opacity .15s; }
-  .suggestion:hover, .suggestion.active { border-color: var(--line-2); color: var(--text); background: var(--surface-2); }
-  .suggestion:hover::after, .suggestion.active::after { opacity: 1; }
-  .ask-form { display: flex; gap: 8px; margin-top: auto; padding-top: 6px; }
-  .ask-form input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 11px; border: 1px solid var(--line-2); background: var(--bg); outline: 0; font-size: 14.5px; transition: border-color .15s; }
-  .ask-form input:focus { border-color: var(--mint); }
-  .ask-form input::placeholder { color: var(--dim); }
-  .agent-note { font-size: 12.5px; color: var(--dim); }
-
-  .console { display: flex; flex-direction: column; border: 1px solid var(--line-2); border-radius: var(--radius); background: #0c0c0c; overflow: hidden; min-height: 470px; font-family: var(--mono); font-size: 12.5px; }
-  .console-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 18px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 11.5px; }
-  .console-head .q { color: var(--text); font-family: var(--sans); font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .run-state { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px; background: var(--soft); color: var(--muted); flex-shrink: 0; }
-  .run-state::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .run-state.running { color: var(--text); }
-  .run-state.running::before { animation: blink 1s steps(2) infinite; }
-  .run-state.done { color: var(--mint); background: var(--mint-soft); }
-  @keyframes blink { 50% { opacity: 0; } }
-  .steps-log { list-style: none; padding: 14px 18px 4px; }
-  .steps-log li { display: grid; grid-template-columns: 82px 1fr auto; gap: 12px; padding: 6px 0; animation: step-in .35s var(--ease) both; }
-  @keyframes step-in { from { opacity: 0; transform: translateY(4px); } }
-  .steps-log .kind { color: var(--dim); }
-  .steps-log .kind.tool { color: var(--mint); }
-  .steps-log .detail { color: var(--muted); overflow-wrap: anywhere; }
-  .steps-log .detail b { color: var(--text); font-weight: 500; }
-  .steps-log .ms { color: var(--dim); font-size: 11px; }
-  .answer { margin: 8px 18px 18px; padding: 18px 20px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); font-family: var(--sans); font-size: 15px; color: var(--muted); line-height: 1.65; }
-  .answer:empty { display: none; }
-  .answer b { color: var(--text); font-weight: 600; }
-  .answer ul { list-style: none; display: grid; gap: 8px; margin-top: 8px; }
-  .answer li { position: relative; padding-left: 16px; }
-  .answer li::before { content: ''; position: absolute; left: 0; top: 11px; width: 7px; height: 1px; background: var(--mint); }
-  .cite { display: inline-flex; align-items: center; gap: 4px; margin-left: 4px; padding: 0 7px; border-radius: 6px; vertical-align: 1px; font-family: var(--mono); font-size: 11px; color: var(--mint); background: var(--mint-soft); border: 1px solid rgba(94,234,212,.2); transition: background .15s; }
-  .cite:hover { background: rgba(94,234,212,.22); }
-  .caret { display: inline-block; width: 7px; height: 15px; background: var(--mint); vertical-align: -2px; margin-left: 2px; animation: blink 1s steps(2) infinite; }
-  .flash { animation: flash 1.8s ease-out; }
-  @keyframes flash { 0%, 30% { box-shadow: 0 0 0 2px var(--mint), 0 0 40px rgba(94,234,212,.25); } 100% { box-shadow: 0 0 0 2px transparent; } }
-
-  /* ---------- PROJECTS ---------- */
-  .project { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 56px; align-items: center; padding: 56px 0; border-top: 1px solid var(--line); border-radius: var(--radius); }
-  .project:first-of-type { border-top: 0; padding-top: 8px; }
-  .project.flip .shot { order: 2; }
-  @media (max-width: 960px) { .project, .project.flip { grid-template-columns: 1fr; gap: 32px; } .project.flip .shot { order: 0; } }
-
-  .frame { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-2); background: var(--surface); clip-path: inset(6% 6% 6% 6% round 18px); transition: clip-path 1.1s var(--ease), border-color .3s; }
-  .project.in .frame { clip-path: inset(0 0 0 0 round 18px); }
-  .frame-bar { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-bottom: 1px solid var(--line); background: var(--bg-2); }
-  .dots { display: flex; gap: 6px; }
-  .dots i { width: 10px; height: 10px; border-radius: 50%; background: #2a2a2a; }
-  .url { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; font-family: var(--mono); font-size: 11.5px; color: var(--dim); padding: 5px 10px; border-radius: 7px; background: var(--surface); border: 1px solid var(--line); }
-  .url span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .url svg { flex-shrink: 0; width: 11px; height: 11px; }
-  @media (max-width: 560px) { .url, .dots { display: none; } }
-  .tabs { display: flex; gap: 2px; padding: 3px; border-radius: 9px; background: var(--surface); border: 1px solid var(--line); flex-shrink: 0; }
-  @media (max-width: 560px) { .tabs { flex: 1; } .tab { flex: 1; } }
-  .tab { font-size: 12px; font-weight: 500; color: var(--dim); padding: 5px 10px; border-radius: 6px; transition: color .15s, background .15s; white-space: nowrap; }
-  .tab:hover { color: var(--text); }
-  .tab[aria-selected="true"] { color: var(--text); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--line-2); }
-  .tab .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--mint); margin-right: 6px; vertical-align: 1px; box-shadow: 0 0 6px var(--mint); }
-  .panes { position: relative; aspect-ratio: 16 / 10.4; background: #050505; overflow: hidden; }
-  .pane { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .35s ease, visibility 0s linear .35s; }
-  .pane.active { opacity: 1; visibility: visible; transition: opacity .35s ease; }
-  .pane-preview a { display: block; height: 100%; }
-  .pane-preview img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transform: scale(1.12); transition: transform 1.4s var(--ease); }
-  .project.in .pane-preview img { transform: scale(1); }
-  .project.in .pane-preview a:hover img { transform: scale(1.03); transition-duration: .8s; }
-  .pane-cta { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10,10,10,0); opacity: 0; transition: opacity .3s, background .3s; }
-  .pane-cta span { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px; background: var(--text); color: #0a0a0a; font-weight: 600; font-size: 14px; transform: translateY(8px); transition: transform .3s; }
-  .pane-preview a:hover .pane-cta, .pane-preview a:focus-visible .pane-cta { opacity: 1; background: rgba(10,10,10,.45); }
-  .pane-preview a:hover .pane-cta span { transform: none; }
-  .pane-arch { background: radial-gradient(ellipse at 50% 0%, #121212, #080808 70%); }
-  .pane-arch svg { width: 100%; height: 100%; display: block; }
-  .pane-live iframe { width: 100%; height: 100%; border: 0; background: #0a0a0a; }
-  .pane-live .loading { position: absolute; inset: 0; display: grid; place-items: center; color: var(--dim); font-family: var(--mono); font-size: 12px; pointer-events: none; }
-  .fullscreen { font-family: var(--mono); font-size: 11px; color: var(--dim); padding: 5px 8px; border-radius: 6px; flex-shrink: 0; transition: color .15s; }
-  .fullscreen:hover { color: var(--text); }
-
-  /* Architecture diagram styling */
-  .arch-edge { fill: none; stroke: rgba(255,255,255,.13); stroke-width: 1.5; }
-  .arch-edge.dash { stroke-dasharray: 5 6; stroke: rgba(255,255,255,.18); }
-  .arch-node rect { fill: #141414; stroke: rgba(255,255,255,.14); }
-  .arch-node.hot rect { stroke: rgba(94,234,212,.55); }
-  .arch-node text { fill: #ededea; font-family: var(--sans); font-size: 13px; font-weight: 600; }
-  .arch-node .sub { fill: #8a8a87; font-family: var(--mono); font-size: 9px; font-weight: 400; }
-  .arch-label { fill: #6c6c69; font-family: var(--mono); font-size: 9.5px; }
-  .arch-label.accent { fill: var(--mint); }
-  .arch-label.light { fill: #ededea; }
-  .pkt { fill: var(--mint); filter: drop-shadow(0 0 4px rgba(94,234,212,.9)); }
-  .pkt.slow { fill: #ededea; filter: drop-shadow(0 0 3px rgba(237,237,234,.7)); }
-
-  .p-index { font-family: var(--mono); font-size: 12px; color: var(--dim); margin-bottom: 14px; display: flex; gap: 12px; align-items: center; }
-  .p-index .tag { color: var(--muted); padding: 3px 8px; border-radius: 6px; background: var(--soft); letter-spacing: .06em; text-transform: uppercase; font-size: 10.5px; }
-  .project h3 { font-size: clamp(30px, 3.6vw, 42px); letter-spacing: -0.035em; line-height: 1.05; font-weight: 700; margin-bottom: 12px; }
-  .p-lede { color: var(--muted); font-size: 16.5px; margin-bottom: 26px; }
-  .p-lede b { color: var(--text); font-weight: 500; }
-  .steps { list-style: none; position: relative; margin-bottom: 26px; counter-reset: step; }
-  .steps::before { content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(var(--mint), rgba(94,234,212,.08)); transform-origin: top; transform: scaleY(0); transition: transform 1s cubic-bezier(.4,0,.2,1) .15s; }
-  .project.in .steps::before { transform: scaleY(1); }
-  .steps li { position: relative; display: grid; grid-template-columns: 24px 1fr; gap: 14px; padding: 7px 0; font-size: 14.5px; color: var(--muted); opacity: 0; transform: translateX(-8px); transition: opacity .5s ease, transform .5s ease; }
-  .steps li:nth-child(1) { transition-delay: .2s; } .steps li:nth-child(2) { transition-delay: .5s; } .steps li:nth-child(3) { transition-delay: .8s; }
-  .project.in .steps li { opacity: 1; transform: none; }
-  .steps li::before { content: counter(step); counter-increment: step; width: 23px; height: 23px; border-radius: 7px; display: grid; place-items: center; font-family: var(--mono); font-size: 11px; color: var(--text); background: var(--bg); border: 1px solid var(--line-2); position: relative; z-index: 1; transition: border-color .4s; }
-  .project.in .steps li::before { border-color: rgba(94,234,212,.45); }
-  .steps li b { color: var(--text); font-weight: 500; }
-  .decision { margin: 0 0 24px; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); border-left: 2px solid var(--mint); background: linear-gradient(90deg, var(--mint-soft), transparent 70%); color: var(--muted); font-size: 14.5px; }
-  .decision span { display: block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--mint); margin-bottom: 4px; }
-  .decision b { color: var(--text); font-weight: 500; }
-  .metrics { display: flex; gap: 28px; margin-bottom: 24px; flex-wrap: wrap; }
-  .metrics div strong { display: block; font-size: 26px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.1; font-variant-numeric: tabular-nums; }
-  .metrics div span { font-family: var(--mono); font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .06em; }
-  .stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
-  .p-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-
-  .earlier { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 40px; }
-  @media (max-width: 900px) { .earlier { grid-template-columns: 1fr; } }
-  .mini { display: flex; flex-direction: column; gap: 10px; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); transition: border-color .2s, transform .2s; }
-  .mini:hover { border-color: var(--line-2); transform: translateY(-3px); }
-  .mini-top { display: flex; justify-content: space-between; align-items: center; font-family: var(--mono); font-size: 11px; color: var(--dim); text-transform: uppercase; letter-spacing: .08em; }
-  .mini h4 { font-size: 18px; letter-spacing: -0.02em; }
-  .mini p { color: var(--muted); font-size: 14px; flex: 1; }
-  .mini .arrow { color: var(--dim); transition: color .2s, transform .2s; }
-  .mini:hover .arrow { color: var(--mint); transform: translate(2px,-2px); }
-
-  /* ---------- OPEN SOURCE ---------- */
-  .oss-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
-  @media (max-width: 760px) { .oss-summary { grid-template-columns: 1fr; } }
-  .oss-stat { padding: 22px 24px; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); }
-  .oss-stat strong { display: block; font-size: 38px; letter-spacing: -0.04em; font-weight: 700; line-height: 1.05; }
-  .oss-stat span { color: var(--dim); font-size: 13.5px; }
-  .oss-stat.merged strong { color: var(--mint); }
-  .ledger { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: var(--surface); }
-  .ledger-head, .pr { display: grid; grid-template-columns: 210px 1fr 110px 100px; gap: 20px; align-items: center; padding: 16px 22px; }
-  .ledger-head { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); background: var(--bg-2); border-bottom: 1px solid var(--line); }
-  .pr { border-bottom: 1px solid var(--line); opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease, background .15s; transition-delay: calc(var(--i, 0) * 70ms); }
-  .ledger.in .pr { opacity: 1; transform: none; }
-  .pr:last-child { border-bottom: 0; }
-  .pr:hover { background: rgba(255,255,255,0.025); }
-  .pr-repo b { display: block; font-weight: 600; letter-spacing: -0.01em; }
-  .pr-repo span { font-family: var(--mono); font-size: 11.5px; color: var(--dim); }
-  .pr-what b { display: block; font-weight: 500; font-size: 14.5px; margin-bottom: 2px; }
-  .pr-what p { color: var(--muted); font-size: 13.5px; line-height: 1.5; }
-  .pr-stars { font-family: var(--mono); font-size: 13px; color: var(--dim); }
-  .state { justify-self: start; display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; font-weight: 500; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
-  .state::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .state.merged { color: var(--mint); background: var(--mint-soft); }
-  .state.open { color: var(--muted); background: var(--soft); }
-  .ledger.in .state.merged::before { animation: merged-pulse 1.6s ease-out calc(var(--i, 0) * 70ms + .5s) 1; }
-  @keyframes merged-pulse { 0% { box-shadow: 0 0 0 0 rgba(94,234,212,.7); } 100% { box-shadow: 0 0 0 7px rgba(94,234,212,0); } }
-  @media (max-width: 820px) {
-    .ledger-head { display: none; }
-    .pr { grid-template-columns: 1fr auto; grid-template-areas: "repo state" "what what" "stars stars"; gap: 10px 16px; }
-    .pr-repo { grid-area: repo; } .pr-what { grid-area: what; } .pr-stars { grid-area: stars; } .state { grid-area: state; justify-self: end; }
-  }
-  .live-note { display: flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11.5px; color: var(--dim); margin-top: 14px; }
-  .live-note .live-pill { font-size: 11.5px; }
-
-  /* ---------- EXPERIENCE ---------- */
-  .xp-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 20px; }
-  @media (max-width: 900px) { .xp-grid { grid-template-columns: 1fr; } }
-  .card { border: 1px solid var(--line); border-radius: 18px; background: var(--surface); padding: 28px; }
-  .card-title { font-family: var(--mono); font-size: 11.5px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
-  .role { display: grid; grid-template-columns: 132px 1fr; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
-  .role:last-child { border-bottom: 0; padding-bottom: 0; }
-  @media (max-width: 560px) { .role { grid-template-columns: 1fr; gap: 6px; } }
-  .role-when { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-top: 3px; }
-  .role h4 { font-size: 18px; letter-spacing: -0.02em; }
-  .role .org { color: var(--dim); font-size: 14px; margin-bottom: 12px; }
-  .role ul { list-style: none; display: grid; gap: 8px; }
-  .role li { position: relative; padding-left: 18px; color: var(--muted); font-size: 14.5px; }
-  .role li::before { content: ''; position: absolute; left: 0; top: 11px; width: 8px; height: 1px; background: var(--dim); }
-  .role li b { color: var(--text); font-weight: 600; }
-  .edu { padding: 18px 0; border-bottom: 1px solid var(--line); }
-  .edu:last-child { border-bottom: 0; }
-  .edu h4 { font-size: 16.5px; letter-spacing: -0.015em; }
-  .edu p { color: var(--dim); font-size: 13.5px; }
-  .edu .gpa { display: inline-block; margin-top: 8px; font-family: var(--mono); font-size: 11.5px; color: var(--text); padding: 3px 8px; border-radius: 6px; background: var(--soft); }
-
-  /* ---------- SKILLS ---------- */
-  .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  @media (max-width: 960px) { .skills { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .skills { grid-template-columns: 1fr; } }
-  .skill h4 { font-family: var(--mono); font-size: 11.5px; font-weight: 500; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  .skill h4 i { width: 7px; height: 7px; border-radius: 2px; background: var(--dim); }
-  .skill .stack { margin: 0; }
-
-  /* ---------- CONTACT ---------- */
-  .contact { position: relative; overflow: hidden; margin-top: 120px; border: 1px solid var(--line-2); border-radius: 28px; padding: clamp(40px, 7vw, 88px) clamp(24px, 6vw, 72px); background: var(--surface); }
-  .contact::before { content: ''; position: absolute; inset: 0 0 auto; height: 1px; background: linear-gradient(90deg, transparent, rgba(94,234,212,.5), transparent); }
-  .contact h2 { font-size: clamp(40px, 6.5vw, 84px); line-height: .98; letter-spacing: -0.045em; font-weight: 700; max-width: 900px; margin: 16px 0 22px; }
-  .contact h2 .serif { color: var(--mint); }
-  .contact p { color: var(--muted); font-size: 17px; max-width: 580px; margin-bottom: 34px; }
-  .contact-row { display: flex; gap: 12px; flex-wrap: wrap; }
-  .copy-ok { font-family: var(--mono); font-size: 12px; color: var(--mint); align-self: center; opacity: 0; transition: opacity .2s; }
-  .copy-ok.show { opacity: 1; }
-  footer { padding: 56px 0 64px; color: var(--dim); font-size: 13.5px; }
-  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  footer nav { display: flex; gap: 18px; }
-  footer a:hover { color: var(--text); }
-
-  /* ---------- COMMAND PALETTE ---------- */
-  .palette { position: fixed; inset: 0; z-index: 100; display: none; place-items: start center; padding: 14vh 16px 16px; background: rgba(3,3,3,.6); backdrop-filter: blur(6px); }
-  .palette.open { display: grid; animation: fade .15s ease; }
-  @keyframes fade { from { opacity: 0; } }
-  .palette-box { width: min(620px, 100%); border-radius: 16px; border: 1px solid var(--line-2); background: #101010; box-shadow: 0 40px 100px -20px rgba(0,0,0,.9); overflow: hidden; }
-  .palette-input { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
-  .palette-input svg { width: 18px; height: 18px; color: var(--dim); flex-shrink: 0; }
-  .palette-input input { flex: 1; background: none; border: 0; outline: 0; font-size: 16px; }
-  .palette-input input::placeholder { color: var(--dim); }
-  .palette-list { list-style: none; max-height: 380px; overflow-y: auto; padding: 8px; }
-  .palette-group { font-family: var(--mono); font-size: 10.5px; color: var(--dim); letter-spacing: .1em; text-transform: uppercase; padding: 10px 12px 6px; }
-  .palette-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; border-radius: 10px; cursor: pointer; font-size: 14.5px; color: var(--muted); }
-  .palette-item small { font-family: var(--mono); font-size: 11px; color: var(--dim); }
-  .palette-item.active { background: var(--soft); color: var(--text); }
-  .palette-item.active small { color: var(--mint); }
-  .palette-empty { padding: 24px; text-align: center; color: var(--dim); font-size: 14px; }
-  .palette-foot { display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 11px; color: var(--dim); }
-
-  /* ---------- MINI-GAURAV (illustrated avatar) ---------- */
-  .avatar { display: block; width: 100%; height: 100%; overflow: visible; }
-  .avatar .av-mouth, .avatar .av-think, .avatar .av-hand { display: none; }
-  .avatar[data-state="idle"] .av-m-smile, .avatar[data-state="happy"] .av-m-smile, .avatar[data-state="wave"] .av-m-smile { display: inline; }
-  .avatar[data-state="talking"] .av-m-talk { display: inline; }
-  .avatar[data-state="thinking"] .av-m-flat, .avatar[data-state="shrug"] .av-m-flat { display: inline; }
-  .avatar[data-state="thinking"] .av-think, .avatar[data-state="wave"] .av-hand { display: inline; }
-  .avatar .av-pupils { transform: translate(var(--px, 0px), var(--py, 0px)); transition: transform .12s linear; }
-  .avatar[data-state="thinking"] .av-pupils { transform: translate(-1.6px, -2.4px); }
-  .avatar .av-eyes { transform-box: view-box; transform-origin: 100px 87px; animation: av-blink 5.2s infinite; }
-  @keyframes av-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.08); } }
-  .avatar .av-head { transform-box: view-box; transform-origin: 100px 132px; animation: av-sway 7s ease-in-out infinite; transition: transform .35s var(--ease); }
-  @keyframes av-sway { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
-  .avatar .av-body { animation: av-breathe 4s ease-in-out infinite; }
-  @keyframes av-breathe { 50% { transform: translateY(1px); } }
-  .avatar .tw { animation: av-twinkle 3.4s ease-in-out infinite; }
-  .avatar .tw:nth-child(3n) { animation-delay: -1.2s; } .avatar .tw:nth-child(3n+1) { animation-delay: -2.3s; }
-  @keyframes av-twinkle { 50% { opacity: .25; } }
-  .avatar .av-talk { transform-box: view-box; transform-origin: 100px 119px; animation: av-talk .26s ease-in-out infinite alternate; }
-  @keyframes av-talk { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
-  .avatar .av-hand { transform-box: view-box; transform-origin: 160px 184px; animation: av-wave 1.1s ease-in-out 2; }
-  @keyframes av-wave { 0%, 100% { transform: rotate(0); } 25%, 75% { transform: rotate(14deg); } 50% { transform: rotate(-8deg); } }
-  .avatar .av-think circle { animation: av-dot 1.2s ease-in-out infinite; }
-  .avatar .av-think circle:nth-child(2) { animation-delay: .15s; } .avatar .av-think circle:nth-child(3) { animation-delay: .3s; }
-  @keyframes av-dot { 50% { transform: translateY(-3px); opacity: .5; } }
-  .avatar[data-state="happy"] .av-head { animation: av-hop .6s var(--ease); }
-  @keyframes av-hop { 40% { transform: translateY(-4px) rotate(-2deg); } }
-  .avatar[data-state="shrug"] .av-head { animation: none; transform: rotate(-7deg); }
-  .avatar[data-state="shrug"] .av-brow-l { transform: translateY(-3px); }
-  .avatar[data-state="shrug"] .av-body { animation: none; transform: translateY(-3px); }
-  .avatar[data-state="thinking"] .av-brows { transform: translateY(-2px); }
-
-  /* Ask panel persona */
-  .persona { display: flex; align-items: center; gap: 14px; }
-  .persona .av-slot { width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; box-shadow: 0 0 0 1px var(--line-2), 0 10px 30px -10px rgba(0,0,0,.8); }
-  .persona b { display: block; font-size: 16px; letter-spacing: -0.01em; }
-  .persona span { font-size: 13.5px; color: var(--muted); }
-
-  /* Live GitHub activity line */
-  .activity { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--dim); flex-wrap: wrap; }
-  .activity a { color: var(--muted); border-bottom: 1px solid var(--line-2); transition: color .15s; }
-  .activity a:hover { color: var(--text); }
-
-  /* ---------- FLOATING GUIDE ---------- */
-  .guide { position: fixed; right: 20px; bottom: 20px; z-index: 60; display: flex; align-items: flex-end; gap: 12px; pointer-events: none; }
-  .guide.hidden { display: none; }
-  .guide-av {
-    pointer-events: auto; width: 68px; height: 68px; border-radius: 50%; padding: 0; flex-shrink: 0;
-    box-shadow: 0 0 0 1px var(--line-2), 0 16px 40px -12px rgba(0,0,0,.9); transform: translateY(120%) scale(.6); opacity: 0;
-    transition: transform .6s var(--ease), opacity .4s ease, box-shadow .2s;
-  }
-  .guide.on .guide-av { transform: none; opacity: 1; }
-  .guide-av:hover { box-shadow: 0 0 0 2px var(--mint), 0 16px 40px -12px rgba(0,0,0,.9); }
-  .guide-bubble {
-    pointer-events: auto; position: relative; max-width: 290px; padding: 14px 16px 14px; border-radius: 14px 14px 4px 14px;
-    background: var(--surface-2); border: 1px solid var(--line-2); box-shadow: 0 20px 50px -18px rgba(0,0,0,.9);
-    font-size: 14px; color: var(--muted); line-height: 1.5;
-    opacity: 0; transform: translateY(8px) scale(.98); transform-origin: bottom right; visibility: hidden;
-    transition: opacity .3s ease, transform .35s var(--ease), visibility 0s linear .35s;
-  }
-  .guide-bubble.show { opacity: 1; transform: none; visibility: visible; transition: opacity .3s ease, transform .35s var(--ease); }
-  .guide-bubble p { padding-right: 16px; }
-  .guide-bubble b { color: var(--text); font-weight: 600; }
-  .guide-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-  .guide-actions:empty { display: none; }
-  .guide-actions button { font-size: 12.5px; font-weight: 600; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line-2); color: var(--text); background: var(--bg-2); transition: border-color .15s, background .15s; }
-  .guide-actions button:hover { border-color: var(--text); }
-  .guide-actions button.primary { background: var(--text); color: #0a0a0a; border-color: var(--text); }
-  .guide-x { position: absolute; top: 6px; right: 8px; font-size: 16px; line-height: 1; color: var(--dim); padding: 2px 4px; }
-  .guide-x:hover { color: var(--text); }
-  @media (max-width: 560px) { .guide { right: 12px; bottom: 12px; } .guide-av { width: 56px; height: 56px; } .guide-bubble { max-width: calc(100vw - 96px); font-size: 13.5px; } }
-
-  /* ---------- 60-SECOND TOUR ---------- */
-  .tour { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
-  .tour[hidden] { display: none; }
-  .tour-spot { position: fixed; border-radius: 18px; box-shadow: 0 0 0 200vmax rgba(0,0,0,.66), 0 0 0 1px rgba(94,234,212,.5); transition: top .55s var(--ease), left .55s var(--ease), width .55s var(--ease), height .55s var(--ease); pointer-events: none; }
-  .tour-card {
-    pointer-events: auto; position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); width: min(600px, calc(100% - 32px));
-    display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; padding: 18px 20px;
-    border-radius: 18px; background: rgba(20,20,20,.96); border: 1px solid var(--line-2); box-shadow: 0 30px 80px -20px rgba(0,0,0,.95);
-    backdrop-filter: blur(12px);
-  }
-  .tour-card .av-slot { width: 64px; height: 64px; border-radius: 50%; box-shadow: 0 0 0 1px var(--line-2); }
-  .tour-step { font-family: var(--mono); font-size: 11px; color: var(--dim); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-  .tour-text { font-size: 15.5px; color: var(--text); line-height: 1.5; min-height: 46px; }
-  .tour-foot { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; }
-  .tour-bar { flex: 1; height: 2px; border-radius: 2px; background: var(--line-2); overflow: hidden; }
-  .tour-bar i { display: block; height: 100%; width: 0; background: var(--mint); }
-  .tour-foot button { font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 9px; border: 1px solid var(--line-2); transition: border-color .15s; }
-  .tour-foot button:hover { border-color: var(--text); }
-  .tour-foot .primary { background: var(--text); color: #0a0a0a; border-color: var(--text); }
-  .tour-foot .skip { border-color: transparent; color: var(--dim); }
-  @media (max-width: 560px) { .tour-card { grid-template-columns: 48px 1fr; padding: 14px; bottom: 12px; } .tour-card .av-slot { width: 48px; height: 48px; } .tour-text { font-size: 14.5px; } }
-
-  /* ---------- TERMINAL MODE ---------- */
-  .term { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; padding: 16px; background: rgba(3,3,3,.72); backdrop-filter: blur(6px); animation: fade .15s ease; }
-  .term[hidden] { display: none; }
-  .term-box { width: min(860px, 100%); height: min(560px, calc(100vh - 32px)); display: flex; flex-direction: column; border-radius: 14px; border: 1px solid var(--line-2); background: #0b0d0c; box-shadow: 0 40px 100px -20px rgba(0,0,0,.95); overflow: hidden; font-family: var(--mono); font-size: 13.5px; }
-  .term-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); color: var(--dim); font-size: 12px; }
-  .term-bar .dots i:first-child { background: #3a3a3a; }
-  .term-bar span { flex: 1; text-align: center; }
-  .term-bar button { color: var(--dim); font-size: 12px; }
-  .term-bar button:hover { color: var(--text); }
-  .term-out { flex: 1; overflow-y: auto; padding: 16px 18px 6px; color: #cfd6d2; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .term-out .c { color: var(--mint); } .term-out .d { color: var(--dim); } .term-out .w { color: var(--text); font-weight: 600; } .term-out .e { color: #f08a8a; }
-  .term-out a { color: var(--mint); text-decoration: underline; text-underline-offset: 2px; }
-  .term-form { display: flex; align-items: center; gap: 10px; padding: 10px 18px 16px; }
-  .term-prompt { color: var(--mint); white-space: nowrap; }
-  .term-form input { flex: 1; min-width: 0; background: none; border: 0; outline: 0; font-family: var(--mono); font-size: 13.5px; caret-color: var(--mint); }
-  .footer-hint kbd { margin: 0 2px; }
-
-  .tour-foot button:disabled { opacity: .4; cursor: default; }
-
-  /* ---------- MOTION ---------- */
-  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s var(--ease); }
-  .reveal.in { opacity: 1; transform: none; }
-  .words .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .08em; margin-bottom: -.08em; }
-  .words .w > span { display: inline-block; transform: translateY(105%); transition: transform .9s var(--ease); transition-delay: calc(var(--i) * 55ms); }
-  .words.in .w > span { transform: none; }
-  .hero-fade { opacity: 0; transform: translateY(14px); transition: opacity .8s ease, transform .8s var(--ease); transition-delay: var(--d, 0ms); }
-  .hero-fade.in { opacity: 1; transform: none; }
-  @media (hover: hover) {
-    .spot:not(.trace) { position: relative; }
-    .spot::after { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(360px circle at var(--mx, -500px) var(--my, -500px), rgba(255,255,255,.06), transparent 60%); opacity: 0; transition: opacity .3s; }
-    .spot:hover::after { opacity: 1; }
-  }
-  /* Without JavaScript, show everything */
-  .no-js .reveal, .no-js .hero-fade, .no-js .pr, .no-js .steps li { opacity: 1; transform: none; }
-  .no-js .frame { clip-path: none; }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    html { scroll-behavior: auto; }
-    .reveal, .hero-fade, .pr, .steps li, .trace li { opacity: 1 !important; transform: none !important; }
-    .words .w > span, .pane-preview img { transform: none !important; }
-    .frame { clip-path: none !important; }
-    .steps::before { transform: none !important; }
-    .progress, .nav-pill, .caret { display: none; }
-  }
-</style>
-</head>
-<body class="no-js">
-<script>document.body.classList.remove('no-js');</script>
-
-<div class="backdrop" aria-hidden="true"></div>
-
-<header class="nav" id="nav">
-  <div class="wrap">
-    <a href="#top" class="brand" aria-label="Gaurav Chintakunta, home">
-      <span class="brand-mark"><svg viewBox="0 0 18 18" fill="none"><path d="M4 14V5m5 9V8m5 6v-3" stroke="#5eead4" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-      <span>Gaurav Chintakunta <small>/ AI engineer</small></span>
-    </a>
-    <nav class="nav-links" aria-label="Primary">
-      <span class="nav-pill" aria-hidden="true"></span>
-      <a href="#ask" class="hide-sm">Ask</a>
-      <a href="#work" class="hide-sm">Work</a>
-      <a href="#open-source" class="hide-sm">Open source</a>
-      <a href="#experience" class="hide-sm">Experience</a>
-      <a href="./Gaurav_Resume.pdf" target="_blank" rel="noopener" class="hide-sm">Resume</a>
-      <button class="kbd-btn" id="open-palette" aria-label="Open command menu"><span class="kbd-label">Jump to</span><kbd id="kbd-hint">Ctrl K</kbd></button>
-    </nav>
-  </div>
-  <div class="progress" id="progress" aria-hidden="true"></div>
-</header>
-
-<main id="top">
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="wrap hero-grid">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101112" />
+    <title>Gaurav Chintakunta | AI Engineer</title>
+    <meta
+      name="description"
+      content="AI systems, opened up. Explore Gaurav Chintakunta's local-first AI, agent observability, guarded infrastructure, and open-source engineering."
+    />
+    <meta
+      property="og:title"
+      content="Gaurav Chintakunta | AI systems, opened up"
+    />
+    <meta
+      property="og:description"
+      content="An interactive systems bench. Four working products. Open-source fixes. MS Computer Science, UIC."
+    />
+    <meta
+      property="og:image"
+      content="https://gauravch-code.github.io/Portfolio/assets/portfolio-social.webp"
+    />
+    <meta
+      property="og:url"
+      content="https://gauravch-code.github.io/Portfolio/"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image:alt"
+      content="Gaurav Chintakunta's interactive 3D systems bench"
+    />
+    <link rel="icon" href="./assets/gaurav.webp" />
+    <link
+      rel="preload"
+      href="./assets/fonts/space-grotesk.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./vendor/lucide.min.js" defer></script>
+    <script src="./app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip" href="#work">Skip to projects</a>
+    <header class="header">
+      <a class="identity" href="#lab" aria-label="Gaurav Chintakunta, home"
+        ><span class="monogram">gc<span>.</span></span
+        ><span class="identity-name">GAURAV CHINTAKUNTA</span></a
+      >
+      <nav aria-label="Main navigation">
+        <a href="#lab" class="active">Lab</a><a href="#work">Work</a
+        ><a href="#open-source">Open source</a><a href="#about">About</a>
+      </nav>
+      <a
+        class="resume-link"
+        href="./Gaurav_Resume.pdf"
+        target="_blank"
+        rel="noopener"
+        >Resume <i data-lucide="arrow-up-right"></i
+      ></a>
+    </header>
+    <main>
+      <section class="lab" id="lab" aria-labelledby="main-title">
+        <div class="masthead wrap">
+          <div class="overline">
+            <span>AI ENGINEER / MS CS, UIC</span
+            ><a href="#contact"
+              ><span class="status-dot"></span> OPEN TO WORK</a
+            >
+          </div>
+          <h1 id="main-title">
+            Gaurav Chintakunta<span class="period">.</span>
+          </h1>
+          <div class="intro-line">
+            <p>
+              I build AI systems you can <em>look inside.</em><br />Local-first
+              decisions. Visible reasoning. Bounded actions.
+            </p>
+            <a class="text-link" href="#work"
+              >Explore the work <i data-lucide="arrow-down-right"></i
+            ></a>
+          </div>
+        </div>
+        <div class="bench-bar wrap">
+          <div class="bench-title">
+            <span class="crosshair">+</span> SYSTEMS BENCH
+            <span class="dim">/ 004</span>
+          </div>
+          <div class="bench-controls">
+            <button
+              class="icon-button"
+              id="motion"
+              aria-label="Pause animation"
+              aria-pressed="false"
+              data-tooltip="Pause animation"
+            >
+              <i data-lucide="pause"></i>
+            </button>
+            <button
+              class="icon-button"
+              id="orbit"
+              aria-label="Rotate bench"
+              aria-pressed="false"
+              data-tooltip="Rotate bench"
+            >
+              <i data-lucide="rotate-3d"></i>
+            </button>
+            <button
+              class="icon-button"
+              id="focus-scene"
+              aria-label="Focus selected system"
+              aria-pressed="false"
+              data-tooltip="Focus selected system"
+            >
+              <i data-lucide="scan"></i>
+            </button>
+            <button
+              class="icon-button"
+              id="reset"
+              aria-label="Reset bench"
+              data-tooltip="Reset bench"
+            >
+              <i data-lucide="rotate-ccw"></i>
+            </button>
+            <button
+              class="icon-button"
+              id="explode"
+              aria-label="Exploded component view"
+              aria-pressed="false"
+              data-tooltip="Exploded component view"
+            >
+              <i data-lucide="layers-3"></i>
+            </button>
+          </div>
+        </div>
+        <div
+          class="module-selector wrap"
+          role="tablist"
+          aria-label="Select a system"
+        >
+          <button
+            role="tab"
+            id="tab-winnow"
+            aria-selected="true"
+            aria-controls="bench-panel"
+            data-project="winnow"
+          >
+            <span>01</span><b>Winnow</b><small>LOCAL-FIRST AI</small>
+          </button>
+          <button
+            role="tab"
+            id="tab-traceguard"
+            aria-selected="false"
+            aria-controls="bench-panel"
+            tabindex="-1"
+            data-project="traceguard"
+          >
+            <span>02</span><b>TraceGuard</b><small>OBSERVABILITY</small>
+          </button>
+          <button
+            role="tab"
+            id="tab-sre"
+            aria-selected="false"
+            aria-controls="bench-panel"
+            tabindex="-1"
+            data-project="sre"
+          >
+            <span>03</span><b>Agentic SRE</b><small>GUARDED ACTIONS</small>
+          </button>
+          <button
+            role="tab"
+            id="tab-toolgen"
+            aria-selected="false"
+            aria-controls="bench-panel"
+            tabindex="-1"
+            data-project="toolgen"
+          >
+            <span>04</span><b>Toolgen</b><small>TRAINING DATA</small>
+          </button>
+        </div>
+        <div
+          class="bench"
+          id="bench-panel"
+          role="tabpanel"
+          aria-labelledby="tab-winnow"
+        >
+          <div class="scene" id="scene">
+            <div class="scene-loading" id="scene-loading">
+              <span class="loading-line"></span>ASSEMBLING SYSTEMS
+            </div>
+            <canvas
+              id="systems-canvas"
+              aria-label="Interactive 3D architecture models of Winnow, TraceGuard, Agentic SRE, and Toolgen"
+            ></canvas>
+            <div class="scene-labels" id="scene-labels"></div>
+            <div class="scene-fallback" id="scene-fallback" hidden>
+              <div class="fallback-graph">
+                <span>INPUT</span><b>LOCAL MODEL</b><span>CONFIDENT</span
+                ><b>OUTPUT</b>
+              </div>
+              <p>Architecture overview</p>
+            </div>
+            <span class="scene-coordinate" aria-hidden="true"
+              >GC / ENGINEERING SYSTEMS / 2026</span
+            >
+          </div>
+          <div class="inspector" aria-labelledby="system-title">
+            <div class="inspector-index">
+              <span id="system-index">MODULE 01</span
+              ><span class="status-dot"></span>
+            </div>
+            <h2 id="system-title">Winnow</h2>
+            <p id="system-summary">Classify locally. Escalate selectively.</p>
+            <div class="experiment">
+              <label for="scenario">INPUT SCENARIO</label>
+              <select id="scenario">
+                <option value="0">Confident email</option>
+                <option value="1">Ambiguous email</option>
+              </select>
+              <button class="run-button" id="run">
+                <i data-lucide="play"></i><span>Run scenario</span
+                ><i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+            <ol
+              class="execution"
+              id="execution"
+              aria-label="Execution steps"
+            ></ol>
+            <div class="result" id="result" role="status" aria-live="polite">
+              Ready to classify.
+            </div>
+            <div class="inspector-foot">
+              <span>ARCHITECTURE SIMULATION</span
+              ><a
+                href="#winnow"
+                id="inspect-project"
+                aria-label="View Winnow project"
+                ><i data-lucide="arrow-down-right"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="lab-foot wrap">
+          <span>PYTHON / GO / TYPESCRIPT</span
+          ><a href="#work">BEYOND THE BENCH <i data-lucide="arrow-down"></i></a>
+        </div>
+      </section>
+      <section class="work wrap" id="work" aria-labelledby="work-title">
+        <div class="section-heading reveal">
+          <span class="section-number">01 / SELECTED WORK</span>
+          <h2 id="work-title">Ideas, implemented.</h2>
+          <p>
+            Not just architecture diagrams.<br />Working products, with demos
+            and source.
+          </p>
+        </div>
+        <div id="projects"></div>
+        <div class="other-work reveal">
+          <h3>Also in the repository</h3>
+          <a
+            href="https://github.com/gauravch-code/AI-Research-Assistant"
+            target="_blank"
+            rel="noopener"
+            ><span>AI Research Assistant</span
+            ><small>RAG / academic documents</small
+            ><i data-lucide="arrow-up-right"></i></a
+          ><a
+            href="https://github.com/gauravch-code/AI-doc-bot"
+            target="_blank"
+            rel="noopener"
+            ><span>AI Documentation Bot</span
+            ><small>Semantic search / source ranking</small
+            ><i data-lucide="arrow-up-right"></i></a
+          ><a
+            href="https://github.com/gauravch-code/UIC-Pix2Path"
+            target="_blank"
+            rel="noopener"
+            ><span>Pix2Path</span
+            ><small>Transformers / spatialomics / HPC</small
+            ><i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+      </section>
+      <section class="oss-section" id="open-source" aria-labelledby="oss-title">
+        <div class="wrap">
+          <div class="section-heading reveal">
+            <span class="section-number">02 / OPEN SOURCE</span>
+            <h2 id="oss-title">Small fixes.<br />Real downstream impact.</h2>
+            <p>
+              Find the bug. Reproduce it.<br />Ship the fix with a regression
+              test.
+            </p>
+          </div>
+          <div class="oss-topline">
+            <div><b id="merged-count">2</b><span>MERGED</span></div>
+            <div><b id="open-count">7</b><span>OPEN</span></div>
+            <div><b id="repo-count">9</b><span>REPOSITORIES</span></div>
+            <span id="github-status" class="data-status"
+              >SNAPSHOT / OCT 01, 2026</span
+            >
+          </div>
+          <div
+            id="contributions"
+            class="contributions"
+            aria-label="Open-source contributions"
+          ></div>
+          <a
+            class="text-link oss-all"
+            href="https://github.com/search?q=author%3Agauravch-code+is%3Apr+-user%3Agauravch-code&type=pullrequests"
+            target="_blank"
+            rel="noopener"
+            >All contributions on GitHub <i data-lucide="arrow-up-right"></i
+          ></a>
+        </div>
+      </section>
+      <section class="about wrap" id="about" aria-labelledby="about-title">
+        <div class="section-heading reveal">
+          <span class="section-number">03 / THE ENGINEER</span>
+          <h2 id="about-title">Curiosity.<br />With a test suite.</h2>
+        </div>
+        <div class="about-grid">
+          <div class="portrait-wrap reveal">
+            <img
+              src="./assets/gaurav.webp"
+              alt="Gaurav Chintakunta"
+              width="900"
+              height="900"
+              loading="lazy"
+            /><span>GAURAV CHINTAKUNTA / NJ, USA</span>
+          </div>
+          <div class="bio reveal">
+            <p class="bio-lead">
+              I'm interested in the part between <em>"the model works"</em> and
+              <em>"the system works."</em>
+            </p>
+            <p>
+              That means the uncertain edge cases, the tools an agent can
+              actually call, the trace that explains a bad answer, and the local
+              model that saves an unnecessary API request.
+            </p>
+            <p>
+              My work spans AI engineering, full-stack products, and
+              deep-learning research. I build in Python, Go, and TypeScript, and
+              contribute fixes to the tools I use.
+            </p>
+            <div class="education">
+              <span>EDUCATION</span>
+              <h3>MS, Computer Science</h3>
+              <p>University of Illinois Chicago / May 2026 / GPA 3.89</p>
+              <h3>B.Tech, Computer Science</h3>
+              <p>JNT University Hyderabad / May 2024</p>
+            </div>
+          </div>
+        </div>
+        <div class="experience reveal">
+          <div class="experience-row">
+            <span>2025 - 2026</span>
+            <div>
+              <h3>Graduate Researcher</h3>
+              <p>University of Illinois Chicago</p>
+            </div>
+            <p>
+              Transformer-based GAN research over 2 TB+ of spatialomics data.
+              Parallel ingestion, HPC training, and reproducible experiments.
+            </p>
+          </div>
+          <div class="experience-row">
+            <span>2023</span>
+            <div>
+              <h3>Machine Learning Intern</h3>
+              <p>AIML Analytics Solutions</p>
+            </div>
+            <p>
+              Forecasting models on SQL streams, REST data-validation services,
+              and analytics dashboards.
+            </p>
+          </div>
+        </div>
+        <div class="toolkit reveal">
+          <h3>The toolkit</h3>
+          <div>
+            <span>LANGUAGES</span>
+            <p>Python / Go / TypeScript / SQL / Scala / C</p>
+          </div>
+          <div>
+            <span>AI SYSTEMS</span>
+            <p>
+              PyTorch / PydanticAI / CrewAI / LangGraph / MCP / RAG /
+              scikit-learn
+            </p>
+          </div>
+          <div>
+            <span>PRODUCT &amp; INFRA</span>
+            <p>
+              FastAPI / Next.js / Postgres / Kubernetes / Docker / Prometheus /
+              Cloudflare Workers
+            </p>
+          </div>
+        </div>
+      </section>
+      <section class="contact" id="contact" aria-labelledby="contact-title">
+        <div class="wrap">
+          <div class="contact-top">
+            <span class="section-number">04 / NEXT CHAPTER</span
+            ><span class="availability"
+              ><span class="status-dot"></span> AVAILABLE FOR FULL-TIME
+              ROLES</span
+            >
+          </div>
+          <h2 id="contact-title">
+            Let's build<br />something that holds up<span>.</span>
+          </h2>
+          <div class="contact-bottom">
+            <p>
+              AI / ML / Software Engineering<br />New Jersey, NYC metro / OPT
+              work authorization
+            </p>
+            <a href="mailto:gaurav.pvt25@gmail.com" class="email"
+              >gaurav.pvt25@gmail.com <i data-lucide="arrow-up-right"></i></a
+            ><button
+              class="icon-button"
+              id="copy-email"
+              aria-label="Copy email address"
+              data-tooltip="Copy email"
+            >
+              <i data-lucide="copy"></i>
+            </button>
+          </div>
+          <span id="copy-status" role="status"></span>
+        </div>
+      </section>
+    </main>
+    <footer class="wrap">
+      <span>GAURAV CHINTAKUNTA / 2026</span>
       <div>
-        <div class="status hero-fade"><span class="pulse"></span><span><b>Open to full-time roles</b> · AI / ML / Software Engineer · OPT</span></div>
-        <h1 id="hero-title">I build AI agents you can <span class="serif">actually trust</span>.</h1>
-        <p class="hero-lead hero-fade">
-          I'm Gaurav, an AI engineer from <b>UIC's MS CS program</b>. I ship agents that are observable, bounded, and grounded in real workflows, from local-first inbox triage to self-healing Kubernetes. Every project below has a <b>live demo</b>, and my fixes are merged into open-source AI tools people rely on.
-        </p>
-        <div class="hero-cta hero-fade">
-          <a href="#ask" class="btn btn-primary">Ask my portfolio
-            <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a>
-          <button class="btn btn-ghost" type="button" data-start-tour>▶ 60-second tour</button>
-        </div>
-        <div class="proof hero-fade">
-          <div><strong>4</strong><span>agents with live demos</span></div>
-          <div><strong><span id="hero-merged">2</span> merged</strong><span>PRs in AI open source</span></div>
-          <div><strong>3.89</strong><span>GPA · MS CS, UIC</span></div>
-        </div>
-        <p class="activity hero-fade" id="activity" hidden></p>
+        <a
+          href="https://github.com/gauravch-code"
+          target="_blank"
+          rel="noopener"
+          >GitHub <i data-lucide="arrow-up-right"></i></a
+        ><a
+          href="https://www.linkedin.com/in/gauravchintak/"
+          target="_blank"
+          rel="noopener"
+          >LinkedIn <i data-lucide="arrow-up-right"></i></a
+        ><a href="./Gaurav_Resume.pdf" target="_blank" rel="noopener"
+          >Resume <i data-lucide="arrow-up-right"></i></a
+        ><a href="#lab" aria-label="Back to top"
+          ><i data-lucide="arrow-up"></i
+        ></a>
       </div>
-
-      <div class="portrait reveal">
-        <div class="photo">
-          <img src="./assets/gaurav.webp" width="900" height="900" alt="Gaurav Chintakunta smiling in front of the lower Manhattan skyline at night" fetchpriority="high" />
-          <div class="photo-tag">📍 New Jersey · NYC metro</div>
-        </div>
-        <div class="trace" aria-label="Summary, styled as an agent trace">
-          <div class="trace-head"><span>run_gaurav · evaluate_candidate</span><span class="ok" id="trace-ok">running</span></div>
-          <ol id="trace-steps">
-            <li><i>→</i><span><span class="k">task</span> <b>find an AI engineer who ships</b></span><em>0ms</em></li>
-            <li><i>✦</i><span><span class="k">retrieve</span> <b>4 agents, all with live demos</b></span><em>210ms</em></li>
-            <li><i>✓</i><span><span class="k">verify</span> <b>merged: OpenSRE, Haystack</b></span><em>540ms</em></li>
-            <li><i>◇</i><span><span class="k">check</span> <b>MS CS · UIC · GPA 3.89</b></span><em>820ms</em></li>
-            <li><i>✓</i><span><span class="k">result</span> <b class="mint">available now</b></span><em>1.1s</em></li>
-          </ol>
-          <div class="trace-foot"><a href="#ask">Ask it your own question →</a></div>
-        </div>
+    </footer>
+    <dialog id="demo-dialog" class="demo-dialog">
+      <div class="demo-bar">
+        <span id="demo-name">Live demo</span
+        ><a
+          id="demo-external"
+          target="_blank"
+          rel="noopener"
+          aria-label="Open demo in new tab"
+          ><i data-lucide="external-link"></i></a
+        ><button class="icon-button" id="demo-close" aria-label="Close demo">
+          <i data-lucide="x"></i>
+        </button>
       </div>
-    </div>
-
-    <div class="strip">
-      <div class="wrap">
-        <span class="strip-label">Open-source work in</span>
-        <div class="strip-list" id="strip-list"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ASK MY PORTFOLIO -->
-  <section class="section" id="ask">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">Ask my portfolio</span>
-          <h2>Don't take my word for it. <span class="serif">Ask.</span></h2>
-        </div>
-        <p>Mini-me runs a small retrieval agent over this page, right in your browser, with no LLM. It can only answer from evidence you can click through to, and it tells you when there isn't any.</p>
-      </div>
-
-      <div class="agent reveal">
-        <div class="agent-side spot">
-          <div class="persona"><div class="av-slot" aria-hidden="true"></div><div><b>Hi, I'm Mini-Gaurav.</b><span>Ask me about my work. I cite everything.</span></div></div>
-          <h3>Try a question</h3>
-          <div class="suggestions" id="suggestions">
-            <button class="suggestion" type="button">Have you shipped AI agents?</button>
-            <button class="suggestion" type="button">What have you merged into open source?</button>
-            <button class="suggestion" type="button">Can you handle infrastructure and Kubernetes?</button>
-            <button class="suggestion" type="button">Do you know RAG and retrieval?</button>
-            <button class="suggestion" type="button">Are you available, and how do I reach you?</button>
-          </div>
-          <form class="ask-form" id="ask-form" autocomplete="off">
-            <input id="ask-input" type="text" maxlength="160" placeholder="Or ask your own…" aria-label="Ask Mini-Gaurav a question about his work" />
-            <button class="btn btn-primary btn-sm" type="submit">Ask</button>
-          </form>
-          <p class="agent-note">Retrieval is keyword expansion and weighted scoring over this page's content. Timings shown are real.</p>
-        </div>
-
-        <div class="console" aria-live="polite">
-          <div class="console-head"><span class="q" id="console-q">mini-gaurav · portfolio agent</span><span class="run-state" id="run-state">idle</span></div>
-          <ol class="steps-log" id="steps-log"><li class="idle"><span class="kind">ready</span><span class="detail">Pick a question on the left, or type your own. Each step of the run shows up here.</span><span class="ms"></span></li></ol>
-          <div class="answer" id="answer"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- WORK -->
-  <section class="section" id="work">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">Selected work</span>
-          <h2>Four agents. <span class="serif">Four live demos.</span></h2>
-        </div>
-        <p>Switch any frame to <b>Architecture</b> to watch the system's data flow, or to <b>Run live</b> to use the real demo right here. No sign-up, no API key.</p>
-      </div>
-
-      <!-- Winnow -->
-      <article class="project" id="winnow" data-demo="https://gauravch-code.github.io/winnow/">
-        <div class="shot">
-          <div class="frame">
-            <div class="frame-bar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <div class="url"><svg viewBox="0 0 12 12" fill="none"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.2"/></svg><span>gauravch-code.github.io/winnow</span></div>
-              <div class="tabs" role="tablist" aria-label="Winnow views"><button class="tab" role="tab" aria-selected="true" data-pane="preview">Preview</button><button class="tab" role="tab" aria-selected="false" data-pane="arch">Architecture</button><button class="tab" role="tab" aria-selected="false" data-pane="live"><span class="live-dot"></span>Run live</button></div>
-            </div>
-            <div class="panes">
-              <div class="pane pane-preview active" role="tabpanel"><a href="https://gauravch-code.github.io/winnow/" target="_blank" rel="noopener" aria-label="Open the Winnow live demo"><img src="./assets/winnow.webp" width="1600" height="1087" loading="lazy" alt="Winnow demo: turn inbox noise into three clear decisions, with ~5 ms local decisions and 92% of mail handled without an LLM" /><span class="pane-cta"><span>Open live demo ↗</span></span></a></div>
-              <div class="pane pane-arch" role="tabpanel">
-                <svg viewBox="0 0 640 416" role="img" aria-label="Winnow architecture: mail goes through a local classifier; confident mail goes straight to one of three lanes, uncertain mail goes through a PydanticAI fallback first, and corrections feed back into retraining.">
-                  <path id="w-f1" class="arch-edge" d="M75,190 H255 C390,190 390,86 525,86"/>
-                  <path id="w-f2" class="arch-edge" d="M75,190 H525"/>
-                  <path id="w-f3" class="arch-edge" d="M75,190 H255 C390,190 390,294 525,294"/>
-                  <path id="w-s1" class="arch-edge" d="M75,190 H255 V316 C400,316 390,98 525,98"/>
-                  <path class="arch-edge dash" d="M525,322 V392 H150 V218 H180"/>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="0s"><mpath href="#w-f1"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="-0.8s"><mpath href="#w-f2"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="-1.6s"><mpath href="#w-f3"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.4s" repeatCount="indefinite" begin="-2.0s"><mpath href="#w-f2"/></animateMotion></circle>
-                  <circle class="pkt slow" r="3.5"><animateMotion dur="5.2s" repeatCount="indefinite" begin="-1s"><mpath href="#w-s1"/></animateMotion></circle>
-                  <g class="arch-node"><rect x="20" y="162" width="110" height="56" rx="10"/><text x="75" y="186" text-anchor="middle">Inbox</text><text class="sub" x="75" y="203" text-anchor="middle">new mail</text></g>
-                  <g class="arch-node hot"><rect x="180" y="154" width="150" height="72" rx="10"/><text x="255" y="182" text-anchor="middle">Local classifier</text><text class="sub" x="255" y="199" text-anchor="middle">MiniLM + scikit-learn</text><text class="sub" x="255" y="213" text-anchor="middle">~5 ms · CPU · $0</text></g>
-                  <g class="arch-node"><rect x="180" y="288" width="150" height="58" rx="10"/><text x="255" y="313" text-anchor="middle">PydanticAI fallback</text><text class="sub" x="255" y="330" text-anchor="middle">only when uncertain</text></g>
-                  <g class="arch-node"><rect x="440" y="58" width="170" height="56" rx="10"/><text x="525" y="82" text-anchor="middle">Needs you</text><text class="sub" x="525" y="99" text-anchor="middle">with an explanation</text></g>
-                  <g class="arch-node"><rect x="440" y="162" width="170" height="56" rx="10"/><text x="525" y="186" text-anchor="middle">Informational</text><text class="sub" x="525" y="203" text-anchor="middle">read when you want</text></g>
-                  <g class="arch-node"><rect x="440" y="266" width="170" height="56" rx="10"/><text x="525" y="290" text-anchor="middle">Hidden</text><text class="sub" x="525" y="307" text-anchor="middle">noise, kept out of sight</text></g>
-                  <text class="arch-label accent" x="352" y="150">confident · 92%</text>
-                  <text class="arch-label" x="262" y="262">uncertain</text>
-                  <text class="arch-label" x="300" y="408">your corrections → guarded retraining</text>
-                  <text class="arch-label accent" x="20" y="30">● local fast path</text><text class="arch-label light" x="130" y="30">● LLM path</text>
-                </svg>
-              </div>
-              <div class="pane pane-live" role="tabpanel"><span class="loading">Loading live demo…</span></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="p-index"><span>01</span><span class="tag">Local-first agent</span></div>
-          <h3>Winnow</h3>
-          <p class="p-lede"><b>Inbox triage that decides locally first.</b> A CPU classifier sorts most mail in milliseconds and calls an LLM only when it isn't confident. Every route comes with an explanation.</p>
-          <ol class="steps">
-            <li><span><b>Classify locally</b> with MiniLM embeddings and scikit-learn, on CPU, at zero cost.</span></li>
-            <li><span><b>Escalate only when uncertain</b> to a PydanticAI fallback that reads the full thread.</span></li>
-            <li><span><b>Learn from corrections</b> through a guarded retraining loop with regression checks.</span></li>
-          </ol>
-          <p class="decision"><span>Key decision</span><b>Don't send every email to an LLM.</b> Most mail is easy to classify, so a local model handles the confident majority in milliseconds for free, and the LLM budget goes only to the ambiguous tail.</p>
-          <div class="metrics">
-            <div><strong>~5 ms</strong><span>local decision</span></div>
-            <div><strong>92%</strong><span>no LLM needed</span></div>
-            <div><strong>153</strong><span>passing tests</span></div>
-          </div>
-          <div class="stack"><span class="chip">Python</span><span class="chip">FastAPI</span><span class="chip">PydanticAI</span><span class="chip">scikit-learn</span><span class="chip">Sentence Transformers</span><span class="chip">Postgres</span><span class="chip">Next.js</span></div>
-          <div class="p-actions">
-            <a class="btn btn-primary btn-sm" href="https://gauravch-code.github.io/winnow/" target="_blank" rel="noopener">Launch demo <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/gauravch-code/winnow" target="_blank" rel="noopener">Source</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- TraceGuard -->
-      <article class="project flip" id="traceguard" data-demo="https://gauravch-code.github.io/TraceGuard/">
-        <div class="shot">
-          <div class="frame">
-            <div class="frame-bar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <div class="url"><svg viewBox="0 0 12 12" fill="none"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.2"/></svg><span>gauravch-code.github.io/TraceGuard</span></div>
-              <div class="tabs" role="tablist" aria-label="TraceGuard views"><button class="tab" role="tab" aria-selected="true" data-pane="preview">Preview</button><button class="tab" role="tab" aria-selected="false" data-pane="arch">Architecture</button><button class="tab" role="tab" aria-selected="false" data-pane="live"><span class="live-dot"></span>Run live</button></div>
-            </div>
-            <div class="panes">
-              <div class="pane pane-preview active" role="tabpanel"><a href="https://gauravch-code.github.io/TraceGuard/" target="_blank" rel="noopener" aria-label="Open the TraceGuard live demo"><img src="./assets/traceguard.webp" width="1600" height="1250" loading="lazy" alt="TraceGuard demo: see what your AI agent actually did, with a recorded five-step run including plan, retrieval, and citation check" /><span class="pane-cta"><span>Open live demo ↗</span></span></a></div>
-              <div class="pane pane-arch" role="tabpanel">
-                <svg viewBox="0 0 640 416" role="img" aria-label="TraceGuard architecture: every agent run passes through a step recorder into a trace store and console; confident replies go to the customer, uncertain drafts go to a human review queue first.">
-                  <path id="t-p1" class="arch-edge" d="M85,208 H235 C300,208 300,100 395,100 H555"/>
-                  <path id="t-p2" class="arch-edge" d="M85,208 H555"/>
-                  <path id="t-p3" class="arch-edge" d="M85,208 H235 C300,208 300,316 395,316 H555"/>
-                  <path class="arch-edge dash" d="M555,288 V236"/>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.8s" repeatCount="indefinite" begin="0s"><mpath href="#t-p1"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.8s" repeatCount="indefinite" begin="-1.4s"><mpath href="#t-p1"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="2.6s" repeatCount="indefinite" begin="-0.6s"><mpath href="#t-p2"/></animateMotion></circle>
-                  <circle class="pkt slow" r="3.5"><animateMotion dur="4.6s" repeatCount="indefinite" begin="-1.2s"><mpath href="#t-p3"/></animateMotion></circle>
-                  <g class="arch-node"><rect x="20" y="180" width="130" height="56" rx="10"/><text x="85" y="204" text-anchor="middle">Agent run</text><text class="sub" x="85" y="221" text-anchor="middle">support agent</text></g>
-                  <g class="arch-node hot"><rect x="170" y="180" width="130" height="56" rx="10"/><text x="235" y="204" text-anchor="middle">Step recorder</text><text class="sub" x="235" y="221" text-anchor="middle">steps · tool calls</text></g>
-                  <g class="arch-node"><rect x="330" y="72" width="130" height="56" rx="10"/><text x="395" y="96" text-anchor="middle">Trace store</text><text class="sub" x="395" y="113" text-anchor="middle">D1 · Drizzle</text></g>
-                  <g class="arch-node"><rect x="490" y="72" width="130" height="56" rx="10"/><text x="555" y="96" text-anchor="middle">Console</text><text class="sub" x="555" y="113" text-anchor="middle">inspect runs</text></g>
-                  <g class="arch-node"><rect x="490" y="180" width="130" height="56" rx="10"/><text x="555" y="204" text-anchor="middle">Customer</text><text class="sub" x="555" y="221" text-anchor="middle">confident replies</text></g>
-                  <g class="arch-node"><rect x="330" y="288" width="130" height="56" rx="10"/><text x="395" y="312" text-anchor="middle">Review gate</text><text class="sub" x="395" y="329" text-anchor="middle">uncertain drafts</text></g>
-                  <g class="arch-node"><rect x="490" y="288" width="130" height="56" rx="10"/><text x="555" y="312" text-anchor="middle">Human queue</text><text class="sub" x="555" y="329" text-anchor="middle">approve · edit</text></g>
-                  <text class="arch-label" x="562" y="266">approved</text>
-                  <text class="arch-label" x="20" y="386">External agents can send their own traces through the ingestion API.</text>
-                  <text class="arch-label accent" x="20" y="30">● traced &amp; confident</text><text class="arch-label light" x="148" y="30">● needs a human</text>
-                </svg>
-              </div>
-              <div class="pane pane-live" role="tabpanel"><span class="loading">Loading live demo…</span></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="p-index"><span>02</span><span class="tag">Agent observability</span></div>
-          <h3>TraceGuard</h3>
-          <p class="p-lede"><b>An operations console for AI agents.</b> It records every run so you can see the decisions, tool calls, failures, cost and human approvals behind each output.</p>
-          <ol class="steps">
-            <li><span><b>Observe:</b> reconstruct every step and tool call of an agent run.</span></li>
-            <li><span><b>Investigate:</b> jump to the exact point where a run failed or drifted.</span></li>
-            <li><span><b>Control:</b> route uncertain support drafts into a human review queue.</span></li>
-          </ol>
-          <p class="decision"><span>Key decision</span><b>Treat agent output as a draft, not an answer.</b> Uncertain support replies go to a human queue instead of straight to the customer, and every step behind them stays inspectable.</p>
-          <div class="metrics">
-            <div><strong>Every step</strong><span>traced &amp; timed</span></div>
-            <div><strong>Human</strong><span>review queue</span></div>
-            <div><strong>API</strong><span>external trace ingest</span></div>
-          </div>
-          <div class="stack"><span class="chip">TypeScript</span><span class="chip">Next.js</span><span class="chip">OpenAI</span><span class="chip">Cloudflare Workers</span><span class="chip">D1</span><span class="chip">Drizzle</span></div>
-          <div class="p-actions">
-            <a class="btn btn-primary btn-sm" href="https://gauravch-code.github.io/TraceGuard/" target="_blank" rel="noopener">Launch demo <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/gauravch-code/TraceGuard" target="_blank" rel="noopener">Source</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Agentic SRE -->
-      <article class="project" id="sre" data-demo="https://gauravch-code.github.io/Agentic-SRE-Pipeline/">
-        <div class="shot">
-          <div class="frame">
-            <div class="frame-bar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <div class="url"><svg viewBox="0 0 12 12" fill="none"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.2"/></svg><span>gauravch-code.github.io/Agentic-SRE-Pipeline</span></div>
-              <div class="tabs" role="tablist" aria-label="Agentic SRE views"><button class="tab" role="tab" aria-selected="true" data-pane="preview">Preview</button><button class="tab" role="tab" aria-selected="false" data-pane="arch">Architecture</button><button class="tab" role="tab" aria-selected="false" data-pane="live"><span class="live-dot"></span>Run live</button></div>
-            </div>
-            <div class="panes">
-              <div class="pane pane-preview active" role="tabpanel"><a href="https://gauravch-code.github.io/Agentic-SRE-Pipeline/" target="_blank" rel="noopener" aria-label="Open the Agentic SRE live demo"><img src="./assets/sre.webp" width="1600" height="1056" loading="lazy" alt="Agentic SRE demo: when the alert fires, the AI is already moving. Incident simulator covering detect, investigate, remediate, verify" /><span class="pane-cta"><span>Open live demo ↗</span></span></a></div>
-              <div class="pane pane-arch" role="tabpanel">
-                <svg viewBox="0 0 640 416" role="img" aria-label="Agentic SRE architecture: a closed loop from Prometheus to a Go watchdog to a CrewAI orchestrator, through four allowlisted MCP tools, to remediation, a recurrence check and verification, then back to monitoring.">
-                  <path id="s-loop" class="arch-edge" d="M85,100 H555 V316 H85 Z"/>
-                  <circle class="pkt" r="3.5"><animateMotion dur="7s" repeatCount="indefinite" begin="0s"><mpath href="#s-loop"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="7s" repeatCount="indefinite" begin="-2.33s"><mpath href="#s-loop"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="7s" repeatCount="indefinite" begin="-4.66s"><mpath href="#s-loop"/></animateMotion></circle>
-                  <g class="arch-node"><rect x="20" y="72" width="130" height="56" rx="10"/><text x="85" y="96" text-anchor="middle">Prometheus</text><text class="sub" x="85" y="113" text-anchor="middle">memory pressure</text></g>
-                  <g class="arch-node"><rect x="170" y="72" width="130" height="56" rx="10"/><text x="235" y="96" text-anchor="middle">Go watchdog</text><text class="sub" x="235" y="113" text-anchor="middle">polls metrics</text></g>
-                  <g class="arch-node"><rect x="330" y="72" width="130" height="56" rx="10"/><text x="395" y="96" text-anchor="middle">Orchestrator</text><text class="sub" x="395" y="113" text-anchor="middle">CrewAI agents</text></g>
-                  <g class="arch-node hot"><rect x="490" y="72" width="130" height="56" rx="10"/><text x="555" y="96" text-anchor="middle">MCP allowlist</text><text class="sub" x="555" y="113" text-anchor="middle">4 tools only</text></g>
-                  <g class="arch-node"><rect x="490" y="288" width="130" height="56" rx="10"/><text x="555" y="312" text-anchor="middle">Remediate</text><text class="sub" x="555" y="329" text-anchor="middle">1st: restart pod</text></g>
-                  <g class="arch-node"><rect x="330" y="288" width="130" height="56" rx="10"/><text x="395" y="312" text-anchor="middle">Recurred?</text><text class="sub" x="395" y="329" text-anchor="middle">then 2× memory</text></g>
-                  <g class="arch-node"><rect x="170" y="288" width="130" height="56" rx="10"/><text x="235" y="312" text-anchor="middle">Verify</text><text class="sub" x="235" y="329" text-anchor="middle">alert goes silent</text></g>
-                  <text class="arch-label accent" x="546" y="208" text-anchor="end">bounded actions</text>
-                  <text class="arch-label" x="94" y="208">back to monitoring</text>
-                  <text class="arch-label accent" x="20" y="30">● one incident moving through the loop</text>
-                  <text class="arch-label" x="20" y="392">detect → investigate → remediate → verify, escalating only on recurrence</text>
-                </svg>
-              </div>
-              <div class="pane pane-live" role="tabpanel"><span class="loading">Loading live demo…</span></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="p-index"><span>03</span><span class="tag">Autonomous remediation</span></div>
-          <h3>Agentic SRE Pipeline</h3>
-          <p class="p-lede"><b>Self-healing Kubernetes with guardrails.</b> When memory pressure fires, an agent collects evidence and fixes the problem through a strict allowlist, escalating only when the cheap fix fails.</p>
-          <ol class="steps">
-            <li><span><b>Detect:</b> a Go watchdog polls Prometheus and raises incidents.</span></li>
-            <li><span><b>Investigate:</b> a CrewAI orchestrator gathers evidence through four allowlisted MCP tools.</span></li>
-            <li><span><b>Remediate:</b> restart on the first alert, and double the memory limit only if the problem recurs in the window.</span></li>
-          </ol>
-          <p class="decision"><span>Key decision</span><b>A small allowlist beats broad cluster access.</b> With four bounded MCP tools and a two-step escalation, the worst the agent can do is known before it ever runs.</p>
-          <div class="metrics">
-            <div><strong>4</strong><span>allowlisted MCP tools</span></div>
-            <div><strong>2-stage</strong><span>bounded escalation</span></div>
-            <div><strong>Go + Py</strong><span>watchdog + agents</span></div>
-          </div>
-          <div class="stack"><span class="chip">Go</span><span class="chip">Python</span><span class="chip">CrewAI</span><span class="chip">MCP</span><span class="chip">Kubernetes</span><span class="chip">Prometheus</span><span class="chip">Flask</span></div>
-          <div class="p-actions">
-            <a class="btn btn-primary btn-sm" href="https://gauravch-code.github.io/Agentic-SRE-Pipeline/" target="_blank" rel="noopener">Launch demo <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/gauravch-code/Agentic-SRE-Pipeline" target="_blank" rel="noopener">Source</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Toolgen -->
-      <article class="project flip" id="toolgen" data-demo="https://gauravch-code.github.io/toolgen/">
-        <div class="shot">
-          <div class="frame">
-            <div class="frame-bar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <div class="url"><svg viewBox="0 0 12 12" fill="none"><rect x="2.5" y="5.5" width="7" height="5" rx="1.2" stroke="currentColor" stroke-width="1.2"/><path d="M4 5.5V4a2 2 0 014 0v1.5" stroke="currentColor" stroke-width="1.2"/></svg><span>gauravch-code.github.io/toolgen</span></div>
-              <div class="tabs" role="tablist" aria-label="Toolgen views"><button class="tab" role="tab" aria-selected="true" data-pane="preview">Preview</button><button class="tab" role="tab" aria-selected="false" data-pane="arch">Architecture</button><button class="tab" role="tab" aria-selected="false" data-pane="live"><span class="live-dot"></span>Run live</button></div>
-            </div>
-            <div class="panes">
-              <div class="pane pane-preview active" role="tabpanel"><a href="https://gauravch-code.github.io/toolgen/" target="_blank" rel="noopener" aria-label="Open the Toolgen live demo"><img src="./assets/toolgen.webp" width="1600" height="710" loading="lazy" alt="Toolgen demo: turn tool definitions into conversations agents can learn from, across 16 tools, 40 endpoints and 8 categories" /><span class="pane-cta"><span>Open live demo ↗</span></span></a></div>
-              <div class="pane pane-arch" role="tabpanel">
-                <svg viewBox="0 0 640 416" role="img" aria-label="Toolgen architecture: ToolBench schemas become an endpoint graph, connected tool chains are sampled and executed against schema-valid mocks, an LLM judge scores each conversation, failures go through a repair loop, and passing samples enter the dataset.">
-                  <path id="g-main" class="arch-edge" d="M85,100 H555 V316 H85"/>
-                  <path id="g-fail" class="arch-edge dash" d="M555,316 C520,270 470,210 395,210 C320,210 520,300 555,316"/>
-                  <circle class="pkt" r="3.5"><animateMotion dur="6s" repeatCount="indefinite" begin="0s"><mpath href="#g-main"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="6s" repeatCount="indefinite" begin="-2s"><mpath href="#g-main"/></animateMotion></circle>
-                  <circle class="pkt" r="3.5"><animateMotion dur="6s" repeatCount="indefinite" begin="-4s"><mpath href="#g-main"/></animateMotion></circle>
-                  <circle class="pkt slow" r="3.5"><animateMotion dur="3.4s" repeatCount="indefinite" begin="-1s"><mpath href="#g-fail"/></animateMotion></circle>
-                  <g class="arch-node"><rect x="20" y="72" width="130" height="56" rx="10"/><text x="85" y="96" text-anchor="middle">ToolBench</text><text class="sub" x="85" y="113" text-anchor="middle">tool schemas</text></g>
-                  <g class="arch-node"><rect x="170" y="72" width="130" height="56" rx="10"/><text x="235" y="96" text-anchor="middle">Endpoint graph</text><text class="sub" x="235" y="113" text-anchor="middle">NetworkX</text></g>
-                  <g class="arch-node"><rect x="330" y="72" width="130" height="56" rx="10"/><text x="395" y="96" text-anchor="middle">Tool chain</text><text class="sub" x="395" y="113" text-anchor="middle">connected endpoints</text></g>
-                  <g class="arch-node"><rect x="490" y="72" width="130" height="56" rx="10"/><text x="555" y="96" text-anchor="middle">Mock execution</text><text class="sub" x="555" y="113" text-anchor="middle">schema-valid mocks</text></g>
-                  <g class="arch-node hot"><rect x="490" y="288" width="130" height="56" rx="10"/><text x="555" y="312" text-anchor="middle">LLM judge</text><text class="sub" x="555" y="329" text-anchor="middle">scores each sample</text></g>
-                  <g class="arch-node"><rect x="330" y="182" width="130" height="56" rx="10"/><text x="395" y="206" text-anchor="middle">Repair</text><text class="sub" x="395" y="223" text-anchor="middle">fix weak samples</text></g>
-                  <g class="arch-node"><rect x="20" y="288" width="130" height="56" rx="10"/><text x="85" y="312" text-anchor="middle">Dataset</text><text class="sub" x="85" y="329" text-anchor="middle">accepted samples</text></g>
-                  <text class="arch-label accent" x="290" y="308">pass</text>
-                  <text class="arch-label" x="330" y="160">fail → repair → re-judge</text>
-                  <text class="arch-label accent" x="20" y="30">● accepted sample</text><text class="arch-label light" x="140" y="30">● sent back for repair</text>
-                </svg>
-              </div>
-              <div class="pane pane-live" role="tabpanel"><span class="loading">Loading live demo…</span></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="p-index"><span>04</span><span class="tag">Synthetic training data</span></div>
-          <h3>Toolgen</h3>
-          <p class="p-lede"><b>Training data for tool-using agents.</b> It turns ToolBench schemas into grounded multi-turn conversations, with a judge that keeps bad samples out of the dataset.</p>
-          <ol class="steps">
-            <li><span><b>Build an endpoint graph</b> and sample connected, realistic tool chains.</span></li>
-            <li><span><b>Execute schema-valid mock tools</b> with session state so the conversation stays consistent.</span></li>
-            <li><span><b>Judge and repair</b> with an LLM judge that scores naturalness, tool correctness and completion.</span></li>
-          </ol>
-          <p class="decision"><span>Key decision</span><b>Execute the tools instead of imagining them.</b> Schema-valid mock responses with session state keep multi-turn data consistent, and a judge-plus-repair loop fixes weak samples instead of quietly keeping them.</p>
-          <div class="metrics">
-            <div><strong>16</strong><span>tools</span></div>
-            <div><strong>40</strong><span>endpoints</span></div>
-            <div><strong>8</strong><span>categories</span></div>
-          </div>
-          <div class="stack"><span class="chip">Python</span><span class="chip">Pydantic</span><span class="chip">NetworkX</span><span class="chip">OpenAI</span><span class="chip">Faker</span><span class="chip">LLM-as-judge</span></div>
-          <div class="p-actions">
-            <a class="btn btn-primary btn-sm" href="https://gauravch-code.github.io/toolgen/" target="_blank" rel="noopener">Launch demo <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <a class="btn btn-ghost btn-sm" href="https://github.com/gauravch-code/toolgen" target="_blank" rel="noopener">Source</a>
-          </div>
-        </div>
-      </article>
-
-      <div class="earlier reveal">
-        <a class="mini" id="research-assistant" href="https://github.com/gauravch-code/AI-Research-Assistant" target="_blank" rel="noopener">
-          <div class="mini-top"><span>RAG API</span><span class="arrow">↗</span></div>
-          <h4>AI Research Assistant</h4>
-          <p>Natural-language search over academic documents at under 200 ms p95 with 95% retrieval consistency. Pinecone, GPT-3.5 and a local Flan-T5 fallback.</p>
-        </a>
-        <a class="mini" id="doc-bot" href="https://github.com/gauravch-code/AI-doc-bot" target="_blank" rel="noopener">
-          <div class="mini-top"><span>Semantic search</span><span class="arrow">↗</span></div>
-          <h4>AI Documentation Bot</h4>
-          <p>Searches the Pandas, NumPy and scikit-learn docs. An MLP ranks sources by reliability, improving relevance by 20%.</p>
-        </a>
-        <a class="mini" id="pix2path" href="https://github.com/gauravch-code/UIC-Pix2Path" target="_blank" rel="noopener">
-          <div class="mini-top"><span>Research · UIC</span><span class="arrow">↗</span></div>
-          <h4>Pix2Path</h4>
-          <p>A Transformer-based GAN over 2 TB+ of spatialomics data on UIC's HPC cluster. It improved spatial prediction accuracy by 30%.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- OPEN SOURCE -->
-  <section class="section" id="open-source">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">Open source</span>
-          <h2>Fixes shipped into tools <span class="serif">people rely on.</span></h2>
-        </div>
-        <p>Each fix is a real bug I found in the code, reproduced and fixed, with a regression test.</p>
-      </div>
-      <div class="oss-summary reveal">
-        <div class="oss-stat merged spot"><strong id="n-merged">2</strong><span>merged pull requests</span></div>
-        <div class="oss-stat spot"><strong id="n-open">6</strong><span>in review right now</span></div>
-        <div class="oss-stat spot"><strong id="n-projects">8</strong><span>open-source projects</span></div>
-      </div>
-      <div class="ledger spot" id="ledger" role="table" aria-label="Open-source pull requests">
-        <div class="ledger-head" role="row"><span role="columnheader">Project</span><span role="columnheader">What I fixed</span><span role="columnheader">Stars</span><span role="columnheader">Status</span></div>
-        <div id="ledger-rows"></div>
-      </div>
-      <div class="live-note"><span class="live-pill" id="oss-live">live</span><span id="oss-note">New pull requests appear here automatically. Status and stars load from the GitHub API.</span></div>
-    </div>
-  </section>
-
-  <!-- EXPERIENCE -->
-  <section class="section" id="experience">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">Experience</span>
-          <h2>Research rigor, <span class="serif">product instincts.</span></h2>
-        </div>
-      </div>
-      <div class="xp-grid reveal">
-        <div class="card spot" id="work-history">
-          <div class="card-title">Work</div>
-          <div class="role">
-            <div class="role-when">Jan 2025 –<br />Jan 2026</div>
-            <div>
-              <h4>Graduate Researcher</h4>
-              <div class="org">University of Illinois Chicago</div>
-              <ul>
-                <li>Improved spatial prediction accuracy by <b>30%</b> with a Transformer-based GAN pipeline (Pix2Path) over 2 TB+ of spatialomics data on the HPC cluster.</li>
-                <li>Cut training time per epoch by <b>40%</b> with parallel patch extraction and memory-efficient ingestion in Python and Spark.</li>
-                <li>Built automated TensorBoard tracking and checkpointing, which made experiments reproducible across the team.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="role">
-            <div class="role-when">May 2023 –<br />Sep 2023</div>
-            <div>
-              <h4>Machine Learning Intern</h4>
-              <div class="org">AIML Analytics Solutions</div>
-              <ul>
-                <li>Improved business-metric forecasting accuracy by <b>15%</b> with scikit-learn models on real-time SQL streams.</li>
-                <li>Built REST data-validation services on SQL backends, reducing data inconsistencies by <b>25%</b>.</li>
-                <li>Fed model outputs into Tableau dashboards for 3 teams, cutting decision cycle time by 20%.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="card spot" id="education">
-          <div class="card-title">Education</div>
-          <div class="edu">
-            <h4>MS, Computer Science</h4>
-            <p>University of Illinois Chicago · Aug 2024 – May 2026</p>
-            <p>Responsible AI Engineering, Neural Networks, Deep Learning for CV</p>
-            <span class="gpa">GPA 3.89</span>
-          </div>
-          <div class="edu">
-            <h4>B.Tech, Computer Science</h4>
-            <p>JNT University Hyderabad · Aug 2020 – May 2024</p>
-            <p>Machine Learning, Algorithms, Data Science, Big Data</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS + CONTACT -->
-  <section class="section" id="skills">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <span class="eyebrow">Toolkit</span>
-          <h2>What I reach for.</h2>
-        </div>
-      </div>
-      <div class="skills reveal">
-        <div class="skill card spot"><h4><i></i>Languages</h4><div class="stack"><span class="chip">Python</span><span class="chip">Go</span><span class="chip">TypeScript</span><span class="chip">JavaScript</span><span class="chip">SQL</span><span class="chip">Scala</span><span class="chip">C</span></div></div>
-        <div class="skill card spot"><h4><i></i>AI &amp; agents</h4><div class="stack"><span class="chip">PyTorch</span><span class="chip">Transformers</span><span class="chip">PydanticAI</span><span class="chip">CrewAI</span><span class="chip">LangGraph</span><span class="chip">LangChain</span><span class="chip">MCP</span><span class="chip">DSPy</span><span class="chip">RAG</span><span class="chip">Sentence Transformers</span><span class="chip">scikit-learn</span></div></div>
-        <div class="skill card spot"><h4><i></i>Backend &amp; data</h4><div class="stack"><span class="chip">FastAPI</span><span class="chip">Flask</span><span class="chip">Next.js</span><span class="chip">Postgres</span><span class="chip">SQLAlchemy</span><span class="chip">Drizzle</span><span class="chip">Pinecone</span><span class="chip">Pandas</span><span class="chip">Spark</span></div></div>
-        <div class="skill card spot"><h4><i></i>Infrastructure</h4><div class="stack"><span class="chip">Kubernetes</span><span class="chip">Docker</span><span class="chip">Prometheus</span><span class="chip">Cloudflare Workers</span><span class="chip">AWS</span><span class="chip">Azure</span><span class="chip">GitHub Actions</span><span class="chip">Linux</span></div></div>
-      </div>
-
-      <div class="contact reveal" id="contact">
-        <span class="eyebrow">Let's talk</span>
-        <h2>Building agents? <span class="serif">Let's make them trustworthy.</span></h2>
-        <p>I'm looking for full-time AI Engineer, ML Engineer and Software Engineer roles, especially on teams building agents, evaluation and observability, or developer tools. If you're a founder hiring your first ML engineer, I'd love to hear from you.</p>
-        <div class="contact-row">
-          <a class="btn btn-primary" href="mailto:gaurav.pvt25@gmail.com">Email me <svg viewBox="0 0 16 16" fill="none"><path d="M5 11l6-6M6 5h5v5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-          <a class="btn btn-ghost" href="https://www.linkedin.com/in/gauravchintak/" target="_blank" rel="noopener">LinkedIn</a>
-          <a class="btn btn-ghost" href="https://github.com/gauravch-code" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn btn-ghost" href="./Gaurav_Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
-          <button class="btn btn-ghost" id="copy-email" type="button">Copy email</button>
-          <span class="copy-ok" id="copy-ok" role="status">Copied ✓</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
-
-<footer>
-  <div class="wrap">
-    <span>© 2026 Gaurav Chintakunta · Built by hand, no framework · <a href="#" class="footer-hint" data-open-term>press <kbd>`</kbd> for terminal mode</a></span>
-    <nav aria-label="Footer">
-      <a href="https://github.com/gauravch-code" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://www.linkedin.com/in/gauravchintak/" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="mailto:gaurav.pvt25@gmail.com">Email</a>
-    </nav>
-  </div>
-</footer>
-
-<div class="guide" id="guide">
-  <div class="guide-bubble" id="guide-bubble" role="status" aria-live="polite">
-    <p id="guide-text"></p>
-    <div class="guide-actions" id="guide-actions"></div>
-    <button class="guide-x" id="guide-x" type="button" aria-label="Close">×</button>
-  </div>
-  <button class="guide-av" id="guide-av" type="button" aria-label="Mini-Gaurav: open menu"><span class="av-slot" style="display:block;width:100%;height:100%;border-radius:50%;overflow:hidden"></span></button>
-</div>
-
-<div class="tour" id="tour" hidden>
-  <div class="tour-spot" id="tour-spot"></div>
-  <div class="tour-card" id="tour-card" role="dialog" aria-label="60-second tour">
-    <div class="av-slot" aria-hidden="true"></div>
-    <div><div class="tour-step" id="tour-step">1 / 6</div><p class="tour-text" id="tour-text"></p></div>
-    <div class="tour-foot">
-      <button class="skip" id="tour-skip" type="button">Skip</button>
-      <div class="tour-bar"><i id="tour-bar"></i></div>
-      <button id="tour-back" type="button">Back</button>
-      <button class="primary" id="tour-next" type="button">Next</button>
-    </div>
-  </div>
-</div>
-
-<div class="term" id="term" hidden role="dialog" aria-modal="true" aria-label="Terminal mode">
-  <div class="term-box">
-    <div class="term-bar"><div class="dots"><i></i><i></i><i></i></div><span>visitor@gaurav: ~</span><button id="term-close" type="button">esc ✕</button></div>
-    <div class="term-out" id="term-out"></div>
-    <form class="term-form" id="term-form" autocomplete="off"><label class="term-prompt" for="term-in">visitor@gaurav:~$</label><input id="term-in" type="text" spellcheck="false" autocapitalize="off" /></form>
-  </div>
-</div>
-
-<div class="palette" id="palette" role="dialog" aria-modal="true" aria-label="Command menu">
-  <div class="palette-box">
-    <div class="palette-input">
-      <svg viewBox="0 0 20 20" fill="none"><circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.6"/><path d="M13.5 13.5L17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <input id="palette-q" type="text" placeholder="Jump to a section, open a demo, copy email…" autocomplete="off" aria-label="Search commands" />
-      <kbd>esc</kbd>
-    </div>
-    <ul class="palette-list" id="palette-list" role="listbox"></ul>
-    <div class="palette-foot"><span>↑↓ navigate</span><span>↵ open</span><span>esc close</span></div>
-  </div>
-</div>
-
-<script>
-(function () {
-  'use strict';
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const fmt = (n) => n >= 100000 ? Math.floor(n / 1000) + 'k' : n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k' : String(n);
-  const sleep = (ms) => new Promise((r) => setTimeout(r, reduce ? 0 : ms));
-
-  function readCache(key, maxAgeMs) {
-    try {
-      const raw = localStorage.getItem(key);
-      if (!raw) return null;
-      const { t, v } = JSON.parse(raw);
-      return Date.now() - t < maxAgeMs ? v : null;
-    } catch (e) { return null; }
-  }
-  function writeCache(key, v) {
-    try { localStorage.setItem(key, JSON.stringify({ t: Date.now(), v })); } catch (e) { /* storage unavailable */ }
-  }
-
-  // ======================= Open-source work, discovered live from GitHub =======================
-  // Summaries in my own words for PRs worth explaining; any other PR shows its own title.
-  const NOTES = {
-    'Tracer-Cloud/opensre#716': { name: 'OpenSRE', title: 'Evidence-grounded root-cause analysis',
-      what: 'Structured RCA prompt with an alternative-hypothesis output and a backward-compatible parser, which cut false-positive classifications by 30%.' },
-    'deepset-ai/haystack#12863': { name: 'Haystack', title: 'MetaFieldRanker ignored its missing-meta policy',
-      what: 'A single None metadata value silently turned off ranking for the whole batch. It now follows the configured drop, top or bottom policy.' },
-    'deepset-ai/haystack#12896': { name: 'Haystack', title: 'RegexTextExtractor returned None',
-      what: 'An alternation or optional group returned None instead of "", which crashed extract-then-route pipelines.' },
-    'huggingface/sentence-transformers#4073': { name: 'Sentence Transformers', title: 'Hard-negative mining skipped the CrossEncoder',
-      what: 'With min_score as the only filter, mine_hard_negatives filtered on bi-encoder scores and never ran the reranker it was given.' },
-    'browser-use/browser-use#5690': { name: 'browser-use', title: 'send_keys treated "center" as Enter',
-      what: 'Substring matching added a navigation wait to ordinary typing. It now tracks the keys actually dispatched.' },
-    'huggingface/diffusers#14708': { name: 'Diffusers', title: 'Positional config args lost on round-trip',
-      what: 'Values passed positionally were saved as defaults and dropped by from_config. They now survive the save and load.' },
-    'chroma-core/chroma#7610': { name: 'Chroma', title: 'Whitespace-padded collection names',
-      what: 'Collection names with invisible leading or trailing spaces are now rejected with an explicit validation error.' },
-    'zed-industries/zed#63992': { name: 'Zed' },
-    'agno-agi/agno#10072': { name: 'Agno' }
-  };
-  // Last known state, shown instantly and kept if the GitHub API is unreachable.
-  const FALLBACK = [
-    { repo: 'deepset-ai/haystack', number: 12863, merged: true, date: '2026-09-24', stars: 26599, title: 'Treat None meta values as missing in MetaFieldRanker' },
-    { repo: 'Tracer-Cloud/opensre', number: 716, merged: true, date: '2026-04-20', stars: 11224, title: 'Improve RCA prompt for evidence-grounded diagnosis' },
-    { repo: 'huggingface/sentence-transformers', number: 4073, merged: false, date: '2026-09-23', stars: 19123, title: '' },
-    { repo: 'zed-industries/zed', number: 63992, merged: false, date: '2026-09-20', stars: 90900, title: 'Fix thread switcher registration after enabling AI' },
-    { repo: 'agno-agi/agno', number: 10072, merged: false, date: '2026-09-15', stars: 42300, title: 'Restore direct answers for simple route-mode requests' },
-    { repo: 'browser-use/browser-use', number: 5690, merged: false, date: '2026-09-05', stars: 116266, title: '' },
-    { repo: 'huggingface/diffusers', number: 14708, merged: false, date: '2026-09-04', stars: 34600, title: '' },
-    { repo: 'chroma-core/chroma', number: 7610, merged: false, date: '2026-08-18', stars: 29376, title: '' }
-  ];
-  const cleanTitle = (t) => {
-    const x = t.replace(/^\s*(\[[^\]]+\]\s*)?(\([^)]*\)\s*:?\s*)?([a-z]+(\([^)]*\))?!?:\s*)?/i, '').replace(/\s*\((fixes|closes|resolves)\s+#\d+\)\s*$/i, '').trim();
-    return x.charAt(0).toUpperCase() + x.slice(1);
-  };
-  const prettyRepo = (repo) => repo.split('/')[1].replace(/[-_]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-  const prName = (p) => (NOTES[`${p.repo}#${p.number}`] || {}).name || prettyRepo(p.repo);
-  let OSS = FALLBACK;
-
-  function renderLedger(prs) {
-    OSS = [...prs].sort((a, b) => (a.merged === b.merged ? b.date.localeCompare(a.date) : a.merged ? -1 : 1));
-    $('#ledger-rows').innerHTML = OSS.map((p, i) => {
-      const note = NOTES[`${p.repo}#${p.number}`] || {};
-      return `
-      <a class="pr" role="row" style="--i:${i}" href="https://github.com/${p.repo}/pull/${p.number}" target="_blank" rel="noopener">
-        <span class="pr-repo" role="cell"><b>${esc(prName(p))}</b><span>${esc(p.repo.split('/')[0])} · #${p.number}</span></span>
-        <span class="pr-what" role="cell"><b>${esc(note.title || p.title)}</b>${note.what ? `<p>${esc(note.what)}</p>` : ''}</span>
-        <span class="pr-stars" role="cell">★ ${fmt(p.stars)}</span>
-        <span class="state ${p.merged ? 'merged' : 'open'}" role="cell">${p.merged ? 'Merged' : 'In review'}</span>
-      </a>`;
-    }).join('');
-    const merged = OSS.filter((p) => p.merged).length;
-    const repos = [];
-    OSS.forEach((p) => { if (!repos.some((r) => r.repo === p.repo)) repos.push(p); });
-    $('#n-merged').textContent = merged;
-    $('#hero-merged').textContent = merged;
-    $('#n-open').textContent = OSS.length - merged;
-    $('#n-projects').textContent = repos.length;
-    $('#strip-list').innerHTML = repos.map((p) => `<a href="https://github.com/${p.repo}" target="_blank" rel="noopener">${esc(prName(p))} <span>★ ${fmt(p.stars)}</span></a>`).join('');
-  }
-
-  async function refreshLedger() {
-    renderLedger(FALLBACK);
-    const cached = readCache('gc-oss-v2', 30 * 60 * 1000);
-    if (cached) { renderLedger(cached); return; }
-    const gh = async (path) => {
-      const r = await fetch('https://api.github.com/' + path, { headers: { Accept: 'application/vnd.github+json' } });
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    };
-    try {
-      const found = await gh('search/issues?q=author:gauravch-code+is:pr+-user:gauravch-code&per_page=100');
-      const prs = found.items
-        .filter((i) => i.state === 'open' || i.pull_request.merged_at)
-        .map((i) => ({
-          repo: i.repository_url.split('/repos/')[1], number: i.number, merged: Boolean(i.pull_request.merged_at),
-          date: (i.pull_request.merged_at || i.created_at).slice(0, 10), title: cleanTitle(i.title), stars: 0
-        }));
-      const repos = [...new Set(prs.map((p) => p.repo))];
-      const stars = Object.fromEntries(await Promise.all(repos.map(async (r) => [r, (await gh('repos/' + r)).stargazers_count])));
-      prs.forEach((p) => { p.stars = stars[p.repo]; });
-      writeCache('gc-oss-v2', prs);
-      renderLedger(prs);
-    } catch (e) {
-      $('#oss-live').textContent = 'cached';
-      $('#oss-note').textContent = "GitHub's API rate limit was hit, so this shows the last known status.";
-    }
-  }
-
-  // ======================= Ask my portfolio: a small, grounded retrieval agent =======================
-  // The knowledge base is this page's own content. Every answer cites the section it came from.
-  const KB = [
-    { id: 'winnow', title: 'Winnow', kind: 'project', anchor: '#winnow',
-      tags: 'agent agents shipped production live demo local-first llm fallback pydanticai classifier classification email inbox triage scikit-learn sentence transformers minilm embeddings fastapi postgres nextjs retraining cost latency tests python',
-      text: 'a local-first inbox triage agent: a CPU classifier decides most mail in about 5 ms, a PydanticAI fallback handles only uncertain mail, and corrections feed a guarded retraining loop (92% of mail needs no LLM, 153 passing tests)' },
-    { id: 'traceguard', title: 'TraceGuard', kind: 'project', anchor: '#traceguard',
-      tags: 'agent agents shipped production live demo observability tracing monitoring evaluation evals human-in-the-loop review queue typescript nextjs openai cloudflare workers d1 drizzle api',
-      text: 'an operations console for AI agents that records every step and tool call, and routes uncertain support drafts to a human review queue' },
-    { id: 'sre', title: 'Agentic SRE Pipeline', kind: 'project', anchor: '#sre',
-      tags: 'agent agents shipped live demo infrastructure infra kubernetes k8s prometheus go golang devops sre reliability incident remediation automation mcp crewai guardrails allowlist docker cloud',
-      text: 'self-healing Kubernetes: a Go watchdog polls Prometheus, and a CrewAI orchestrator works through four allowlisted MCP tools, restarting first and doubling memory only on recurrence' },
-    { id: 'toolgen', title: 'Toolgen', kind: 'project', anchor: '#toolgen',
-      tags: 'agent agents live demo synthetic data training data fine-tuning finetuning tool use function calling llm judge evaluation evals pydantic networkx openai multi-agent dataset python',
-      text: 'a training-data engine for tool-using agents: an endpoint graph, schema-valid mock execution with session state, and an LLM judge with a repair loop' },
-    { id: 'research-assistant', title: 'AI Research Assistant', kind: 'project', anchor: '#research-assistant',
-      tags: 'rag retrieval retrieval-augmented vector search semantic pinecone embeddings langchain fastapi flan-t5 gpt latency api python',
-      text: 'a RAG API over academic documents at under 200 ms p95 with 95% retrieval consistency, using Pinecone and a local Flan-T5 fallback' },
-    { id: 'doc-bot', title: 'AI Documentation Bot', kind: 'project', anchor: '#doc-bot',
-      tags: 'rag retrieval semantic search pinecone langchain ranking reranking mlp documentation python',
-      text: 'semantic search over the Pandas, NumPy and scikit-learn docs, where an MLP ranks sources by reliability and improves relevance by 20%' },
-    { id: 'pix2path', title: 'Pix2Path', kind: 'research', anchor: '#pix2path',
-      tags: 'research deep learning gan transformer pytorch hpc spark computer vision data pipeline',
-      text: 'a Transformer-based GAN over 2 TB+ of spatialomics data on UIC\'s HPC cluster that improved spatial prediction accuracy by 30%' },
-    { id: 'xp', title: 'Work experience', kind: 'experience', anchor: '#work-history',
-      tags: 'experience work research researcher deep learning pytorch spark pipelines tensorboard reproducibility intern internship machine learning scikit-learn sql forecasting rest',
-      text: 'Graduate Researcher at UIC (30% accuracy gain, 40% faster training), and before that a Machine Learning Intern at AIML Analytics (15% better forecasts, 25% fewer data inconsistencies)' },
-    { id: 'edu', title: 'Education', kind: 'education', anchor: '#education',
-      tags: 'education degree masters ms computer science gpa university uic school btech',
-      text: 'an MS in Computer Science from the University of Illinois Chicago (GPA 3.89, May 2026) and a B.Tech in Computer Science from JNTU Hyderabad' },
-    { id: 'skills', title: 'Toolkit', kind: 'skills', anchor: '#skills',
-      tags: 'skills stack languages python go golang typescript javascript sql scala pytorch transformers pydanticai crewai langgraph langchain mcp dspy rag fastapi flask nextjs postgres kubernetes docker aws azure',
-      text: 'Python, Go and TypeScript, with PyTorch, PydanticAI, CrewAI, LangGraph, MCP and RAG, on FastAPI, Postgres, Kubernetes and the major clouds' }
-  ];
-  const SYNONYMS = {
-    rag: ['retrieval', 'pinecone', 'embeddings', 'semantic'], retrieval: ['rag', 'search'], search: ['retrieval', 'semantic'],
-    agent: ['agents'], agents: ['agent', 'pydanticai', 'crewai', 'mcp'], agentic: ['agents'],
-    infrastructure: ['infra', 'kubernetes', 'devops'], infra: ['kubernetes', 'devops'], kubernetes: ['k8s', 'devops'], k8s: ['kubernetes'],
-    devops: ['kubernetes', 'sre'], sre: ['kubernetes', 'reliability'], cloud: ['kubernetes', 'aws'],
-    llm: ['pydanticai', 'openai', 'gpt'], llms: ['llm'], evals: ['evaluation', 'judge'], eval: ['evaluation', 'judge'], evaluation: ['judge', 'tracing'],
-    observability: ['tracing', 'monitoring'], monitoring: ['observability'], production: ['shipped', 'tests'], shipped: ['production', 'live'], ship: ['shipped'],
-    ml: ['machine', 'learning', 'scikit-learn', 'pytorch'], data: ['dataset', 'pipeline'], finetune: ['fine-tuning'],
-    golang: ['go'], research: ['researcher'], experience: ['work']
-  };
-  const STOP = new Set('a an the is are was were be been he his him has have had does do did can could would will should of in on for with and or to what which who how any about me you your this that it its i my from by as at know there really ever also some very handle'.split(' '));
-  // Words that appear in almost every question ("experience with…", "has he built…") carry little signal
-  const WEAK = new Set('experience work worked working built build building use used using projects project done made'.split(' '));
-  const tokenize = (s) => s.toLowerCase().replace(/[^a-z0-9+#.\- ]/g, ' ').split(/\s+/)
-    .map((t) => t.replace(/^[.\-]+|[.\-]+$/g, ''))
-    .flatMap((t) => (t.includes('-') ? [t, ...t.split('-')] : [t]))
-    .filter((t) => t && !STOP.has(t));
-
-  function retrieve(query) {
-    const terms = new Map();
-    tokenize(query).forEach((t) => {
-      terms.set(t, WEAK.has(t) ? 0.3 : 1);
-      (SYNONYMS[t] || []).forEach((s) => { if (!terms.has(s)) terms.set(s, WEAK.has(t) ? 0.2 : 0.6); });
-    });
-    const results = KB.map((doc) => {
-      const tags = doc.tags.split(' '), title = doc.title.toLowerCase(), text = doc.text.toLowerCase();
-      let score = 0;
-      terms.forEach((w, t) => {
-        if (tags.includes(t)) score += 3 * w;
-        else if (t.length > 4 && tags.some((x) => x.length > 4 && (x.startsWith(t) || t.startsWith(x)))) score += 1.5 * w;
-        if (title.includes(t)) score += 2 * w;
-        if (t.length > 2 && text.includes(t)) score += 1 * w;
-      });
-      return { doc, score: score / Math.sqrt(tags.length / 10 + 1) };
-    }).filter((r) => r.score > 1.2).sort((a, b) => b.score - a.score);
-    return { terms: [...terms.keys()], results };
-  }
-
-  const INTENTS = [
-    { name: 'open_source', re: /open.?source|merged?|pull request|\bprs?\b|contribut|github|\boss\b/i, tool: 'github.search_prs(author="gauravch-code")' },
-    { name: 'availability', re: /hire|hiring|availab|\bopt\b|visa|sponsor|authori[sz]|contact|e-?mail|reach|location|where|based|relocat/i, tool: 'profile.availability()' },
-    { name: 'education', re: /degree|gpa|educat|school|universit|\buic\b|master|studied|study|graduat/i, tool: 'profile.education()' }
-  ];
-  const plan = (query) => INTENTS.find((i) => i.re.test(query)) || { name: 'search', tool: 'portfolio.search()' };
-  const cite = (anchor, label) => `<a class="cite" href="${anchor}" data-cite="${anchor}">${esc(label)} ↗</a>`;
-
-  function answerFor(intent, query, retrieval) {
-    if (intent.name === 'open_source') {
-      const merged = OSS.filter((p) => p.merged), open = OSS.filter((p) => !p.merged);
-      return {
-        html: `I have <b>${merged.length} merged pull requests</b>: ${merged.map((p) => `${esc(prName(p))} (★ ${fmt(p.stars)})`).join(' and ')}, plus <b>${open.length} more in review</b> at ${open.map((p) => esc(prName(p))).join(', ')}. Each one fixes a real bug with a regression test. ${cite('#open-source', 'open source')}`,
-        sources: merged.length + open.length
-      };
-    }
-    if (intent.name === 'availability') {
-      return {
-        html: `<b>Yes.</b> I'm open to full-time AI Engineer, ML Engineer and Software Engineer roles, on <b>OPT work authorization</b>, based in <b>New Jersey</b> (NYC metro). The fastest way to reach me is <b>gaurav.pvt25@gmail.com</b>. ${cite('#contact', 'contact')}`,
-        sources: 1
-      };
-    }
-    if (intent.name === 'education') {
-      const edu = KB.find((d) => d.id === 'edu');
-      return { html: `I have ${esc(edu.text)}. ${cite(edu.anchor, 'education')}`, sources: 1 };
-    }
-    const top = retrieval.results.slice(0, 3);
-    if (!top.length) {
-      return {
-        html: `I couldn't find evidence for <b>“${esc(query)}”</b> on this page, so I won't guess. What I can show you: AI agents, RAG and retrieval, agent observability, Kubernetes automation, and open-source fixes. Try one of the suggested questions.`,
-        sources: 0
-      };
-    }
-    const lead = top[0].score >= 4 ? "<b>Yes.</b> Here's the evidence:" : "The closest evidence I have:";
-    return {
-      html: `${lead}<ul>${top.map((r) => `<li><b>${esc(r.doc.title)}</b>: ${esc(r.doc.text)}. ${cite(r.doc.anchor, r.doc.kind)}</li>`).join('')}</ul>`,
-      sources: top.length
-    };
-  }
-
-  const log = $('#steps-log'), answerEl = $('#answer'), stateEl = $('#run-state'), qEl = $('#console-q');
-  let runId = 0;
-  function addStep(kind, detail, ms, isTool) {
-    const li = document.createElement('li');
-    li.innerHTML = `<span class="kind${isTool ? ' tool' : ''}">${kind}</span><span class="detail">${detail}</span><span class="ms">${ms}</span>`;
-    log.appendChild(li);
-  }
-  function truncateHTML(html, chars) {
-    const root = document.createElement('div');
-    root.innerHTML = html;
-    let left = chars;
-    const walk = (node) => {
-      [...node.childNodes].forEach((c) => {
-        if (left <= 0) { c.remove(); return; }
-        if (c.nodeType === 3) { if (c.textContent.length > left) c.textContent = c.textContent.slice(0, left); left -= c.textContent.length; }
-        else walk(c);
-      });
-    };
-    walk(root);
-    return root.innerHTML;
-  }
-  async function typeHTML(el, html, id) {
-    if (reduce) { el.innerHTML = html; return; }
-    const tmp = document.createElement('div');
-    tmp.innerHTML = html;
-    const full = tmp.textContent.length, step = Math.max(2, Math.round(full / 90));
-    for (let n = 0; n < full; n += step) {
-      if (id !== runId) return;
-      el.innerHTML = truncateHTML(html, n) + '<span class="caret"></span>';
-      await new Promise((r) => setTimeout(r, 14));
-    }
-    el.innerHTML = html;
-  }
-
-  async function ask(query) {
-    query = query.trim().slice(0, 160);
-    if (!query) return;
-    const id = ++runId;
-    log.innerHTML = ''; answerEl.innerHTML = '';
-    qEl.textContent = query;
-    stateEl.className = 'run-state running'; stateEl.textContent = 'running';
-    mood('thinking');
-
-    const t0 = performance.now();
-    const intent = plan(query);
-    addStep('plan', `intent <b>${intent.name}</b> · tool <b>${esc(intent.tool)}</b>`, (performance.now() - t0).toFixed(2) + ' ms');
-    await sleep(380); if (id !== runId) return;
-
-    const r0 = performance.now();
-    const retrieval = retrieve(query);
-    const took = (performance.now() - r0).toFixed(2) + ' ms';
-    if (intent.name === 'search') {
-      addStep('tool_call', `search(<b>${esc(retrieval.terms.slice(0, 8).join(', ') || '∅')}</b>)`, took, true);
-      await sleep(420); if (id !== runId) return;
-      const hits = retrieval.results.slice(0, 3).map((x) => `${esc(x.doc.title)} <b>${x.score.toFixed(1)}</b>`).join(' · ');
-      addStep('result', retrieval.results.length ? `${retrieval.results.length} match${retrieval.results.length === 1 ? '' : 'es'} · ${hits}` : 'no evidence above threshold', '—');
-    } else {
-      addStep('tool_call', esc(intent.tool), took, true);
-      await sleep(420); if (id !== runId) return;
-      addStep('result', intent.name === 'open_source' ? `${OSS.length} pull requests · live from the GitHub API` : 'profile record found', '—');
-    }
-    await sleep(380); if (id !== runId) return;
-
-    const out = answerFor(intent, query, retrieval);
-    addStep('verify', out.sources ? `${out.sources} claim${out.sources === 1 ? '' : 's'} linked to on-page evidence` : 'nothing to cite, so it declines to guess', '—');
-    await sleep(300); if (id !== runId) return;
-
-    addStep('answer', 'streaming', ((performance.now() - t0) / 1000).toFixed(1) + ' s');
-    mood('talking');
-    await typeHTML(answerEl, out.html, id);
-    if (id !== runId) return;
-    stateEl.className = 'run-state done'; stateEl.textContent = out.sources ? 'grounded' : 'declined';
-    mood(out.sources ? 'happy' : 'shrug', 2600);
-  }
-
-  $$('.suggestion').forEach((b) => b.addEventListener('click', () => {
-    $$('.suggestion').forEach((x) => x.classList.toggle('active', x === b));
-    ask(b.textContent);
-  }));
-  $('#ask-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const input = $('#ask-input');
-    $$('.suggestion').forEach((x) => x.classList.remove('active'));
-    ask(input.value);
-    input.value = '';
-  });
-  // Citations scroll to the evidence and highlight it briefly
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('[data-cite]');
-    if (!a) return;
-    e.preventDefault();
-    const target = $(a.dataset.cite);
-    if (!target) return;
-    target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-    target.classList.remove('flash'); void target.offsetWidth; target.classList.add('flash');
-  });
-
-  // ======================= Project frames: Preview / Architecture / Run live =======================
-  $$('.project').forEach((project) => {
-    const tabs = $$('.tab', project), panes = $$('.pane', project);
-    const svg = $('.pane-arch svg', project);
-    if (svg && svg.pauseAnimations) svg.pauseAnimations();
-    const show = (name) => {
-      if (name === 'live' && innerWidth < 700) { window.open(project.dataset.demo, '_blank', 'noopener'); return; }
-      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.pane === name)));
-      panes.forEach((p) => p.classList.toggle('active', p.classList.contains('pane-' + name)));
-      if (svg && svg.pauseAnimations) { if (name === 'arch' && !reduce) svg.unpauseAnimations(); else svg.pauseAnimations(); }
-      if (name === 'live') {
-        const live = $('.pane-live', project);
-        if (!$('iframe', live)) {
-          const f = document.createElement('iframe');
-          f.src = project.dataset.demo;
-          f.title = $('h3', project).textContent + ' live demo';
-          f.addEventListener('load', () => { const l = $('.loading', live); if (l) l.remove(); });
-          live.appendChild(f);
-          const bar = $('.frame-bar', project);
-          const a = document.createElement('a');
-          a.className = 'fullscreen'; a.href = project.dataset.demo; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'Open ↗';
-          bar.appendChild(a);
-        }
-      }
-    };
-    project.__show = show;
-    tabs.forEach((t, n) => {
-      t.addEventListener('click', () => show(t.dataset.pane));
-      t.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-        const next = tabs[(n + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
-        next.focus(); show(next.dataset.pane);
-      });
-    });
-  });
-
-  // ======================= Motion =======================
-  function splitWords(el) {
-    let i = 0;
-    const walk = (node) => {
-      [...node.childNodes].forEach((child) => {
-        if (child.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          child.textContent.split(/(\s+)/).forEach((part) => {
-            if (!part) return;
-            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-            const w = document.createElement('span'); w.className = 'w';
-            const inner = document.createElement('span'); inner.textContent = part; inner.style.setProperty('--i', i++);
-            w.appendChild(inner); frag.appendChild(w);
-          });
-          child.replaceWith(frag);
-        } else if (child.nodeType === 1) walk(child);
-      });
-    };
-    walk(el);
-    el.classList.add('words');
-  }
-  const heroTitle = $('#hero-title');
-  const titles = [heroTitle, ...$$('.section-head h2, .contact h2')];
-  titles.forEach(splitWords);
-  $$('.hero-fade').forEach((el, n) => el.style.setProperty('--d', (n === 0 ? 0 : 380 + n * 110) + 'ms'));
-  // A timer, not requestAnimationFrame: rAF is paused in background tabs.
-  setTimeout(() => { heroTitle.classList.add('in'); $$('.hero-fade').forEach((el) => el.classList.add('in')); }, 60);
-
-  function countUp(scope) {
-    if (reduce) return;
-    $$('.metrics strong', scope).forEach((el) => {
-      const m = el.textContent.match(/^(\D*?)(\d+(?:\.\d+)?)(.*)$/);
-      if (!m) return;
-      const [, pre, num, post] = m;
-      const target = parseFloat(num), start = performance.now(), dur = 1100;
-      const tick = (t) => {
-        const k = Math.min(1, (t - start) / dur), eased = 1 - Math.pow(1 - k, 3);
-        el.textContent = pre + Math.round(target * eased) + post;
-        if (k < 1) requestAnimationFrame(tick); else el.textContent = pre + num + post;
-      };
-      requestAnimationFrame(tick);
-    });
-  }
-
-  let askedOnce = false;
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (!e.isIntersecting) return;
-      const el = e.target;
-      el.classList.add('in');
-      if (el.matches('.project')) countUp(el);
-      if (el.matches('.agent') && !askedOnce) { askedOnce = true; $('.suggestion').click(); }
-      io.unobserve(el);
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  $$('.reveal, .project, .ledger').forEach((el) => io.observe(el));
-  titles.slice(1).forEach((t) => io.observe(t));
-
-  // Architecture animations only run while their diagram is visible on screen
-  const archIO = new IntersectionObserver((entries) => entries.forEach((e) => {
-    const svg = $('svg', e.target);
-    if (!svg || !svg.pauseAnimations) return;
-    if (e.isIntersecting && e.target.classList.contains('active') && !reduce) svg.unpauseAnimations(); else svg.pauseAnimations();
-  }));
-  $$('.pane-arch').forEach((p) => archIO.observe(p));
-
-  // Hero trace teaser
-  (function runTrace() {
-    const steps = $$('#trace-steps li'), ok = $('#trace-ok');
-    if (reduce) { steps.forEach((s) => s.classList.add('on')); ok.textContent = 'successful'; return; }
-    let i = 0;
-    const tick = () => { if (i < steps.length) { steps[i++].classList.add('on'); setTimeout(tick, 520); } else ok.textContent = 'successful'; };
-    setTimeout(tick, 700);
-  })();
-
-  // Nav: border on scroll, progress hairline, pill following the current section
-  const nav = $('#nav'), bar = $('#progress'), pill = $('.nav-pill');
-  const links = $$('.nav-links a[href^="#"]');
-  const sections = links.map((a) => $(a.getAttribute('href')));
-  function onScroll() {
-    nav.classList.toggle('scrolled', scrollY > 8);
-    const max = document.documentElement.scrollHeight - innerHeight;
-    bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
-    let current = -1;
-    sections.forEach((s, n) => { if (s && s.getBoundingClientRect().top < innerHeight * 0.4) current = n; });
-    links.forEach((a, n) => a.classList.toggle('current', n === current));
-    const a = links[current];
-    if (a && a.offsetParent) { pill.style.left = a.offsetLeft + 'px'; pill.style.width = a.offsetWidth + 'px'; pill.style.opacity = 1; }
-    else pill.style.opacity = 0;
-  }
-  addEventListener('scroll', onScroll, { passive: true });
-  addEventListener('resize', onScroll);
-  onScroll();
-
-  // Cursor spotlight on cards
-  if (matchMedia('(hover: hover)').matches) {
-    $$('.spot, .mini, .trace').forEach((el) => {
-      el.classList.add('spot');
-      el.addEventListener('pointermove', (e) => {
-        const r = el.getBoundingClientRect();
-        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
-        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
-      });
-    });
-  }
-
-  // ======================= Copy email + command palette =======================
-  function copyEmail() {
-    const done = () => { const ok = $('#copy-ok'); ok.classList.add('show'); setTimeout(() => ok.classList.remove('show'), 1800); };
-    if (navigator.clipboard) navigator.clipboard.writeText('gaurav.pvt25@gmail.com').then(done, () => {});
-  }
-  $('#copy-email').addEventListener('click', copyEmail);
-
-  const touch = matchMedia('(pointer: coarse)').matches;
-  $('#kbd-hint').textContent = touch ? 'Menu' : /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K';
-  const go = (sel) => () => $(sel).scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-  const open = (url) => () => window.open(url, '_blank', 'noopener');
-  const COMMANDS = [
-    { group: 'Mini-Gaurav', label: 'Take the 60-second tour', hint: 'tour', run: () => startTour() },
-    { group: 'Mini-Gaurav', label: 'Open terminal mode', hint: '`', run: () => openTerm() },
-    { group: 'Mini-Gaurav', label: 'Show Mini-Gaurav (the guide)', hint: 'guide', run: () => { setGuideHidden(false); guide.classList.add('on'); } },
-    { group: 'Ask', label: 'Ask my portfolio a question', hint: 'agent', run: () => { go('#ask')(); setTimeout(() => $('#ask-input').focus({ preventScroll: true }), 500); } },
-    { group: 'Live demos', label: 'Winnow: local-first inbox triage', hint: 'demo', run: open('https://gauravch-code.github.io/winnow/') },
-    { group: 'Live demos', label: 'TraceGuard: agent run tracing', hint: 'demo', run: open('https://gauravch-code.github.io/TraceGuard/') },
-    { group: 'Live demos', label: 'Agentic SRE: Kubernetes incident simulator', hint: 'demo', run: open('https://gauravch-code.github.io/Agentic-SRE-Pipeline/') },
-    { group: 'Live demos', label: 'Toolgen: tool-use data generator', hint: 'demo', run: open('https://gauravch-code.github.io/toolgen/') },
-    { group: 'Sections', label: 'Selected work', hint: 'jump', run: go('#work') },
-    { group: 'Sections', label: 'Open-source contributions', hint: 'jump', run: go('#open-source') },
-    { group: 'Sections', label: 'Experience & education', hint: 'jump', run: go('#experience') },
-    { group: 'Sections', label: 'Contact', hint: 'jump', run: go('#contact') },
-    { group: 'Actions', label: 'Copy email address', hint: 'copy', run: copyEmail },
-    { group: 'Actions', label: 'Download resume (PDF)', hint: 'open', run: open('./Gaurav_Resume.pdf') },
-    { group: 'Actions', label: 'GitHub profile', hint: 'open', run: open('https://github.com/gauravch-code') },
-    { group: 'Actions', label: 'LinkedIn', hint: 'open', run: open('https://www.linkedin.com/in/gauravchintak/') }
-  ];
-  const palette = $('#palette'), pq = $('#palette-q'), plist = $('#palette-list');
-  let filtered = COMMANDS, active = 0, lastFocus = null;
-  function draw() {
-    const term = pq.value.trim().toLowerCase();
-    filtered = COMMANDS.filter((c) => (c.label + ' ' + c.group).toLowerCase().includes(term));
-    if (active >= filtered.length) active = 0;
-    if (!filtered.length) { plist.innerHTML = '<li class="palette-empty">No matches</li>'; return; }
-    let html = '', group = '';
-    filtered.forEach((c, i) => {
-      if (c.group !== group) { group = c.group; html += `<li class="palette-group" role="presentation">${group}</li>`; }
-      html += `<li class="palette-item${i === active ? ' active' : ''}" role="option" aria-selected="${i === active}" data-i="${i}">${esc(c.label)}<small>${c.hint}</small></li>`;
-    });
-    plist.innerHTML = html;
-    const cur = $('.palette-item.active', plist);
-    if (cur) cur.scrollIntoView({ block: 'nearest' });
-  }
-  function openPalette() { lastFocus = document.activeElement; palette.classList.add('open'); pq.value = ''; active = 0; draw(); pq.focus(); }
-  function closePalette() { palette.classList.remove('open'); if (lastFocus) lastFocus.focus(); }
-  function runActive() { const c = filtered[active]; if (!c) return; closePalette(); c.run(); }
-  $('#open-palette').addEventListener('click', openPalette);
-  addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); palette.classList.contains('open') ? closePalette() : openPalette(); return; }
-    if (!palette.classList.contains('open')) return;
-    if (e.key === 'Escape') closePalette();
-    else if (e.key === 'ArrowDown') { e.preventDefault(); active = (active + 1) % Math.max(filtered.length, 1); draw(); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); active = (active - 1 + filtered.length) % Math.max(filtered.length, 1); draw(); }
-    else if (e.key === 'Enter') { e.preventDefault(); runActive(); }
-  });
-  pq.addEventListener('input', () => { active = 0; draw(); });
-  plist.addEventListener('mousemove', (e) => { const li = e.target.closest('.palette-item'); if (li && +li.dataset.i !== active) { active = +li.dataset.i; draw(); } });
-  plist.addEventListener('click', (e) => { const li = e.target.closest('.palette-item'); if (li) { active = +li.dataset.i; runActive(); } });
-  palette.addEventListener('click', (e) => { if (e.target === palette) closePalette(); });
-
-  // ======================= Mini-Gaurav: the illustrated avatar =======================
-  const AV_TEMPLATE = `<svg class="avatar" viewBox="0 0 200 200" aria-hidden="true" data-state="idle">
-  <defs>
-    <clipPath id="UID-clip"><circle cx="100" cy="100" r="100"/></clipPath>
-    <linearGradient id="UID-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1014"/><stop offset=".62" stop-color="#141c22"/><stop offset=".63" stop-color="#0c1418"/><stop offset="1" stop-color="#101a1f"/></linearGradient>
-    <linearGradient id="UID-face" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eab894"/><stop offset=".7" stop-color="#dfa681"/><stop offset="1" stop-color="#d39a75"/></linearGradient>
-    <linearGradient id="UID-beard" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a22"/><stop offset=".45" stop-color="#241913"/><stop offset="1" stop-color="#1a120e"/></linearGradient>
-    <linearGradient id="UID-jacket" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b4bec3"/><stop offset=".5" stop-color="#dde3e6"/><stop offset="1" stop-color="#b0babf"/></linearGradient>
-    <radialGradient id="UID-glow" cx=".5" cy=".42" r=".5"><stop offset="0" stop-color="#ffe7c2" stop-opacity=".16"/><stop offset="1" stop-color="#ffe7c2" stop-opacity="0"/></radialGradient>
-    <filter id="UID-soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation=".3"/></filter>
-  </defs>
-  <g clip-path="url(#UID-clip)">
-    <rect width="200" height="200" fill="url(#UID-sky)"/>
-    <g class="av-city" fill="#1a2329">
-      <rect x="2" y="92" width="28" height="36"/><rect x="32" y="66" width="22" height="62"/><rect x="146" y="58" width="24" height="70"/><rect x="172" y="84" width="28" height="44"/><rect x="56" y="104" width="14" height="24"/><rect x="132" y="98" width="12" height="30"/>
-      <path d="M150,58 L158,48 L166,58 Z"/>
-    </g>
-    <g class="av-windows" fill="#f1dca0">
-      <rect x="7" y="100" width="3" height="3"/><rect x="15" y="108" width="3" height="3" class="tw"/><rect x="22" y="100" width="3" height="3"/><rect x="7" y="116" width="3" height="3" class="tw"/>
-      <rect x="37" y="76" width="3" height="3" class="tw"/><rect x="45" y="86" width="3" height="3"/><rect x="37" y="98" width="3" height="3"/><rect x="45" y="110" width="3" height="3" class="tw"/><rect x="37" y="118" width="3" height="3"/>
-      <rect x="151" y="68" width="3" height="3"/><rect x="160" y="78" width="3" height="3" class="tw"/><rect x="151" y="92" width="3" height="3"/><rect x="160" y="104" width="3" height="3"/><rect x="151" y="116" width="3" height="3" class="tw"/>
-      <rect x="178" y="94" width="3" height="3" class="tw"/><rect x="188" y="104" width="3" height="3"/><rect x="178" y="114" width="3" height="3"/>
-      <rect x="60" y="112" width="3" height="3"/><rect x="136" y="106" width="3" height="3" class="tw"/>
-    </g>
-    <g class="av-water" stroke="#e9d59a" stroke-linecap="round" opacity=".22">
-      <path d="M8,136 H26 M36,142 H52 M14,150 H30 M150,138 H168 M176,146 H194 M156,154 H170" stroke-width="1.4"/>
-    </g>
-    <circle cx="100" cy="92" r="70" fill="url(#UID-glow)"/>
-
-    <g class="av-body">
-      <path d="M86,120 L114,120 L115,146 C108,152 92,152 85,146 Z" fill="#d49a76"/>
-      <path d="M86,128 C92,136 108,136 114,128 L114,137 C107,142 93,142 86,137 Z" fill="#b57a58" opacity=".55"/>
-      <path d="M16,204 C20,164 56,144 100,142 C144,144 180,164 184,204 Z" fill="url(#UID-jacket)"/>
-      <path d="M16,204 C20,176 38,158 62,148 L70,204 Z" fill="#6e8e96"/>
-      <path d="M184,204 C180,176 162,158 138,148 L130,204 Z" fill="#6e8e96"/>
-      <path d="M80,143 C88,152 112,152 120,143 L125,204 L75,204 Z" fill="#ece3d4"/>
-      <path d="M62,146 C70,141 78,140 84,141 L92,170 L77,178 Z" fill="#e6ebed"/>
-      <path d="M138,146 C130,141 122,140 116,141 L108,170 L123,178 Z" fill="#e6ebed"/>
-      <path d="M110,170 L112,204" stroke="#8a9aa0" stroke-width="1.2"/>
-    </g>
-
-    <g class="av-hand">
-      <rect x="146" y="170" width="30" height="16" rx="6" fill="#cfd7db"/>
-      <g fill="#e0a882">
-        <ellipse cx="161" cy="160" rx="12.5" ry="13"/>
-        <rect x="149.5" y="130" width="6.2" height="26" rx="3.1"/>
-        <rect x="157" y="125" width="6.2" height="30" rx="3.1"/>
-        <rect x="164.5" y="127" width="6.2" height="28" rx="3.1"/>
-        <rect x="171.5" y="133" width="5.8" height="24" rx="2.9"/>
-        <rect x="139" y="150" width="6" height="18" rx="3" transform="rotate(-38 142 159)"/>
-      </g>
-    </g>
-
-    <g class="av-head">
-      <ellipse cx="67" cy="97" rx="6.5" ry="10" fill="#d9a17c"/>
-      <ellipse cx="133" cy="97" rx="6.5" ry="10" fill="#d9a17c"/>
-      <path d="M65,92 C63,96 64,101 67,103" stroke="#bf8561" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-      <path d="M135,92 C137,96 136,101 133,103" stroke="#bf8561" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-      <path d="M68,84 C68,59 82,48 100,48 C118,48 132,59 132,84 L132,100 C132,121 118,136 100,136 C82,136 68,121 68,100 Z" fill="url(#UID-face)"/>
-      <ellipse cx="100" cy="70" rx="18" ry="7" fill="#fff3e6" opacity=".1"/>
-      <ellipse cx="83" cy="98.5" rx="5.2" ry="3" fill="#e99c86" opacity=".33"/>
-      <ellipse cx="117" cy="98.5" rx="5.2" ry="3" fill="#e99c86" opacity=".33"/>
-      <g class="av-beard" filter="url(#UID-soft)" opacity=".86">
-        <path d="M68,76 L69.4,76 C71.2,83 72.4,90 72.6,97 C73.2,104 76,108.6 81.2,112.2 C86.6,116.6 93.6,117.8 100,117.8 C106.4,117.8 113.4,116.6 118.8,112.2 C124,108.6 126.8,104 127.4,97 C127.6,90 128.8,83 130.6,76 L132,76 L132,100 C132,122 118,137.6 100,137.6 C82,137.6 68,122 68,100 Z" fill="url(#UID-beard)"/>
-        <path d="M85.5,112.2 C90.5,108.2 97,108 100,110.2 C103,108 109.5,108.2 114.5,112.2 C109.5,114 104.5,113.2 100,114.2 C95.5,113.2 90.5,114 85.5,112.2 Z" fill="#221812"/>
-      </g>
-      <path d="M71.6,88 C72.6,96 74.6,106 81.4,112" stroke="#caa088" stroke-width=".7" fill="none" opacity=".35"/>
-      <path d="M128.4,88 C127.4,96 125.4,106 118.6,112" stroke="#caa088" stroke-width=".7" fill="none" opacity=".35"/>
-      <g fill="#15100d">
-        <path d="M66,91 C63,72 66,55 79,45 C90,37 110,36 122,42 C134,49 138,64 134,91 C133,79 130,72 125,68 C119,63 110,62 104,64 C97,61 88,62 82,66 C75,71 69.5,80 68.5,91 Z"/>
-        <circle cx="80" cy="48" r="11"/><circle cx="93" cy="40" r="13"/><circle cx="108" cy="38.5" r="13"/><circle cx="121" cy="44" r="11"/><circle cx="129" cy="54" r="7.5"/><circle cx="72" cy="57" r="7.5"/>
-        <path d="M66.5,70 C66,78 66.8,85 68.4,90 L70,90 C69.2,84 69.4,76 71.6,68 Z"/><path d="M133.5,70 C134,78 133.2,85 131.6,90 L130,90 C130.8,84 130.6,76 128.4,68 Z"/>
-        <path d="M79,66.5 C86,55.5 104,51.5 119,59 C111,58 100.5,60 93.5,66 C89,68.4 84.5,68.6 79,66.5 Z"/>
-      </g>
-      <g stroke="#3a2b24" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".55">
-        <path d="M90,36 C94,33 98,32.5 102,33.5"/><path d="M114,40 C117.5,40.5 120,42.5 121.5,45"/><path d="M98,58 C102,56 106.5,56 110,57.2"/>
-      </g>
-      <g class="av-brows" fill="#18110d">
-        <path class="av-brow-l" d="M75,80.5 C79,75.5 88,73.5 94.5,76.5 L94,79.2 C88,77 80,78 75.8,82 Z"/>
-        <path class="av-brow-r" d="M105.5,76.5 C112,73.5 121,75.5 125,80.5 L124.2,82 C120,78 112,77 106,79.2 Z"/>
-      </g>
-      <g class="av-eyes">
-        <path d="M77,88.5 Q86,82 95,88.5 Q86,93.2 77,88.5 Z" fill="#f8f3ee"/>
-        <path d="M105,88.5 Q114,82 123,88.5 Q114,93.2 105,88.5 Z" fill="#f8f3ee"/>
-        <g class="av-pupils">
-          <circle cx="86" cy="87.8" r="3.7" fill="#3d2518"/><circle cx="114" cy="87.8" r="3.7" fill="#3d2518"/>
-          <circle cx="86" cy="87.8" r="1.9" fill="#0c0705"/><circle cx="114" cy="87.8" r="1.9" fill="#0c0705"/>
-          <circle cx="87.3" cy="86.5" r=".95" fill="#fff"/><circle cx="115.3" cy="86.5" r=".95" fill="#fff"/>
-        </g>
-        <path d="M76.3,88.6 Q86,81 95.7,88.6 M104.3,88.6 Q114,81 123.7,88.6" stroke="#1d130e" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <path d="M78,90.6 Q86,95.4 94,90.6 M106,90.6 Q114,95.4 122,90.6" stroke="#c48a68" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      </g>
-      <path d="M100,91 C99.6,97.5 97.2,101.5 95.6,104.2 C97.8,106.6 102.2,106.6 104.4,104.2" stroke="#bb7f5d" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <path d="M96.5,104.8 C97.6,103.8 98.6,104 99,104.9 M101,104.9 C101.4,104 102.4,103.8 103.5,104.8" stroke="#a86c4d" stroke-width="1.1" fill="none" stroke-linecap="round"/>
-      <g class="av-mouth av-m-smile">
-        <path d="M84.5,114.6 Q100,134 115.5,114.6 Q100,120.4 84.5,114.6 Z" fill="#4a1b17" stroke="#b0685a" stroke-width="1.2" stroke-linejoin="round"/>
-        <path d="M87,115.6 Q100,121.4 113,115.6 L111.2,119.9 Q100,124.6 88.8,119.9 Z" fill="#fffaf3"/>
-      </g>
-      <g class="av-mouth av-m-talk"><ellipse class="av-talk" cx="100" cy="119" rx="7.6" ry="5" fill="#4a1b17" stroke="#b0685a" stroke-width="1.2"/></g>
-      <g class="av-mouth av-m-flat"><path d="M90.5,118.6 Q100,116.2 109.5,118.6" stroke="#a0604f" stroke-width="2.6" fill="none" stroke-linecap="round"/></g>
-    </g>
-    <g class="av-think" fill="#5eead4"><circle cx="144" cy="50" r="3.5"/><circle cx="155" cy="41" r="4.5"/><circle cx="166" cy="32" r="5.5"/></g>
-  </g>
-</svg>`;
-  const avatars = [];
-  function mountAvatar(slot) {
-    slot.innerHTML = AV_TEMPLATE.replaceAll('UID', 'av' + avatars.length);
-    const svg = slot.firstElementChild;
-    avatars.push(svg);
-    return svg;
-  }
-  let moodTimer = null;
-  function mood(state, holdMs) {
-    clearTimeout(moodTimer);
-    avatars.forEach((a) => { a.dataset.state = state; });
-    if (holdMs) moodTimer = setTimeout(() => avatars.forEach((a) => { a.dataset.state = 'idle'; }), holdMs);
-  }
-  $$('.av-slot').forEach(mountAvatar);
-
-  // Eyes follow the cursor
-  if (matchMedia('(hover: hover)').matches && !reduce) {
-    let pending = null;
-    addEventListener('pointermove', (e) => {
-      pending = e;
-      requestAnimationFrame(() => {
-        if (!pending) return;
-        const { clientX: x, clientY: y } = pending; pending = null;
-        avatars.forEach((a) => {
-          const r = a.getBoundingClientRect();
-          if (!r.width || r.bottom < 0 || r.top > innerHeight) return;
-          const dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height * 0.44);
-          const d = Math.hypot(dx, dy) || 1, k = Math.min(1, d / 300);
-          a.style.setProperty('--px', (dx / d * 2.2 * k).toFixed(2) + 'px');
-          a.style.setProperty('--py', (dy / d * 1.6 * k).toFixed(2) + 'px');
-        });
-      });
-    }, { passive: true });
-  }
-
-  // ======================= Floating guide =======================
-  const guide = $('#guide'), bubble = $('#guide-bubble'), gText = $('#guide-text'), gActions = $('#guide-actions');
-  const GUIDE_KEY = 'gc-guide-hidden';
-  let guideHidden = false;
-  try { guideHidden = localStorage.getItem(GUIDE_KEY) === '1'; } catch (e) { /* storage unavailable */ }
-  let bubbleTimer = null, tourActive = false;
-  function say(html, actions = [], ms = 6500) {
-    if (guideHidden || tourActive) return;
-    gText.innerHTML = html;
-    gActions.innerHTML = '';
-    actions.forEach((a) => {
-      const b = document.createElement('button');
-      b.type = 'button'; b.textContent = a.label; if (a.primary) b.className = 'primary';
-      b.addEventListener('click', () => { hideBubble(); a.run(); });
-      gActions.appendChild(b);
-    });
-    bubble.classList.add('show');
-    clearTimeout(bubbleTimer);
-    if (ms) bubbleTimer = setTimeout(hideBubble, ms);
-  }
-  function hideBubble() { bubble.classList.remove('show'); clearTimeout(bubbleTimer); }
-  bubble.addEventListener('pointerenter', () => clearTimeout(bubbleTimer));
-  bubble.addEventListener('pointerleave', () => { if (bubble.classList.contains('show')) bubbleTimer = setTimeout(hideBubble, 3500); });
-  $('#guide-x').addEventListener('click', hideBubble);
-  function setGuideHidden(v) {
-    guideHidden = v;
-    guide.classList.toggle('hidden', v);
-    try { localStorage.setItem(GUIDE_KEY, v ? '1' : '0'); } catch (e) { /* storage unavailable */ }
-  }
-  const focusAsk = () => { go('#ask')(); setTimeout(() => $('#ask-input').focus({ preventScroll: true }), 600); };
-  $('#guide-av').addEventListener('click', () => {
-    if (bubble.classList.contains('show')) { hideBubble(); return; }
-    mood('wave', 2400);
-    say('What would you like to do?', [
-      { label: 'Ask me something', primary: true, run: focusAsk },
-      { label: '60-second tour', run: () => startTour() },
-      { label: 'Terminal mode', run: () => openTerm() },
-      { label: 'Hide me', run: () => setGuideHidden(true) }
-    ], 0);
-  });
-  if (guideHidden) guide.classList.add('hidden');
-  setTimeout(() => {
-    guide.classList.add('on');
-    if (guideHidden) return;
-    mood('wave', 2600);
-    say("Hi, I'm <b>Gaurav</b>. Want the 60-second version of this page?", [
-      { label: 'Take the tour', primary: true, run: () => startTour() },
-      { label: 'Look around', run: () => {} }
-    ], 9000);
-  }, 1400);
-
-  // One short, useful tip per section, shown once
-  const TIPS = {
-    ask: 'Ask me anything about my work. If there\'s no evidence on this page, I\'ll say so instead of guessing.',
-    winnow: 'Flip this frame to <b>Architecture</b>: most mail never touches the LLM.',
-    traceguard: 'This is how I\'d debug an agent: every step recorded, and uncertain drafts go to a human first.',
-    sre: 'Try <b>Run live</b>, then start the incident tour. The agent fixes it through four allowlisted tools.',
-    toolgen: 'Toolgen writes training data for tool-using agents, and a judge sends weak samples back for repair.',
-    'open-source': 'These are real bugs I found and fixed. The statuses update live from GitHub.',
-    experience: 'Before agents: research on 2 TB of spatialomics data on an HPC cluster.',
-    contact: { html: "I'm available now. Email is the fastest way to reach me.", actions: [{ label: 'Copy email', primary: true, run: () => copyEmail() }], wave: true }
-  };
-  const tipped = new Set();
-  const tipIO = new IntersectionObserver((entries) => entries.forEach((e) => {
-    if (!e.isIntersecting || tipped.has(e.target.id) || tourActive) return;
-    tipped.add(e.target.id);
-    const tip = TIPS[e.target.id];
-    if (typeof tip === 'string') say(tip);
-    else { if (tip.wave) mood('wave', 2600); say(tip.html, tip.actions, 8000); }
-  }), { threshold: 0.45 });
-  Object.keys(TIPS).forEach((id) => { const el = document.getElementById(id); if (el) tipIO.observe(el); });
-
-  // ======================= 60-second tour =======================
-  const tourEl = $('#tour'), spot = $('#tour-spot'), tText = $('#tour-text'), tStep = $('#tour-step'), tBar = $('#tour-bar'), tNext = $('#tour-next'), tBack = $('#tour-back');
-  const STEPS = [
-    { sel: '.hero .hero-grid', mood: 'wave', text: "Hi, I'm Gaurav. I build AI agents that are observable, bounded, and grounded in real workflows. Here's the 60-second version." },
-    { sel: '#ask .agent', mood: 'talking', text: 'This is a retrieval agent over my portfolio. Watch it plan, search, and cite every claim. It refuses to guess.', run: () => ask('Have you shipped AI agents?') },
-    { sel: '#winnow .frame', text: 'Winnow: a local classifier decides most mail in about 5 ms. Only the uncertain tail ever reaches an LLM.', run: () => $('#winnow').__show('arch') },
-    { sel: '#sre .frame', text: 'My SRE agent heals Kubernetes through four allowlisted tools, and escalates only when the cheap fix fails.', run: () => $('#sre').__show('arch') },
-    { sel: '#ledger', text: 'I find real bugs in AI tools and ship the fix with a test: merged into Haystack and OpenSRE, with more in review.' },
-    { sel: '#contact', mood: 'wave', text: "I'm open to full-time roles right now. The fastest way to reach me is email.", last: true }
-  ];
-  const STEP_MS = 8000;
-  let tourIdx = 0, tourTimer = null, tourStart = 0, tourPaused = false, tourRaf = null;
-  function placeSpot() {
-    const el = $(STEPS[tourIdx].sel);
-    if (!el) return;
-    const r = el.getBoundingClientRect(), pad = 10;
-    Object.assign(spot.style, { top: (r.top - pad) + 'px', left: (r.left - pad) + 'px', width: (r.width + pad * 2) + 'px', height: (r.height + pad * 2) + 'px' });
-  }
-  function tick() {
-    if (!tourActive) return;
-    placeSpot();
-    if (!tourPaused && !reduce) {
-      const k = Math.min(1, (performance.now() - tourStart) / STEP_MS);
-      tBar.style.width = (k * 100) + '%';
-      if (k >= 1 && !STEPS[tourIdx].last) { showStep(tourIdx + 1); }
-    }
-    tourRaf = requestAnimationFrame(tick);
-  }
-  function showStep(i) {
-    tourIdx = Math.max(0, Math.min(STEPS.length - 1, i));
-    const s = STEPS[tourIdx], el = $(s.sel);
-    tStep.textContent = `${tourIdx + 1} / ${STEPS.length}`;
-    tText.textContent = s.text;
-    tBack.disabled = tourIdx === 0;
-    tNext.textContent = s.last ? 'Email me' : 'Next';
-    if (el) {
-      // Fit the target into the space between the nav and the tour card, not behind the card
-      const card = $('#tour-card').getBoundingClientRect();
-      const top = 84, room = Math.max(160, card.top - top - 24), r = el.getBoundingClientRect();
-      const offset = r.height < room ? (room - r.height) / 2 : 0;
-      window.scrollTo({ top: scrollY + r.top - top - offset, behavior: reduce ? 'auto' : 'smooth' });
-    }
-    mood(s.mood || 'talking', s.mood === 'wave' ? 2600 : 2200);
-    if (s.run) setTimeout(s.run, 500);
-    tourStart = performance.now();
-    tBar.style.width = '0%';
-  }
-  function startTour() {
-    if (tourActive) return;
-    closeTerm();
-    hideBubble();
-    tourActive = true;
-    tourEl.hidden = false;
-    showStep(0);
-    tourRaf = requestAnimationFrame(tick);
-    tNext.focus({ preventScroll: true });
-  }
-  function endTour() {
-    tourActive = false;
-    tourEl.hidden = true;
-    cancelAnimationFrame(tourRaf);
-    mood('idle');
-  }
-  tNext.addEventListener('click', () => {
-    if (STEPS[tourIdx].last) { endTour(); location.href = 'mailto:gaurav.pvt25@gmail.com'; return; }
-    showStep(tourIdx + 1);
-  });
-  tBack.addEventListener('click', () => showStep(tourIdx - 1));
-  $('#tour-skip').addEventListener('click', endTour);
-  $('#tour-card').addEventListener('pointerenter', () => { tourPaused = true; });
-  $('#tour-card').addEventListener('pointerleave', () => { tourPaused = false; tourStart = performance.now() - (parseFloat(tBar.style.width) || 0) / 100 * STEP_MS; });
-  $$('[data-start-tour]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); startTour(); }));
-
-  // ======================= Terminal mode =======================
-  const term = $('#term'), tOut = $('#term-out'), tIn = $('#term-in');
-  const PROJECTS = Object.fromEntries($$('.project').map((p) => [p.id, {
-    name: $('h3', p).textContent,
-    lede: $('.p-lede', p).textContent.trim(),
-    steps: $$('.steps li', p).map((li) => li.textContent.trim()),
-    decision: $('.decision', p).textContent.replace(/^Key decision/, '').trim(),
-    stack: $$('.stack .chip', p).map((c) => c.textContent),
-    demo: p.dataset.demo,
-    src: $('.p-actions a.btn-ghost', p).href
-  }]));
-  $$('.mini').forEach((m) => { PROJECTS[m.id] = { name: $('h4', m).textContent, lede: $('p', m).textContent, steps: [], decision: '', stack: [], demo: null, src: m.href }; });
-  const LINKS = { resume: './Gaurav_Resume.pdf', github: 'https://github.com/gauravch-code', linkedin: 'https://www.linkedin.com/in/gauravchintak/', email: 'mailto:gaurav.pvt25@gmail.com' };
-  const CMDS = ['help', 'whoami', 'ls', 'cat', 'open', 'arch', 'ask', 'oss', 'tour', 'contact', 'clear', 'history', 'exit', 'sudo'];
-  const hist = [];
-  let histIdx = 0;
-  const print = (html, cls) => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; tOut.appendChild(d); tOut.scrollTop = tOut.scrollHeight; };
-  const pad = (s, n) => (s + ' '.repeat(n)).slice(0, n);
-  // Phones get stacked rows instead of padded columns that would wrap mid-row
-  const narrow = () => tOut.clientWidth < 600;
-  const HELP = [
-    ['whoami', 'who I am, in one paragraph'], ['ls [projects|oss]', 'list things'], ['cat <project>', 'read a project: how it works and the key decision'],
-    ['open <project|resume|github|linkedin|email>', 'open a demo or link'], ['arch <project>', 'jump to its live architecture diagram'],
-    ['ask <question>', 'ask my portfolio agent'], ['oss', 'open-source pull requests, live'], ['tour', 'the 60-second tour'],
-    ['clear · history · exit', '']
-  ];
-  const RUN = {
-    help: () => print(HELP.map(([c, d]) => narrow()
-      ? `<span class="c">${esc(c)}</span>${d ? `\n  <span class="d">${esc(d)}</span>` : ''}`
-      : `  <span class="c">${esc(pad(c, 46))}</span><span class="d">${esc(d)}</span>`).join('\n')),
-    whoami: () => print('<span class="w">Gaurav Chintakunta</span>, AI engineer. MS CS, University of Illinois Chicago (GPA 3.89).\nBased in New Jersey (NYC metro), on OPT, open to full-time AI / ML / Software Engineer roles.\nI build agents that are observable, bounded, and grounded in real workflows.'),
-    ls: (arg) => {
-      if (arg === 'projects') return print(Object.entries(PROJECTS).map(([id, p]) => `  <span class="c">${pad(id, 20)}</span>${esc(p.lede.split('. ')[0].replace(/\.$/, ''))}`).join('\n'));
-      if (arg === 'oss') return RUN.oss();
-      print('<span class="c">projects/</span>  <span class="c">oss/</span>  resume.pdf  contact.txt');
-    },
-    cat: (arg) => {
-      if (!arg) return print('usage: cat &lt;project&gt;   (try: ls projects)', 'd');
-      if (arg === 'contact.txt' || arg === 'contact') return RUN.contact();
-      if (arg === 'resume.pdf') return print('binary file. Try: open resume', 'd');
-      const p = PROJECTS[arg.replace(/\/$/, '')];
-      if (!p) return print(`cat: ${esc(arg)}: no such project. Try: ls projects`, 'e');
-      let out = `<span class="w"># ${esc(p.name)}</span>\n${esc(p.lede)}\n`;
-      if (p.steps.length) out += '\n' + p.steps.map((s, i) => `  ${i + 1}. ${esc(s)}`).join('\n') + '\n';
-      if (p.decision) out += `\n<span class="c">key decision:</span> ${esc(p.decision)}\n`;
-      if (p.stack.length) out += `<span class="d">stack: ${esc(p.stack.join(', '))}</span>\n`;
-      if (p.demo) out += `demo: <a href="${p.demo}" target="_blank" rel="noopener">${p.demo}</a>\n`;
-      out += `source: <a href="${p.src}" target="_blank" rel="noopener">${p.src}</a>`;
-      print(out);
-    },
-    open: (arg) => {
-      const p = PROJECTS[arg];
-      const url = (p && (p.demo || p.src)) || LINKS[arg];
-      if (!url) return print(`open: unknown target "${esc(arg || '')}". Try a project name, resume, github, linkedin or email.`, 'e');
-      print(`opening ${esc(url)}…`, 'd');
-      if (url.startsWith('mailto:')) location.href = url; else window.open(url, '_blank', 'noopener');
-    },
-    arch: (arg) => {
-      const el = document.getElementById(arg);
-      if (!el || !el.__show) return print('usage: arch &lt;winnow|traceguard|sre|toolgen&gt;', 'd');
-      closeTerm(); el.__show('arch'); el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
-    },
-    ask: (arg) => {
-      if (!arg) return print('usage: ask &lt;question&gt;', 'd');
-      const q = arg.replace(/^["']|["']$/g, '');
-      const intent = plan(q), out = answerFor(intent, q, retrieve(q));
-      const tmp = document.createElement('div'); tmp.innerHTML = out.html.replace(/<li>/g, '\n  - ');
-      $$('.cite', tmp).forEach((c) => c.remove());
-      print(`<span class="d">plan: intent ${intent.name} · tool ${esc(intent.tool)}</span>\n${esc(tmp.textContent.trim())}`);
-      mood(out.sources ? 'happy' : 'shrug', 2600);
-    },
-    oss: () => print(OSS.map((p) => `  ${p.merged ? '<span class="c">merged   </span>' : '<span class="d">in review</span>'}  ${pad(esc(prName(p)), narrow() ? 23 : 24)}<a href="https://github.com/${p.repo}/pull/${p.number}" target="_blank" rel="noopener">#${p.number}</a>${narrow() ? '' : `${' '.repeat(Math.max(2, 9 - String(p.number).length))}<span class="d">★ ${fmt(p.stars)}</span>`}`).join('\n')),
-    contact: () => print('email:    <a href="mailto:gaurav.pvt25@gmail.com">gaurav.pvt25@gmail.com</a>\nlinkedin: <a href="https://www.linkedin.com/in/gauravchintak/" target="_blank" rel="noopener">linkedin.com/in/gauravchintak</a>\ngithub:   <a href="https://github.com/gauravch-code" target="_blank" rel="noopener">github.com/gauravch-code</a>'),
-    tour: () => { closeTerm(); startTour(); },
-    clear: () => { tOut.innerHTML = ''; },
-    history: () => print(hist.map((h, i) => `  ${i + 1}  ${esc(h)}`).join('\n') || '(empty)', 'd'),
-    exit: () => closeTerm(),
-    sudo: (arg) => {
-      if (/^hire\s+gaurav$/i.test(arg)) {
-        print('[sudo] password for recruiter: ********', 'd');
-        setTimeout(() => { print('<span class="c">✓ access granted.</span> Opening an email draft to gaurav.pvt25@gmail.com…'); mood('happy', 2600); }, 700);
-        setTimeout(() => { location.href = 'mailto:gaurav.pvt25@gmail.com?subject=' + encodeURIComponent("Let's talk about a role"); }, 1600);
-        return;
-      }
-      print('Nice try. The only sudo command allowed here is: sudo hire gaurav', 'e');
-    }
-  };
-  function runLine(line) {
-    const raw = line.trim();
-    print(`<span class="term-prompt">visitor@gaurav:~$</span> ${esc(raw)}`);
-    if (!raw) return;
-    hist.push(raw); histIdx = hist.length;
-    const [cmd, ...rest] = raw.split(/\s+/);
-    const arg = rest.join(' ');
-    const fn = RUN[cmd.toLowerCase()];
-    if (fn) fn(cmd.toLowerCase() === 'ask' || cmd.toLowerCase() === 'sudo' ? arg : arg.toLowerCase());
-    else print(`command not found: ${esc(cmd)}. Type <span class="c">help</span>.`, 'e');
-  }
-  function openTerm() {
-    if (!term.hidden) return;
-    hideBubble();
-    term.hidden = false;
-    if (!tOut.childElementCount) {
-      print('<span class="w">gaurav.dev</span> <span class="d">· the portfolio, as a shell</span>');
-      print('Type <span class="c">help</span> to see commands. Try <span class="c">cat winnow</span> or <span class="c">ask "do you know RAG?"</span>. Esc closes.', 'd');
-    }
-    setTimeout(() => tIn.focus(), 30);
-  }
-  function closeTerm() { if (term.hidden) return; term.hidden = true; }
-  $('#term-form').addEventListener('submit', (e) => { e.preventDefault(); runLine(tIn.value); tIn.value = ''; });
-  $('#term-close').addEventListener('click', closeTerm);
-  term.addEventListener('click', (e) => { if (e.target === term) closeTerm(); });
-  tIn.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowUp') { e.preventDefault(); if (histIdx > 0) tIn.value = hist[--histIdx]; }
-    else if (e.key === 'ArrowDown') { e.preventDefault(); histIdx = Math.min(hist.length, histIdx + 1); tIn.value = hist[histIdx] || ''; }
-    else if (e.key === 'Tab') {
-      e.preventDefault();
-      const parts = tIn.value.split(/\s+/);
-      const pool = parts.length > 1 ? [...Object.keys(PROJECTS), 'projects', 'oss', 'resume', 'github', 'linkedin', 'email', 'contact.txt'] : CMDS;
-      const hits = pool.filter((w) => w.startsWith(parts[parts.length - 1].toLowerCase()));
-      if (hits.length === 1) { parts[parts.length - 1] = hits[0]; tIn.value = parts.join(' ') + ' '; }
-      else if (hits.length > 1) print(hits.join('  '), 'd');
-    } else if (e.key === 'Escape') { closeTerm(); }
-  });
-  $$('[data-open-term]').forEach((b) => b.addEventListener('click', (e) => { e.preventDefault(); openTerm(); }));
-  addEventListener('keydown', (e) => {
-    const typing = /INPUT|TEXTAREA/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
-    if (e.key === '`' && !typing && !e.metaKey && !e.ctrlKey) { e.preventDefault(); term.hidden ? openTerm() : closeTerm(); }
-    if (e.key === 'Escape' && tourActive) endTour();
-    if (tourActive && !typing) { if (e.key === 'ArrowRight') tNext.click(); if (e.key === 'ArrowLeft') tBack.click(); }
-  });
-
-  // ======================= Latest GitHub activity =======================
-  async function loadActivity() {
-    const el = $('#activity');
-    let events = readCache('gc-events-v1', 30 * 60 * 1000);
-    try {
-      if (!events) {
-        const r = await fetch('https://api.github.com/users/gauravch-code/events/public?per_page=30', { headers: { Accept: 'application/vnd.github+json' } });
-        if (!r.ok) return;
-        events = (await r.json()).map((e) => ({ type: e.type, repo: e.repo.name, at: e.created_at, action: e.payload.action, merged: e.payload.pull_request && e.payload.pull_request.merged, commits: e.payload.size, refType: e.payload.ref_type }));
-        writeCache('gc-events-v1', events);
-      }
-    } catch (e) { return; }
-    const describe = (e) => {
-      const repo = `<a href="https://github.com/${e.repo}" target="_blank" rel="noopener">${esc(e.repo.split('/')[1])}</a>`;
-      if (e.type === 'PullRequestEvent' && e.action === 'opened') return `Opened a pull request in ${repo}`;
-      if (e.type === 'PullRequestEvent' && e.action === 'closed' && e.merged) return `Got a pull request merged in ${repo}`;
-      if (e.type === 'PushEvent') return `Pushed ${e.commits || 'new'} commit${e.commits === 1 ? '' : 's'} to ${repo}`;
-      if (e.type === 'CreateEvent' && e.refType === 'repository') return `Created ${repo}`;
-      return null;
-    };
-    const ev = events.find((e) => describe(e));
-    if (!ev) return;
-    const days = (Date.now() - new Date(ev.at)) / 864e5;
-    if (days > 60) return;
-    const ago = days < 1 / 24 ? 'just now' : days < 1 ? Math.round(days * 24) + 'h ago' : Math.round(days) + (Math.round(days) === 1 ? ' day ago' : ' days ago');
-    el.innerHTML = `<span class="live-pill">latest</span><span>${describe(ev)} · ${ago}</span>`;
-    el.hidden = false;
-  }
-  loadActivity();
-
-  refreshLedger();
-
-  // Hooks for automated checks
-  window.__portfolio = { ask, retrieve, plan, runLine, startTour, endTour, openTerm, closeTerm, mood, avatars };
-})();
-</script>
-</body>
+      <p id="demo-loading" class="demo-loading" role="status">
+        Loading demo...
+      </p>
+      <iframe
+        id="demo-frame"
+        title="Project demo"
+        referrerpolicy="no-referrer"
+        allow="clipboard-write"
+      ></iframe>
+    </dialog>
+    <noscript
+      ><p class="noscript">
+        The interactive bench needs JavaScript.
+        <a href="https://github.com/gauravch-code"
+          >Explore the projects on GitHub</a
+        >
+        or <a href="./Gaurav_Resume.pdf">read my resume</a>.
+      </p></noscript
+    >
+  </body>
 </html>
