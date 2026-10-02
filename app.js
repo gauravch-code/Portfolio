@@ -1,4 +1,5 @@
 import { projects, contributionSnapshot } from "./data.js";
+import { mountMini } from "./mini.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -56,6 +57,9 @@ function cancelRun() {
   $("#run").disabled = false;
   $("#run span").textContent = "Run scenario";
   scene?.setExecution(-1, 0);
+  document.dispatchEvent(
+    new CustomEvent("portfolio:run", { detail: { state: "cancelled" } }),
+  );
 }
 
 function selectProject(id) {
@@ -82,6 +86,9 @@ function selectProject(id) {
   scene?.select(id);
   $("#scene-fallback p").textContent = `${active.short} / ${active.summary}`;
   steps();
+  document.dispatchEvent(
+    new CustomEvent("portfolio:project", { detail: { id: active.id } }),
+  );
 }
 
 $$("[data-project]").forEach((b) =>
@@ -110,6 +117,9 @@ $("#run").addEventListener("click", async () => {
   const rows = $$("#execution li");
   $("#run").disabled = true;
   $("#run span").textContent = "Running...";
+  document.dispatchEvent(
+    new CustomEvent("portfolio:run", { detail: { state: "running" } }),
+  );
   $("#result").className = "result";
   $("#result").textContent = "Executing selected path...";
   rows.forEach((r) => (r.className = ""));
@@ -126,9 +136,15 @@ $("#run").addEventListener("click", async () => {
   $("#run").disabled = false;
   $("#run span").textContent = "Run again";
   scene?.setExecution(4, scenario.branch);
+  document.dispatchEvent(
+    new CustomEvent("portfolio:run", {
+      detail: { state: "complete", result: scenario.result },
+    }),
+  );
 });
 
 function updateControls() {
+  document.documentElement.dataset.paused = String(paused);
   $("#motion").setAttribute("aria-pressed", String(paused));
   $("#motion").setAttribute(
     "aria-label",
@@ -265,19 +281,20 @@ async function loadContributions() {
 
 const dialog = $("#demo-dialog");
 let returnFocus;
+function openDemo(id, trigger) {
+  const p = projects.find((p) => p.id === id);
+  const url = `https://gauravch-code.github.io/${p.repo}/`;
+  returnFocus = trigger;
+  $("#demo-name").textContent = p.name;
+  $("#demo-external").href = url;
+  $("#demo-frame").title = `${p.name} live demo`;
+  $("#demo-loading").hidden = false;
+  $("#demo-frame").src = url;
+  dialog.showModal();
+  document.body.style.overflow = "hidden";
+}
 $$("[data-demo]").forEach((button) =>
-  button.addEventListener("click", () => {
-    const p = projects.find((p) => p.id === button.dataset.demo);
-    const url = `https://gauravch-code.github.io/${p.repo}/`;
-    returnFocus = button;
-    $("#demo-name").textContent = p.name;
-    $("#demo-external").href = url;
-    $("#demo-frame").title = `${p.name} live demo`;
-    $("#demo-loading").hidden = false;
-    $("#demo-frame").src = url;
-    dialog.showModal();
-    document.body.style.overflow = "hidden";
-  }),
+  button.addEventListener("click", () => openDemo(button.dataset.demo, button)),
 );
 $("#demo-frame").addEventListener("load", () => {
   $("#demo-loading").hidden = true;
@@ -338,6 +355,20 @@ window.addEventListener("scroll", navPosition, { passive: true });
 selectProject("winnow");
 updateControls();
 loadContributions();
+mountMini({
+  projects,
+  getProject: () => active,
+  selectProject,
+  openDemo,
+  icons,
+  runScenario: () => {
+    $("#bench-panel").scrollIntoView({
+      behavior: reduced ? "instant" : "smooth",
+      block: "center",
+    });
+    if (!$("#run").disabled) $("#run").click();
+  },
+});
 
 try {
   const { createScene } = await import("./scene.js");
