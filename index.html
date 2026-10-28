@@ -3,488 +3,180 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#101112" />
+    <meta name="theme-color" content="#0f0f0e" />
     <title>Gaurav Chintakunta | AI Engineer</title>
     <meta
       name="description"
-      content="AI systems, opened up. Explore Gaurav Chintakunta's local-first AI, agent observability, guarded infrastructure, and open-source engineering."
+      content="Gaurav Chintakunta builds AI systems you can look inside: local-first agents, agent observability, guarded infrastructure, and open-source fixes."
     />
-    <meta
-      property="og:title"
-      content="Gaurav Chintakunta | AI systems, opened up"
-    />
+    <meta property="og:title" content="Gaurav Chintakunta | AI Engineer" />
     <meta
       property="og:description"
-      content="An interactive systems bench. Four working products. Open-source fixes. MS Computer Science, UIC."
+      content="Four working AI products with live demos, open-source fixes merged across the AI tooling ecosystem, and an MS in Computer Science from UIC."
     />
     <meta
       property="og:image"
       content="https://gauravch-code.github.io/Portfolio/assets/portfolio-social.webp"
     />
-    <meta
-      property="og:url"
-      content="https://gauravch-code.github.io/Portfolio/"
-    />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:url" content="https://gauravch-code.github.io/Portfolio/" />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:image:alt"
-      content="Gaurav Chintakunta's interactive 3D systems bench"
-    />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="./assets/gaurav.webp" />
-    <link
-      rel="preload"
-      href="./assets/fonts/space-grotesk.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preload" href="./assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=editorial-1" />
     <script src="./vendor/lucide.min.js" defer></script>
-    <script src="./app.js?v=lab-2" type="module"></script>
+    <script src="./app.js?v=editorial-1" type="module"></script>
   </head>
   <body>
     <a class="skip" href="#work">Skip to projects</a>
+
     <header class="header">
-      <a class="identity" href="#lab" aria-label="Gaurav Chintakunta, home"
-        ><span class="monogram">gc<span>.</span></span
-        ><span class="identity-name">GAURAV CHINTAKUNTA</span></a
-      >
-      <nav aria-label="Main navigation">
-        <a href="#lab" class="active">Lab</a><a href="#work">Work</a
-        ><a href="#open-source">Open source</a><a href="#about">About</a>
-      </nav>
-      <a
-        class="resume-link"
-        href="./Gaurav_Resume.pdf"
-        target="_blank"
-        rel="noopener"
-        >Resume <i data-lucide="arrow-up-right"></i
-      ></a>
+      <div class="header-inner">
+        <a class="identity" href="#top">Gaurav Chintakunta</a>
+        <nav aria-label="Main navigation">
+          <a href="#work">Work</a>
+          <a href="#open-source">Open source</a>
+          <a href="#about">About</a>
+          <a class="nav-resume" href="./Gaurav_Resume.pdf" target="_blank" rel="noopener">Resume</a>
+        </nav>
+      </div>
     </header>
-    <main>
-      <section class="lab" id="lab" aria-labelledby="main-title">
-        <div class="masthead wrap">
-          <div class="overline">
-            <span>AI ENGINEER / MS CS, UIC</span
-            ><a href="#contact"
-              ><span class="status-dot"></span> OPEN TO WORK</a
-            >
-          </div>
-          <h1 id="main-title">
-            Gaurav Chintakunta<span class="period">.</span>
-          </h1>
-          <div class="intro-line">
-            <p>
-              I build AI systems you can <em>look inside.</em><br />Local-first
-              decisions. Visible reasoning. Bounded actions.
-            </p>
-            <a class="text-link" href="#work"
-              >Explore the work <i data-lucide="arrow-down-right"></i
-            ></a>
-          </div>
-        </div>
-        <div class="bench-bar wrap">
-          <div class="bench-title">
-            <span class="crosshair">+</span> SYSTEMS BENCH
-            <span class="dim">/ 004</span>
-          </div>
-          <div class="bench-controls">
-            <button
-              class="icon-button"
-              id="motion"
-              aria-label="Pause animation"
-              aria-pressed="false"
-              data-tooltip="Pause animation"
-            >
-              <i data-lucide="pause"></i>
-            </button>
-            <button
-              class="icon-button"
-              id="orbit"
-              aria-label="Rotate bench"
-              aria-pressed="false"
-              data-tooltip="Rotate bench"
-            >
-              <i data-lucide="rotate-3d"></i>
-            </button>
-            <button
-              class="icon-button"
-              id="focus-scene"
-              aria-label="Focus selected system"
-              aria-pressed="false"
-              data-tooltip="Focus selected system"
-            >
-              <i data-lucide="scan"></i>
-            </button>
-            <button
-              class="icon-button"
-              id="reset"
-              aria-label="Reset bench"
-              data-tooltip="Reset bench"
-            >
-              <i data-lucide="rotate-ccw"></i>
-            </button>
-            <button
-              class="icon-button"
-              id="explode"
-              aria-label="Exploded component view"
-              aria-pressed="false"
-              data-tooltip="Exploded component view"
-            >
-              <i data-lucide="layers-3"></i>
-            </button>
-          </div>
-        </div>
-        <div
-          class="module-selector wrap"
-          role="tablist"
-          aria-label="Select a system"
-        >
-          <button
-            role="tab"
-            id="tab-winnow"
-            aria-selected="true"
-            aria-controls="bench-panel"
-            data-project="winnow"
-          >
-            <span>01</span><b>Winnow</b><small>LOCAL-FIRST AI</small>
-          </button>
-          <button
-            role="tab"
-            id="tab-traceguard"
-            aria-selected="false"
-            aria-controls="bench-panel"
-            tabindex="-1"
-            data-project="traceguard"
-          >
-            <span>02</span><b>TraceGuard</b><small>OBSERVABILITY</small>
-          </button>
-          <button
-            role="tab"
-            id="tab-sre"
-            aria-selected="false"
-            aria-controls="bench-panel"
-            tabindex="-1"
-            data-project="sre"
-          >
-            <span>03</span><b>Agentic SRE</b><small>GUARDED ACTIONS</small>
-          </button>
-          <button
-            role="tab"
-            id="tab-toolgen"
-            aria-selected="false"
-            aria-controls="bench-panel"
-            tabindex="-1"
-            data-project="toolgen"
-          >
-            <span>04</span><b>Toolgen</b><small>TRAINING DATA</small>
-          </button>
-        </div>
-        <div
-          class="bench"
-          id="bench-panel"
-          role="tabpanel"
-          aria-labelledby="tab-winnow"
-        >
-          <div class="scene" id="scene">
-            <div class="scene-loading" id="scene-loading">
-              <span class="loading-line"></span>ASSEMBLING SYSTEMS
-            </div>
-            <canvas
-              id="systems-canvas"
-              aria-label="Interactive 3D architecture models of Winnow, TraceGuard, Agentic SRE, and Toolgen"
-            ></canvas>
-            <div class="scene-labels" id="scene-labels"></div>
-            <div class="scene-fallback" id="scene-fallback" hidden>
-              <div class="fallback-graph">
-                <span>INPUT</span><b>LOCAL MODEL</b><span>CONFIDENT</span
-                ><b>OUTPUT</b>
-              </div>
-              <p>Architecture overview</p>
-            </div>
-            <span class="scene-coordinate" aria-hidden="true"
-              >GC / ENGINEERING SYSTEMS / 2026</span
-            >
-          </div>
-          <div class="inspector" aria-labelledby="system-title">
-            <div class="inspector-index">
-              <span id="system-index">MODULE 01</span
-              ><span class="status-dot"></span>
-            </div>
-            <h2 id="system-title">Winnow</h2>
-            <p id="system-summary">Classify locally. Escalate selectively.</p>
-            <div class="experiment">
-              <label for="scenario">INPUT SCENARIO</label>
-              <select id="scenario">
-                <option value="0">Confident email</option>
-                <option value="1">Ambiguous email</option>
-              </select>
-              <button class="run-button" id="run">
-                <i data-lucide="play"></i><span>Run scenario</span
-                ><i data-lucide="arrow-right"></i>
-              </button>
-            </div>
-            <ol
-              class="execution"
-              id="execution"
-              aria-label="Execution steps"
-            ></ol>
-            <div class="result" id="result" role="status" aria-live="polite">
-              Ready to classify.
-            </div>
-            <div class="inspector-foot">
-              <span>ARCHITECTURE SIMULATION</span
-              ><a
-                href="#winnow"
-                id="inspect-project"
-                aria-label="View Winnow project"
-                ><i data-lucide="arrow-down-right"></i
-              ></a>
-            </div>
-          </div>
-        </div>
-        <div class="lab-foot wrap">
-          <span>PYTHON / GO / TYPESCRIPT</span
-          ><a href="#work">BEYOND THE BENCH <i data-lucide="arrow-down"></i></a>
-        </div>
-      </section>
-      <section class="work wrap" id="work" aria-labelledby="work-title">
-        <div class="section-heading reveal">
-          <span class="section-number">01 / SELECTED WORK</span>
-          <h2 id="work-title">Ideas, implemented.</h2>
-          <p>
-            Not just architecture diagrams.<br />Working products, with demos
-            and source.
+
+    <main id="top">
+      <section class="hero wrap" aria-labelledby="hero-title">
+        <div class="hero-text">
+          <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>Open to full-time AI and ML engineering roles</p>
+          <h1 id="hero-title">I build AI systems you can <em>look inside.</em></h1>
+          <p class="lede">
+            I'm Gaurav, an AI engineer with an MS in Computer Science from UIC. I build agents that are
+            observable, bounded, and grounded in real workflows, and I fix bugs in the open-source tools
+            they run on.
           </p>
+          <div class="actions">
+            <a class="button primary" href="#work">See the work</a>
+            <a class="button" href="mailto:gaurav.pvt25@gmail.com">Get in touch</a>
+          </div>
         </div>
-        <div id="projects"></div>
-        <div class="other-work reveal">
-          <h3>Also in the repository</h3>
-          <a
-            href="https://github.com/gauravch-code/AI-Research-Assistant"
-            target="_blank"
-            rel="noopener"
-            ><span>AI Research Assistant</span
-            ><small>RAG / academic documents</small
-            ><i data-lucide="arrow-up-right"></i></a
-          ><a
-            href="https://github.com/gauravch-code/AI-doc-bot"
-            target="_blank"
-            rel="noopener"
-            ><span>AI Documentation Bot</span
-            ><small>Semantic search / source ranking</small
-            ><i data-lucide="arrow-up-right"></i></a
-          ><a
-            href="https://github.com/gauravch-code/UIC-Pix2Path"
-            target="_blank"
-            rel="noopener"
-            ><span>Pix2Path</span
-            ><small>Transformers / spatialomics / HPC</small
-            ><i data-lucide="arrow-up-right"></i
-          ></a>
+        <figure class="portrait">
+          <img src="./assets/gaurav.webp" alt="Gaurav Chintakunta" width="900" height="900" />
+          <figcaption>New Jersey, NYC metro</figcaption>
+        </figure>
+      </section>
+
+      <div class="wrap">
+        <dl class="proof">
+          <div><dt>4</dt><dd>AI products, each with a live demo</dd></div>
+          <div><dt id="proof-merged">13</dt><dd>open-source fixes merged</dd></div>
+          <div><dt>3.89</dt><dd>GPA, MS Computer Science at UIC</dd></div>
+        </dl>
+      </div>
+
+      <section class="work wrap" id="work" aria-labelledby="work-title">
+        <header class="section-head reveal">
+          <h2 id="work-title">Selected work</h2>
+          <p>Working products, each with a live demo and source. Under every one is the engineering call that shaped it.</p>
+        </header>
+        <div id="projects" class="projects"></div>
+        <div class="also reveal">
+          <h3>Also on GitHub</h3>
+          <ul>
+            <li><a href="https://github.com/gauravch-code/AI-Research-Assistant" target="_blank" rel="noopener"><span>AI Research Assistant</span><small>RAG over academic documents</small></a></li>
+            <li><a href="https://github.com/gauravch-code/AI-doc-bot" target="_blank" rel="noopener"><span>AI Documentation Bot</span><small>Semantic search and source ranking</small></a></li>
+            <li><a href="https://github.com/gauravch-code/UIC-Pix2Path" target="_blank" rel="noopener"><span>Pix2Path</span><small>Transformers on spatialomics data, HPC</small></a></li>
+          </ul>
         </div>
       </section>
-      <section class="oss-section" id="open-source" aria-labelledby="oss-title">
+
+      <section class="oss" id="open-source" aria-labelledby="oss-title">
         <div class="wrap">
-          <div class="section-heading reveal">
-            <span class="section-number">02 / OPEN SOURCE</span>
-            <h2 id="oss-title">Small fixes.<br />Real downstream impact.</h2>
-            <p>
-              Find the bug. Reproduce it.<br />Ship the fix with a regression
-              test.
-            </p>
-          </div>
-          <div class="oss-topline">
-            <div><b id="merged-count">2</b><span>MERGED</span></div>
-            <div><b id="open-count">7</b><span>OPEN</span></div>
-            <div><b id="repo-count">9</b><span>REPOSITORIES</span></div>
-            <span id="github-status" class="data-status"
-              >SNAPSHOT / OCT 01, 2026</span
-            >
-          </div>
-          <div
-            id="contributions"
-            class="contributions"
-            aria-label="Open-source contributions"
-          ></div>
-          <a
-            class="text-link oss-all"
-            href="https://github.com/search?q=author%3Agauravch-code+is%3Apr+-user%3Agauravch-code&type=pullrequests"
-            target="_blank"
-            rel="noopener"
-            >All contributions on GitHub <i data-lucide="arrow-up-right"></i
-          ></a>
+          <header class="section-head reveal">
+            <h2 id="oss-title">Open source</h2>
+            <p>I find bugs in the tools I use, reproduce them, and send the fix with a regression test.</p>
+          </header>
+          <p class="oss-summary reveal">
+            <strong id="merged-count">13</strong> merged and <strong id="open-count">14</strong> in review
+            across <strong id="repo-count">25</strong> projects.
+            <span class="data-status" id="github-status">Snapshot from Oct 28, 2026</span>
+          </p>
+          <ol class="prs" id="merged-list" aria-label="Merged pull requests"></ol>
+          <details class="in-review">
+            <summary>Show pull requests in review (<span id="open-count-2">14</span>)</summary>
+            <ol class="prs" id="open-list" aria-label="Pull requests in review"></ol>
+          </details>
+          <a class="text-link" href="https://github.com/search?q=author%3Agauravch-code+is%3Apr+-user%3Agauravch-code&amp;type=pullrequests" target="_blank" rel="noopener">All contributions on GitHub <i data-lucide="arrow-up-right"></i></a>
         </div>
       </section>
+
       <section class="about wrap" id="about" aria-labelledby="about-title">
-        <div class="section-heading reveal">
-          <span class="section-number">03 / THE ENGINEER</span>
-          <h2 id="about-title">Curiosity.<br />With a test suite.</h2>
-        </div>
+        <header class="section-head reveal">
+          <h2 id="about-title">About</h2>
+        </header>
         <div class="about-grid">
-          <div class="portrait-wrap reveal">
-            <img
-              src="./assets/gaurav.webp"
-              alt="Gaurav Chintakunta"
-              width="900"
-              height="900"
-              loading="lazy"
-            /><span>GAURAV CHINTAKUNTA / NJ, USA</span>
-          </div>
           <div class="bio reveal">
             <p class="bio-lead">
-              I'm interested in the part between <em>"the model works"</em> and
-              <em>"the system works."</em>
+              I'm most interested in the space between <em>the model works</em> and <em>the system works.</em>
             </p>
             <p>
-              That means the uncertain edge cases, the tools an agent can
-              actually call, the trace that explains a bad answer, and the local
-              model that saves an unnecessary API request.
+              That means the uncertain edge cases, the tools an agent can actually call, the trace that
+              explains a bad answer, and the local model that saves an unnecessary API request.
             </p>
             <p>
-              My work spans AI engineering, full-stack products, and
-              deep-learning research. I build in Python, Go, and TypeScript, and
-              contribute fixes to the tools I use.
+              My work spans AI engineering, full-stack products, and deep-learning research. I build in
+              Python, Go, and TypeScript, and I contribute fixes to the tools I depend on.
             </p>
-            <div class="education">
-              <span>EDUCATION</span>
-              <h3>MS, Computer Science</h3>
-              <p>University of Illinois Chicago / May 2026 / GPA 3.89</p>
-              <h3>B.Tech, Computer Science</h3>
-              <p>JNT University Hyderabad / May 2024</p>
+          </div>
+          <div class="facts reveal">
+            <div class="fact-group">
+              <h3>Education</h3>
+              <p><strong>MS, Computer Science</strong><br />University of Illinois Chicago, May 2026, GPA 3.89</p>
+              <p><strong>B.Tech, Computer Science</strong><br />JNT University Hyderabad, May 2024</p>
             </div>
-          </div>
-        </div>
-        <div class="experience reveal">
-          <div class="experience-row">
-            <span>2025 - 2026</span>
-            <div>
-              <h3>Graduate Researcher</h3>
-              <p>University of Illinois Chicago</p>
+            <div class="fact-group">
+              <h3>Experience</h3>
+              <p><strong>Graduate Researcher</strong>, University of Illinois Chicago, 2025 to 2026<br />Transformer-based GAN research over 2 TB+ of spatialomics data, with parallel ingestion, HPC training, and reproducible experiments.</p>
+              <p><strong>Machine Learning Intern</strong>, AIML Analytics Solutions, 2023<br />Forecasting models on SQL streams, REST data-validation services, and analytics dashboards.</p>
             </div>
-            <p>
-              Transformer-based GAN research over 2 TB+ of spatialomics data.
-              Parallel ingestion, HPC training, and reproducible experiments.
-            </p>
-          </div>
-          <div class="experience-row">
-            <span>2023</span>
-            <div>
-              <h3>Machine Learning Intern</h3>
-              <p>AIML Analytics Solutions</p>
+            <div class="fact-group">
+              <h3>Toolkit</h3>
+              <p><strong>Languages</strong><br />Python, Go, TypeScript, SQL, Scala, C</p>
+              <p><strong>AI systems</strong><br />PyTorch, PydanticAI, CrewAI, LangGraph, MCP, RAG, scikit-learn</p>
+              <p><strong>Product and infrastructure</strong><br />FastAPI, Next.js, Postgres, Kubernetes, Docker, Prometheus, Cloudflare Workers</p>
             </div>
-            <p>
-              Forecasting models on SQL streams, REST data-validation services,
-              and analytics dashboards.
-            </p>
-          </div>
-        </div>
-        <div class="toolkit reveal">
-          <h3>The toolkit</h3>
-          <div>
-            <span>LANGUAGES</span>
-            <p>Python / Go / TypeScript / SQL / Scala / C</p>
-          </div>
-          <div>
-            <span>AI SYSTEMS</span>
-            <p>
-              PyTorch / PydanticAI / CrewAI / LangGraph / MCP / RAG /
-              scikit-learn
-            </p>
-          </div>
-          <div>
-            <span>PRODUCT &amp; INFRA</span>
-            <p>
-              FastAPI / Next.js / Postgres / Kubernetes / Docker / Prometheus /
-              Cloudflare Workers
-            </p>
           </div>
         </div>
       </section>
+
       <section class="contact" id="contact" aria-labelledby="contact-title">
         <div class="wrap">
-          <div class="contact-top">
-            <span class="section-number">04 / NEXT CHAPTER</span
-            ><span class="availability"
-              ><span class="status-dot"></span> AVAILABLE FOR FULL-TIME
-              ROLES</span
-            >
+          <h2 id="contact-title">Let's build something that <em>holds up.</em></h2>
+          <p>Open to AI, ML, and software engineering roles. Based in New Jersey, NYC metro, on OPT work authorization.</p>
+          <div class="contact-actions">
+            <a class="button primary" href="mailto:gaurav.pvt25@gmail.com">gaurav.pvt25@gmail.com</a>
+            <button class="button" type="button" id="copy-email"><i data-lucide="copy"></i><span>Copy email</span></button>
           </div>
-          <h2 id="contact-title">
-            Let's build<br />something that holds up<span>.</span>
-          </h2>
-          <div class="contact-bottom">
-            <p>
-              AI / ML / Software Engineering<br />New Jersey, NYC metro / OPT
-              work authorization
-            </p>
-            <a href="mailto:gaurav.pvt25@gmail.com" class="email"
-              >gaurav.pvt25@gmail.com <i data-lucide="arrow-up-right"></i></a
-            ><button
-              class="icon-button"
-              id="copy-email"
-              aria-label="Copy email address"
-              data-tooltip="Copy email"
-            >
-              <i data-lucide="copy"></i>
-            </button>
-          </div>
-          <span id="copy-status" role="status"></span>
+          <p class="copy-status" id="copy-status" role="status"></p>
         </div>
       </section>
     </main>
-    <footer class="wrap">
-      <span>GAURAV CHINTAKUNTA / 2026</span>
+
+    <footer class="footer wrap">
+      <span>Gaurav Chintakunta, 2026</span>
       <div>
-        <a
-          href="https://github.com/gauravch-code"
-          target="_blank"
-          rel="noopener"
-          >GitHub <i data-lucide="arrow-up-right"></i></a
-        ><a
-          href="https://www.linkedin.com/in/gauravchintak/"
-          target="_blank"
-          rel="noopener"
-          >LinkedIn <i data-lucide="arrow-up-right"></i></a
-        ><a href="./Gaurav_Resume.pdf" target="_blank" rel="noopener"
-          >Resume <i data-lucide="arrow-up-right"></i></a
-        ><a href="#lab" aria-label="Back to top"
-          ><i data-lucide="arrow-up"></i
-        ></a>
+        <a href="https://github.com/gauravch-code" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/gauravchintak/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="./Gaurav_Resume.pdf" target="_blank" rel="noopener">Resume</a>
       </div>
     </footer>
-    <dialog id="demo-dialog" class="demo-dialog">
+
+    <dialog id="demo-dialog" class="demo-dialog" aria-labelledby="demo-name">
       <div class="demo-bar">
-        <span id="demo-name">Live demo</span
-        ><a
-          id="demo-external"
-          target="_blank"
-          rel="noopener"
-          aria-label="Open demo in new tab"
-          ><i data-lucide="external-link"></i></a
-        ><button class="icon-button" id="demo-close" aria-label="Close demo">
-          <i data-lucide="x"></i>
-        </button>
+        <span id="demo-name">Live demo</span>
+        <a id="demo-external" target="_blank" rel="noopener">Open in new tab <i data-lucide="arrow-up-right"></i></a>
+        <button class="icon-button" id="demo-close" type="button" aria-label="Close demo"><i data-lucide="x"></i></button>
       </div>
-      <p id="demo-loading" class="demo-loading" role="status">
-        Loading demo...
-      </p>
-      <iframe
-        id="demo-frame"
-        title="Project demo"
-        referrerpolicy="no-referrer"
-        allow="clipboard-write"
-      ></iframe>
+      <p id="demo-loading" class="demo-loading" role="status">Loading demo...</p>
+      <iframe id="demo-frame" title="Project demo" referrerpolicy="no-referrer" allow="clipboard-write"></iframe>
     </dialog>
-    <noscript
-      ><p class="noscript">
-        The interactive bench needs JavaScript.
-        <a href="https://github.com/gauravch-code"
-          >Explore the projects on GitHub</a
-        >
-        or <a href="./Gaurav_Resume.pdf">read my resume</a>.
-      </p></noscript
-    >
   </body>
 </html>
