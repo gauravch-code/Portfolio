@@ -1,6 +1,6 @@
 import { projects, repoNames, headlineRepos, contributionSnapshot } from "./data.js";
 import { insides } from "./inside.js";
-import { initSky } from "./sky.js";
+import { createAmbience } from "./ambience.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -180,9 +180,118 @@ function navPosition() {
     else a.removeAttribute("aria-current");
   });
 }
-window.addEventListener("scroll", navPosition, { passive: true });
+// The backdrop shows fully at the top and bottom of the page and recedes behind the reading.
+function veil() {
+  const vh = innerHeight;
+  const fromTop = Math.min(scrollY / (vh * 0.75), 1);
+  const left = document.documentElement.scrollHeight - (scrollY + vh);
+  const nearEnd = Math.min(Math.max(left / (vh * 0.7), 0), 1);
+  document.documentElement.style.setProperty("--veil", (fromTop * (0.72 + 0.28 * nearEnd)).toFixed(3));
+}
+window.addEventListener(
+  "scroll",
+  () => {
+    navPosition();
+    veil();
+  },
+  { passive: true },
+);
+window.addEventListener("resize", veil);
 navPosition();
+veil();
+
+// Backdrop, sound, and the ambience dock
+const prefs = {
+  get(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  },
+  set(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* Storage is optional. */
+    }
+  },
+};
+const moods = ["dawn", "day", "night"];
+const ambience = createAmbience();
+let mood = moods.includes(prefs.get("gc-mood")) ? prefs.get("gc-mood") : "dawn";
+
+function setMood(name) {
+  mood = name;
+  document.documentElement.dataset.mood = name;
+  $$(".moods button").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.mood === name)));
+  ambience.setMood(name);
+  prefs.set("gc-mood", name);
+}
+$$(".moods button").forEach((b) => b.addEventListener("click", () => setMood(b.dataset.mood)));
+setMood(mood);
+
+$("#sound-toggle").addEventListener("click", async (e) => {
+  const button = e.currentTarget;
+  const on = !ambience.playing;
+  try {
+    if (on) {
+      $("#sound-label").textContent = "Loading";
+      await ambience.start();
+    } else ambience.stop();
+    button.setAttribute("aria-pressed", String(on));
+    $("#sound-label").textContent = on ? "Sound on" : "Sound off";
+  } catch {
+    button.setAttribute("aria-pressed", "false");
+    $("#sound-label").textContent = "Sound unavailable";
+  }
+});
+
+function setWatching(on) {
+  document.body.classList.toggle("viewing", on);
+  $("#watch-toggle").setAttribute("aria-pressed", String(on));
+  $("#watch-label").textContent = on ? "Back to the page" : "Just watch";
+  for (const el of [$("main"), $(".header"), $(".footer")]) el.inert = on;
+}
+$("#watch-toggle").addEventListener("click", () => setWatching(!document.body.classList.contains("viewing")));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.body.classList.contains("viewing")) setWatching(false);
+});
+
+// The waterfall plays unless the visitor prefers reduced motion; then the poster frame stands in.
+const film = $("#world");
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  film.play().catch(() => {});
+  document.addEventListener("visibilitychange", () => (document.hidden ? film.pause() : film.play().catch(() => {})));
+
+  // A slow drift with the pointer and the scroll gives the footage some depth.
+  const drift = { x: 0, y: 0, tx: 0, ty: 0, raf: 0 };
+  const settle = () => {
+    drift.x += (drift.tx - drift.x) * 0.06;
+    drift.y += (drift.ty - drift.y) * 0.06;
+    film.style.transform = `translate3d(${(-drift.x * 14).toFixed(2)}px, ${(-drift.y * 10).toFixed(2)}px, 0)`;
+    drift.raf = Math.abs(drift.tx - drift.x) + Math.abs(drift.ty - drift.y) > 0.002 ? requestAnimationFrame(settle) : 0;
+  };
+  const steer = () => {
+    if (!drift.raf) drift.raf = requestAnimationFrame(settle);
+  };
+  let pointerY = 0;
+  const aim = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    drift.ty = pointerY + (max > 0 ? (scrollY / max) * 2 - 1 : 0);
+    steer();
+  };
+  addEventListener(
+    "pointermove",
+    (e) => {
+      drift.tx = (e.clientX / innerWidth) * 2 - 1;
+      pointerY = ((e.clientY / innerHeight) * 2 - 1) * 0.5;
+      aim();
+    },
+    { passive: true },
+  );
+  addEventListener("scroll", aim, { passive: true });
+}
 
 icons();
 loadContributions();
-initSky($("#sky"));

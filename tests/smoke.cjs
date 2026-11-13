@@ -57,6 +57,16 @@ async function noOverflow(page) {
   await page.locator('[data-verdict="approved"]').click();
   assert.match(await page.locator("#tg-verdict").textContent(), /Approved/);
 
+  // The waterfall backdrop loads, and the ambience dock changes mood and hides the page
+  assert.ok(await page.locator("#world").evaluate((v) => v.readyState >= 1 && v.videoWidth > 0), "backdrop video did not load");
+  await page.locator('.moods [data-mood="night"]').click();
+  assert.equal(await page.locator("html").getAttribute("data-mood"), "night");
+  await page.locator('.moods [data-mood="dawn"]').click();
+  await page.locator("#watch-toggle").click();
+  assert.ok(await page.locator("body").evaluate((b) => b.classList.contains("viewing")));
+  await page.keyboard.press("Escape");
+  assert.equal(await page.locator("body").evaluate((b) => b.classList.contains("viewing")), false);
+
   // Pull requests in review expand
   await page.locator(".in-review summary").click();
   assert.ok(await page.locator("#open-list").isVisible());
