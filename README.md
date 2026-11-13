@@ -10,11 +10,12 @@ Serve this directory over HTTP (ES modules cannot run from `file://`):
 npx --yes http-server . -p 4173 -c-1
 ```
 
-No build step or backend is required. GitHub Pages serves `main` directly. Lucide 0.468.0 is pinned and self-hosted in `vendor/`. Instrument Serif and Inter are self-hosted in `assets/fonts/`, with their licenses and system-font fallbacks.
+No build step or backend is required. GitHub Pages serves `main` directly. Lucide 0.468.0 is pinned and self-hosted in `vendor/`. Instrument Serif, Instrument Sans, and Geist Mono are self-hosted in `assets/fonts/`, with their licenses and system-font fallbacks.
 
 ## Content
 
 - `data.js`: projects, display names for repositories, and a dated contribution snapshot.
+- `inside.js`: the "Inside" panel under each project (Winnow's threshold dial, TraceGuard's review flow, the SRE escalation chart, Toolgen's run comparison). Figures come from each repository's own docs.
 - `app.js`: project rendering, GitHub refresh, the demo dialog, copy email, and navigation state.
 - `styles.css`: layout, typography, responsive rules, and reduced-motion handling.
 

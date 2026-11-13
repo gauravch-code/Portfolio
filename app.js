@@ -1,4 +1,5 @@
-import { projects, repoNames, contributionSnapshot } from "./data.js";
+import { projects, repoNames, headlineRepos, contributionSnapshot } from "./data.js";
+import { insides } from "./inside.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -29,9 +30,15 @@ $("#projects").innerHTML = projects
         <a href="https://github.com/gauravch-code/${p.repo}" target="_blank" rel="noopener">Source ${icon("arrow-up-right")}</a>
       </div>
     </div>
+    <section class="inside" data-inside="${p.id}" aria-label="Inside ${p.name}">
+      <header><span class="inside-tag">Inside</span><h4>${insides[p.id].title}</h4></header>
+      ${insides[p.id].html}
+    </section>
   </article>`,
   )
   .join("");
+
+$$("[data-inside]").forEach((el) => insides[el.dataset.inside].init?.(el));
 
 // Strip conventional-commit prefixes like "fix(scope):" or "[BUG]:" and trailing issue references
 function cleanTitle(title) {
@@ -60,6 +67,16 @@ function renderContributions(prs) {
   $("#repo-count").textContent = new Set(prs.map((p) => p.repo)).size;
   $("#merged-list").innerHTML = merged.map(row).join("");
   $("#open-list").innerHTML = open.map(row).join("");
+  const place = (repo) => (headlineRepos.indexOf(repo) + 1 || headlineRepos.length + 1);
+  const names = [...new Set(merged.map((p) => p.repo))]
+    .sort((a, b) => place(a) - place(b))
+    .map((repo) => repoNames[repo] || repo.split("/")[1]);
+  const shown = names.slice(0, 9);
+  $("#merged-into").innerHTML =
+    shown.map((n) => `<li>${escape(n)}</li>`).join("") +
+    (names.length > shown.length
+      ? `<li class="more"><a href="#open-source">and ${names.length - shown.length} more</a></li>`
+      : "");
 }
 
 async function loadContributions() {
@@ -145,7 +162,7 @@ const reveal = new IntersectionObserver(
         reveal.unobserve(e.target);
       }
     }),
-  { threshold: 0.08 },
+  { rootMargin: "0px 0px 15% 0px", threshold: 0 },
 );
 $$(".reveal").forEach((el) => reveal.observe(el));
 document.documentElement.classList.add("js");

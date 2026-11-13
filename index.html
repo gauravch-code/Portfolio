@@ -22,11 +22,11 @@
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="./assets/gaurav.webp" />
-    <link rel="preload" href="./assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="./assets/fonts/instrument-sans.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="./assets/fonts/instrument-serif.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="./styles.css?v=editorial-1" />
+    <link rel="stylesheet" href="./styles.css?v=inside-1" />
     <script src="./vendor/lucide.min.js" defer></script>
-    <script src="./app.js?v=editorial-1" type="module"></script>
+    <script src="./app.js?v=inside-1" type="module"></script>
   </head>
   <body>
     <a class="skip" href="#work">Skip to projects</a>
@@ -67,20 +67,25 @@
       <div class="wrap">
         <dl class="proof">
           <div><dt>4</dt><dd>AI products, each with a live demo</dd></div>
-          <div><dt id="proof-merged">13</dt><dd>open-source fixes merged</dd></div>
+          <div><dt id="proof-merged">17</dt><dd>open-source fixes merged</dd></div>
           <div><dt>3.89</dt><dd>GPA, MS Computer Science at UIC</dd></div>
         </dl>
+        <div class="merged-into-row">
+          <p>Fixes merged into</p>
+          <ul id="merged-into" class="merged-into"></ul>
+        </div>
       </div>
 
       <section class="work wrap" id="work" aria-labelledby="work-title">
         <header class="section-head reveal">
           <h2 id="work-title">Selected work</h2>
-          <p>Working products, each with a live demo and source. Under every one is the engineering call that shaped it.</p>
+          <p>Four working products, each with a live demo and source. Under every one is a panel you can operate: the engineering call that shaped it, shown with its own numbers.</p>
         </header>
         <div id="projects" class="projects"></div>
         <div class="also reveal">
           <h3>Also on GitHub</h3>
           <ul>
+            <li><a href="https://github.com/gauravch-code/GridScout" target="_blank" rel="noopener"><span>GridScout</span><small>Explainable ranking of Texas battery-storage sites</small></a></li>
             <li><a href="https://github.com/gauravch-code/AI-Research-Assistant" target="_blank" rel="noopener"><span>AI Research Assistant</span><small>RAG over academic documents</small></a></li>
             <li><a href="https://github.com/gauravch-code/AI-doc-bot" target="_blank" rel="noopener"><span>AI Documentation Bot</span><small>Semantic search and source ranking</small></a></li>
             <li><a href="https://github.com/gauravch-code/UIC-Pix2Path" target="_blank" rel="noopener"><span>Pix2Path</span><small>Transformers on spatialomics data, HPC</small></a></li>
@@ -95,13 +100,13 @@
             <p>I find bugs in the tools I use, reproduce them, and send the fix with a regression test.</p>
           </header>
           <p class="oss-summary reveal">
-            <strong id="merged-count">13</strong> merged and <strong id="open-count">14</strong> in review
-            across <strong id="repo-count">25</strong> projects.
-            <span class="data-status" id="github-status">Snapshot from Oct 28, 2026</span>
+            <strong id="merged-count">17</strong> merged and <strong id="open-count">28</strong> in review
+            across <strong id="repo-count">40</strong> projects.
+            <span class="data-status" id="github-status">Snapshot from Nov 13, 2026</span>
           </p>
           <ol class="prs" id="merged-list" aria-label="Merged pull requests"></ol>
           <details class="in-review">
-            <summary>Show pull requests in review (<span id="open-count-2">14</span>)</summary>
+            <summary>Show pull requests in review (<span id="open-count-2">28</span>)</summary>
             <ol class="prs" id="open-list" aria-label="Pull requests in review"></ol>
           </details>
           <a class="text-link" href="https://github.com/search?q=author%3Agauravch-code+is%3Apr+-user%3Agauravch-code&amp;type=pullrequests" target="_blank" rel="noopener">All contributions on GitHub <i data-lucide="arrow-up-right"></i></a>

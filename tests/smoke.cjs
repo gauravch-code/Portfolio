@@ -48,6 +48,15 @@ async function noOverflow(page) {
   assert.equal(await page.locator("#merged-count").textContent(), String(merged));
   assert.equal(await page.locator("#proof-merged").textContent(), String(merged));
 
+  // Every project has an Inside panel, and the Winnow dial drives its readout
+  assert.equal(await page.locator(".project .inside").count(), 4);
+  assert.ok((await page.locator("#merged-into li").count()) > 0, "merged-into line is empty");
+  await page.locator("#winnow-threshold").fill("2");
+  assert.equal(await page.locator("#winnow-esc").textContent(), "50.0%");
+  assert.equal(await page.locator("#winnow-dots .on").count(), 30);
+  await page.locator('[data-verdict="approved"]').click();
+  assert.match(await page.locator("#tg-verdict").textContent(), /Approved/);
+
   // Pull requests in review expand
   await page.locator(".in-review summary").click();
   assert.ok(await page.locator("#open-list").isVisible());
