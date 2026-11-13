@@ -1,14 +1,11 @@
-// Ambient sound from two real recordings: falling water and a dawn chorus.
-// At night the birds fade out, the water softens, and crickets take over.
-// Nothing loads or plays until the visitor turns it on.
+// Optional sound: a lofi track over a soft bed of falling water.
+// At night the music turns warmer and quieter. Nothing loads or plays until the visitor turns it on.
 
 export function createAmbience() {
-  let ctx, master, waterTone, waterLevel, birdLevel, buffers;
-  let mood = "dawn";
+  let ctx, master, musicTone, musicLevel, buffers;
+  let mood = "day";
   let playing = false;
   let stopLoops = [];
-  let cricketTimer;
-  const rand = (a, b) => a + Math.random() * (b - a);
 
   // Equal-power fade curves, so overlapping loop ends keep a steady loudness.
   const steps = 64;
@@ -40,40 +37,11 @@ export function createAmbience() {
     };
   }
 
-  function chirp(at, pitch, pan) {
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    const panner = ctx.createStereoPanner();
-    osc.frequency.value = pitch;
-    gain.gain.setValueAtTime(0, at);
-    gain.gain.linearRampToValueAtTime(0.012, at + 0.01);
-    gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.04);
-    panner.pan.value = pan;
-    osc.connect(gain).connect(panner).connect(master);
-    osc.start(at);
-    osc.stop(at + 0.06);
-  }
-  function crickets() {
-    clearTimeout(cricketTimer);
-    if (!playing) return;
-    if (mood === "night") {
-      const start = ctx.currentTime + 0.05;
-      const pitch = rand(4100, 4500);
-      const pan = rand(-0.7, 0.7);
-      for (let burst = 0; burst < 3; burst++) {
-        for (let pulse = 0; pulse < 3; pulse++) chirp(start + burst * 0.62 + pulse * 0.058, pitch, pan);
-      }
-    }
-    cricketTimer = setTimeout(crickets, rand(1900, 3200));
-  }
-
-  function tune(seconds = 2) {
+  function tune(seconds = 2.4) {
     if (!ctx) return;
     const night = mood === "night";
-    const now = ctx.currentTime;
-    birdLevel.gain.setTargetAtTime(night ? 0 : mood === "dawn" ? 0.9 : 0.6, now, seconds / 3);
-    waterTone.frequency.setTargetAtTime(night ? 1300 : 9000, now, seconds / 3);
-    waterLevel.gain.setTargetAtTime(night ? 0.5 : 0.62, now, seconds / 3);
+    musicTone.frequency.setTargetAtTime(night ? 2200 : 12000, ctx.currentTime, seconds / 3);
+    musicLevel.gain.setTargetAtTime(night ? 0.62 : 0.8, ctx.currentTime, seconds / 3);
   }
 
   async function build() {
@@ -81,14 +49,26 @@ export function createAmbience() {
     master = ctx.createGain();
     master.gain.value = 0;
     master.connect(ctx.destination);
-    waterTone = ctx.createBiquadFilter();
+
+    musicTone = ctx.createBiquadFilter();
+    musicTone.type = "lowpass";
+    musicLevel = ctx.createGain();
+    musicTone.connect(musicLevel).connect(master);
+
+    // The water sits well under the music: dulled, and about a third as loud.
+    const waterTone = ctx.createBiquadFilter();
     waterTone.type = "lowpass";
-    waterLevel = ctx.createGain();
-    birdLevel = ctx.createGain();
+    waterTone.frequency.value = 1500;
+    const waterLevel = ctx.createGain();
+    waterLevel.gain.value = 0.3;
     waterTone.connect(waterLevel).connect(master);
-    birdLevel.connect(master);
+
     const load = async (url) => ctx.decodeAudioData(await (await fetch(url)).arrayBuffer());
-    buffers = await Promise.all([load("./assets/water.m4a"), load("./assets/birds.m4a")]);
+    const [music, water] = await Promise.all([load("./assets/lofi.m4a"), load("./assets/water.m4a")]);
+    buffers = [
+      [music, musicTone, 4],
+      [water, waterTone, 2.5],
+    ];
   }
 
   return {
@@ -101,15 +81,13 @@ export function createAmbience() {
       playing = true;
       tune(0.1);
       stopLoops.forEach((stop) => stop());
-      stopLoops = [loop(buffers[0], waterTone, 2.5), loop(buffers[1], birdLevel, 3)];
+      stopLoops = buffers.map(([buffer, destination, fade]) => loop(buffer, destination, fade));
       master.gain.cancelScheduledValues(ctx.currentTime);
-      master.gain.setTargetAtTime(0.55, ctx.currentTime, 1.1);
-      crickets();
+      master.gain.setTargetAtTime(0.6, ctx.currentTime, 1.2);
     },
     stop() {
       if (!ctx) return;
       playing = false;
-      clearTimeout(cricketTimer);
       master.gain.cancelScheduledValues(ctx.currentTime);
       master.gain.setTargetAtTime(0, ctx.currentTime, 0.35);
       setTimeout(() => {

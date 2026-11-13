@@ -61,7 +61,7 @@ async function noOverflow(page) {
   assert.ok(await page.locator("#world").evaluate((v) => v.readyState >= 1 && v.videoWidth > 0), "backdrop video did not load");
   await page.locator('.moods [data-mood="night"]').click();
   assert.equal(await page.locator("html").getAttribute("data-mood"), "night");
-  await page.locator('.moods [data-mood="dawn"]').click();
+  await page.locator('.moods [data-mood="day"]').click();
   await page.locator("#watch-toggle").click();
   assert.ok(await page.locator("body").evaluate((b) => b.classList.contains("viewing")));
   await page.keyboard.press("Escape");

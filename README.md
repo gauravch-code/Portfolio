@@ -1,6 +1,6 @@
 # Gaurav Chintakunta's portfolio
 
-A static GitHub Pages portfolio: four AI projects with embedded live demos, a live list of open-source contributions, and a short about section. A real waterfall plays behind the whole page and recedes behind a dark, blurred veil wherever there is text to read. Visitors can turn on ambient sound, switch between dawn, day and night, or hide the page and just watch.
+A static GitHub Pages portfolio: four AI projects with embedded live demos, a live list of open-source contributions, and a short about section. A real waterfall plays behind the whole page, and the content sits on frosted panels so the water stays in view all the way down. Visitors can turn on a lofi track over falling water, switch between day and night, or hide the page and just watch.
 
 ## Development
 
@@ -16,7 +16,7 @@ No build step or backend is required. GitHub Pages serves `main` directly. Lucid
 
 - `data.js`: projects, display names for repositories, and a dated contribution snapshot.
 - `inside.js`: the "Inside" panel under each project (Winnow's threshold dial, TraceGuard's review flow, the SRE escalation chart, Toolgen's run comparison). Figures come from each repository's own docs.
-- `ambience.js`: the optional sound. It loads two recordings on first use, loops them with overlapping fades, and at night fades the birds out and adds crickets (the crickets are the only synthesized sound).
+- `ambience.js`: the optional sound. It loads a lofi track and a water recording on first use, loops them with overlapping fades, and makes the music warmer and quieter at night.
 - `app.js`: project rendering, GitHub refresh, the demo dialog, copy email, navigation state, the backdrop video, and the ambience dock.
 - `styles.css`: layout, typography, responsive rules, and reduced-motion handling.
 
@@ -26,9 +26,9 @@ Contributions refresh from the public GitHub search API, with the dated snapshot
 
 - Video (`assets/waterfall-*.mp4`, poster): "Slow Motion of Waterfalls" by Alan Ford on Pexels, https://www.pexels.com/video/slow-motion-of-waterfalls-8050132/. Stabilized, mirrored, colour-graded, and cut to a 14-second loop.
 - Water sound (`assets/water.m4a`): the audio track of "Waterfalls in the Middle of a Forest" by Francisco Jadson de Araújo on Pexels, https://www.pexels.com/video/waterfalls-in-the-middle-of-a-forest-5544766/. Low-pass filtered and levelled.
-- Birdsong (`assets/birds.m4a`): 40 seconds of "Dawnchorus-uk.ogg" by Silas S. Brown, a public-domain dawn chorus recorded in Shipton Gorge, Dorset, https://commons.wikimedia.org/wiki/File:Dawnchorus-uk.ogg.
+- Music (`assets/lofi.m4a`): "Lofi Study - Calm Peaceful Chill Hop" by FASSounds on Pixabay, https://pixabay.com/music/beats-lofi-study-calm-peaceful-chill-hop-112191/. Levelled and lightly low-pass filtered.
 
-Pexels media is free to use and modify under the Pexels licence. The video does not autoplay and the poster frame stands in when the visitor prefers reduced motion. Sound never starts on its own.
+Pexels and Pixabay media are free to use and modify under their content licences. The video does not autoplay and the poster frame stands in when the visitor prefers reduced motion. Sound never starts on its own.
 
 ## Verification
 

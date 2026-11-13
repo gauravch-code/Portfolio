@@ -186,7 +186,7 @@ function veil() {
   const fromTop = Math.min(scrollY / (vh * 0.75), 1);
   const left = document.documentElement.scrollHeight - (scrollY + vh);
   const nearEnd = Math.min(Math.max(left / (vh * 0.7), 0), 1);
-  document.documentElement.style.setProperty("--veil", (fromTop * (0.72 + 0.28 * nearEnd)).toFixed(3));
+  document.documentElement.style.setProperty("--veil", (fromTop * (0.75 + 0.25 * nearEnd)).toFixed(3));
 }
 window.addEventListener(
   "scroll",
@@ -217,9 +217,8 @@ const prefs = {
     }
   },
 };
-const moods = ["dawn", "day", "night"];
 const ambience = createAmbience();
-let mood = moods.includes(prefs.get("gc-mood")) ? prefs.get("gc-mood") : "dawn";
+let mood = prefs.get("gc-mood") === "night" ? "night" : "day";
 
 function setMood(name) {
   mood = name;

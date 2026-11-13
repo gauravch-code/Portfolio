@@ -97,14 +97,8 @@ main {
   mix-blend-mode: soft-light;
   transition: background-color 2.4s ease;
 }
-[data-mood="day"] #world {
-  filter: brightness(0.98) saturate(1.02);
-}
-[data-mood="day"] .backdrop::after {
-  background: rgba(255, 255, 255, 0);
-}
 [data-mood="night"] #world {
-  filter: brightness(0.42) saturate(0.5);
+  filter: brightness(0.62) saturate(0.55);
 }
 [data-mood="night"] .backdrop::after {
   background: rgba(40, 80, 190, 0.55);
@@ -114,11 +108,36 @@ main {
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background: rgba(12, 14, 13, 0.8);
-  backdrop-filter: blur(14px) saturate(85%);
-  -webkit-backdrop-filter: blur(14px) saturate(85%);
+  background: rgba(9, 11, 10, 0.5);
   opacity: var(--veil, 0);
   transition: opacity 0.6s ease;
+}
+
+/* Frosted panels: the waterfall stays in view around and faintly through the content. */
+.project,
+.also,
+.oss > .wrap,
+.about-grid {
+  padding: clamp(18px, 3.2vw, 40px);
+  border-radius: 24px;
+  border: 1px solid var(--line-2);
+  background: rgba(12, 14, 13, 0.6);
+  backdrop-filter: blur(22px) saturate(125%);
+  -webkit-backdrop-filter: blur(22px) saturate(125%);
+  box-shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.7);
+}
+.section-head,
+.contact {
+  text-shadow: 0 1px 26px rgba(5, 7, 7, 0.75);
+}
+.section-head p {
+  color: var(--text);
+}
+.oss .section-head {
+  text-shadow: none;
+}
+.oss .section-head p {
+  color: var(--muted);
 }
 .hero-shade {
   position: absolute;
@@ -544,7 +563,7 @@ em {
 }
 .projects {
   display: grid;
-  gap: clamp(72px, 10vw, 120px);
+  gap: clamp(56px, 12vh, 140px);
 }
 .project {
   display: grid;
@@ -621,7 +640,7 @@ em {
   margin-top: 26px;
   padding: 18px 22px;
   border-radius: 14px;
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--line);
 }
 .decision-label {
@@ -669,9 +688,7 @@ em {
   border-color: var(--text);
 }
 .also {
-  margin-top: clamp(80px, 10vw, 112px);
-  padding-top: 32px;
-  border-top: 1px solid var(--line);
+  margin-top: clamp(72px, 10vw, 120px);
 }
 .also h3 {
   font-size: 1rem;
@@ -708,7 +725,7 @@ em {
   padding: clamp(20px, 3vw, 32px);
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: rgba(20, 21, 19, 0.6);
+  background: rgba(255, 255, 255, 0.035);
 }
 .inside > header {
   display: flex;
@@ -1155,9 +1172,6 @@ em {
 /* Open source */
 .oss {
   margin-top: clamp(96px, 12vw, 152px);
-  padding-block: clamp(80px, 10vw, 120px);
-  background: rgba(23, 23, 21, 0.5);
-  border-block: 1px solid var(--line);
 }
 .oss-summary {
   font-size: 1.15rem;
