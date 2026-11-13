@@ -66,8 +66,18 @@ body {
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  background-image: radial-gradient(60rem 34rem at 82% -8rem, rgba(169, 215, 188, 0.07), transparent 70%);
-  background-repeat: no-repeat;
+}
+main {
+  position: relative;
+  isolation: isolate;
+}
+.sky {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: -1;
+  width: 100%;
+  height: clamp(620px, 100vh, 940px);
+  pointer-events: none;
 }
 img {
   display: block;

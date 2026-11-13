@@ -1,5 +1,6 @@
 import { projects, repoNames, headlineRepos, contributionSnapshot } from "./data.js";
 import { insides } from "./inside.js";
+import { initSky } from "./sky.js";
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
@@ -184,3 +185,4 @@ navPosition();
 
 icons();
 loadContributions();
+initSky($("#sky"));
