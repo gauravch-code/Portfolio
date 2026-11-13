@@ -27,8 +27,8 @@ $("#projects").innerHTML = projects
       <blockquote class="decision"><p class="decision-label">Key decision</p><p>${p.decision}</p></blockquote>
       <ul class="stack" aria-label="Stack">${p.stack.map((s) => `<li>${s}</li>`).join("")}</ul>
       <div class="project-links">
-        <a href="https://gauravch-code.github.io/${p.repo}/" target="_blank" rel="noopener">Live demo ${icon("arrow-up-right")}</a>
-        <a href="https://github.com/gauravch-code/${p.repo}" target="_blank" rel="noopener">Source ${icon("arrow-up-right")}</a>
+        <a class="button primary small" href="https://gauravch-code.github.io/${p.repo}/" target="_blank" rel="noopener">Live demo ${icon("arrow-up-right")}</a>
+        <a class="button small" href="https://github.com/gauravch-code/${p.repo}" target="_blank" rel="noopener">Source ${icon("arrow-up-right")}</a>
       </div>
     </div>
     <section class="inside" data-inside="${p.id}" aria-label="Inside ${p.name}">

@@ -1,8 +1,8 @@
-// Optional sound: a lofi track over a soft bed of falling water.
-// At night the music turns warmer and quieter. Nothing loads or plays until the visitor turns it on.
+// Optional sound: a forest stream with birdsong, over the soft low body of a waterfall.
+// At night the birds recede and the water is what remains. Nothing loads or plays until the visitor turns it on.
 
 export function createAmbience() {
-  let ctx, master, musicTone, musicLevel, buffers;
+  let ctx, master, forestTone, forestLevel, buffers;
   let mood = "day";
   let playing = false;
   let stopLoops = [];
@@ -40,8 +40,8 @@ export function createAmbience() {
   function tune(seconds = 2.4) {
     if (!ctx) return;
     const night = mood === "night";
-    musicTone.frequency.setTargetAtTime(night ? 2200 : 12000, ctx.currentTime, seconds / 3);
-    musicLevel.gain.setTargetAtTime(night ? 0.62 : 0.8, ctx.currentTime, seconds / 3);
+    forestTone.frequency.setTargetAtTime(night ? 1500 : 14000, ctx.currentTime, seconds / 3);
+    forestLevel.gain.setTargetAtTime(night ? 0.6 : 0.85, ctx.currentTime, seconds / 3);
   }
 
   async function build() {
@@ -50,24 +50,20 @@ export function createAmbience() {
     master.gain.value = 0;
     master.connect(ctx.destination);
 
-    musicTone = ctx.createBiquadFilter();
-    musicTone.type = "lowpass";
-    musicLevel = ctx.createGain();
-    musicTone.connect(musicLevel).connect(master);
+    forestTone = ctx.createBiquadFilter();
+    forestTone.type = "lowpass";
+    forestLevel = ctx.createGain();
+    forestTone.connect(forestLevel).connect(master);
 
-    // The water sits well under the music: dulled, and about a third as loud.
-    const waterTone = ctx.createBiquadFilter();
-    waterTone.type = "lowpass";
-    waterTone.frequency.value = 1500;
-    const waterLevel = ctx.createGain();
-    waterLevel.gain.value = 0.3;
-    waterTone.connect(waterLevel).connect(master);
+    const fallsLevel = ctx.createGain();
+    fallsLevel.gain.value = 0.75;
+    fallsLevel.connect(master);
 
     const load = async (url) => ctx.decodeAudioData(await (await fetch(url)).arrayBuffer());
-    const [music, water] = await Promise.all([load("./assets/lofi.m4a"), load("./assets/water.m4a")]);
+    const [forest, falls] = await Promise.all([load("./assets/forest.m4a"), load("./assets/falls.m4a")]);
     buffers = [
-      [music, musicTone, 4],
-      [water, waterTone, 2.5],
+      [forest, forestTone, 5],
+      [falls, fallsLevel, 4],
     ];
   }
 
@@ -83,7 +79,7 @@ export function createAmbience() {
       stopLoops.forEach((stop) => stop());
       stopLoops = buffers.map(([buffer, destination, fade]) => loop(buffer, destination, fade));
       master.gain.cancelScheduledValues(ctx.currentTime);
-      master.gain.setTargetAtTime(0.6, ctx.currentTime, 1.2);
+      master.gain.setTargetAtTime(0.6, ctx.currentTime, 1.4);
     },
     stop() {
       if (!ctx) return;
